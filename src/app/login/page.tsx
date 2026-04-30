@@ -24,7 +24,7 @@ export default function LoginPage() {
     try {
       await login(email, password);
       await trackEvent("login_success", { method: "password" });
-      if (!auth.currentUser?.emailVerified) {
+      if (!auth?.currentUser?.emailVerified) {
         showToast("Verifica tu email antes de continuar.", "info");
         router.push("/verify-email");
       } else {

@@ -28,7 +28,7 @@ export default function VerifyEmailPage() {
   async function onCheck() {
     setLoading(true);
     await refreshUser();
-    if (auth.currentUser?.emailVerified) {
+    if (auth?.currentUser?.emailVerified) {
       showToast("Email verificado. Bienvenido.", "success");
       router.push("/dashboard");
     } else {

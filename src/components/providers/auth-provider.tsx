@@ -41,6 +41,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    if (!auth || !db) {
+      setLoading(false);
+      return;
+    }
+
     const unsub = onAuthStateChanged(auth, async (nextUser) => {
       setFirebaseUser(nextUser);
       if (!nextUser) {
@@ -79,9 +84,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       appUser,
       loading,
       login: async (email, password) => {
+        if (!auth) throw new Error("Firebase Auth no configurado.");
         await signInWithEmailAndPassword(auth, email, password);
       },
       register: async ({ name, email, password, role = "investor" }) => {
+        if (!auth || !db) throw new Error("Firebase Auth/Firestore no configurado.");
         const credential = await createUserWithEmailAndPassword(auth, email, password);
         await updateProfile(credential.user, { displayName: name });
         await sendEmailVerification(credential.user);
@@ -102,18 +109,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         });
       },
       sendVerificationEmail: async () => {
+        if (!auth) throw new Error("Firebase Auth no configurado.");
         if (!auth.currentUser) return;
         await sendEmailVerification(auth.currentUser);
       },
       refreshUser: async () => {
+        if (!auth) throw new Error("Firebase Auth no configurado.");
         if (!auth.currentUser) return;
         await reload(auth.currentUser);
         setFirebaseUser(auth.currentUser);
       },
       forgotPassword: async (email: string) => {
+        if (!auth) throw new Error("Firebase Auth no configurado.");
         await sendPasswordResetEmail(auth, email);
       },
       logout: async () => {
+        if (!auth) return;
         await signOut(auth);
       },
     }),
