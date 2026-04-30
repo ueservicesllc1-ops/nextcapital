@@ -4,7 +4,7 @@ import Stripe from "stripe";
 import { adminDb, assertAdminSdk } from "@/lib/firebase/admin";
 
 const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2023-10-16" })
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2026-04-22.dahlia" })
   : null;
 
 export async function POST(request: Request) {
