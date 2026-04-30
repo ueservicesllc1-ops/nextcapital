@@ -27,8 +27,8 @@ export default function DepositsPage() {
   const [depositDate, setDepositDate] = useState("");
   const [receipt, setReceipt] = useState<File | null>(null);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-
   const [loadingStripe, setLoadingStripe] = useState(false);
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
 
   async function createStripeDeposit() {
     setLoadingStripe(true);
@@ -190,11 +190,24 @@ export default function DepositsPage() {
         <div className="mt-10 mb-6 text-center">
           <h2 className="text-2xl font-semibold text-white">Opciones de Pago</h2>
           <p className="mt-2 text-zinc-400">Estás adquiriendo el <strong className="text-white">{selectedPlan.name}</strong> por <strong className="text-white">{formatCurrency(selectedPlan.amount)}</strong></p>
+          
+          <div className="mx-auto mt-6 flex max-w-md items-start justify-center gap-3 text-left">
+            <input 
+              type="checkbox" 
+              id="terms" 
+              checked={acceptedTerms}
+              onChange={(e) => setAcceptedTerms(e.target.checked)}
+              className="mt-1 h-4 w-4 cursor-pointer rounded border-white/20 bg-zinc-900 accent-teal-500"
+            />
+            <label htmlFor="terms" className="cursor-pointer text-sm text-zinc-400 select-none">
+              He leído y acepto los <a href="/terms" target="_blank" rel="noopener noreferrer" className="text-teal-400 hover:underline">Términos y Condiciones</a>, incluyendo las políticas de retiros y depósitos mínimos.
+            </label>
+          </div>
         </div>
 
         <section className="grid gap-8 lg:grid-cols-2">
           {/* Pago con Tarjeta (Stripe) */}
-          <article className="rounded-[24px] border border-white/10 bg-zinc-900/50 p-8 shadow-xl backdrop-blur-xl">
+          <article className={`rounded-[24px] border border-white/10 bg-zinc-900/50 p-8 shadow-xl backdrop-blur-xl transition-opacity ${!acceptedTerms ? 'opacity-50 grayscale pointer-events-none' : ''}`}>
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500/10">
                 <svg className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
@@ -208,7 +221,7 @@ export default function DepositsPage() {
             <div className="mt-8">
               <button 
                 onClick={createStripeDeposit}
-                disabled={loadingStripe}
+                disabled={loadingStripe || !acceptedTerms}
                 className="w-full rounded-full bg-indigo-500 px-4 py-4 text-sm font-semibold text-white shadow-[0_0_20px_rgba(99,102,241,0.2)] transition-transform hover:scale-[1.02] hover:bg-indigo-400 disabled:opacity-50 disabled:hover:scale-100"
               >
                 {loadingStripe ? "Procesando..." : `Pagar ${formatCurrency(selectedPlan.amount)} con Tarjeta`}
@@ -217,7 +230,7 @@ export default function DepositsPage() {
           </article>
 
           {/* Transferencia Bancaria */}
-          <article className="rounded-[24px] border border-white/10 bg-zinc-900/50 p-8 shadow-xl backdrop-blur-xl">
+          <article className={`rounded-[24px] border border-white/10 bg-zinc-900/50 p-8 shadow-xl backdrop-blur-xl transition-opacity ${!acceptedTerms ? 'opacity-50 grayscale pointer-events-none' : ''}`}>
             <div className="flex items-center gap-3">
               <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-500/10">
                 <svg className="h-5 w-5 text-emerald-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" /></svg>
@@ -265,7 +278,7 @@ export default function DepositsPage() {
               </div>
 
               <button 
-                disabled={loadingSubmit}
+                disabled={loadingSubmit || !acceptedTerms}
                 className="mt-2 w-full rounded-full bg-white px-4 py-3 text-sm font-semibold text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-transform hover:scale-[1.02] hover:bg-zinc-100 disabled:opacity-50 disabled:hover:scale-100"
               >
                 {loadingSubmit ? "Enviando..." : "Reportar Transferencia"}

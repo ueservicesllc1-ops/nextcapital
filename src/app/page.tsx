@@ -5,7 +5,7 @@ export default function Home() {
     <main className="min-h-screen bg-[#020203] text-zinc-100">
       <header className="sticky top-0 z-40 border-b border-white/10 bg-[#020203]/90 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
-          <img src="/logo.png?cb=20260430" alt="Next Capital logo" width={34} height={34} className="rounded-md" />
+          <div className="text-xl font-bold tracking-tight text-white">NextCapital</div>
           <div className="flex items-center gap-2">
             <Link href="/login" className="rounded-full px-4 py-2 text-sm text-zinc-400 transition hover:text-zinc-100">
               Login
@@ -21,13 +21,12 @@ export default function Home() {
         {/* Right Image Background with Fade */}
         <div className="absolute inset-y-0 right-0 w-full md:w-[70%] lg:w-[60%]">
           {/* Gradients to fade smoothly into the black background on the left and edges */}
-          <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#020203] via-[#020203]/70 to-transparent" />
-          <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#020203] via-transparent to-[#020203]" />
-          <div className="absolute inset-0 z-10 bg-[#020203]/20" /> {/* Slight overall darkening */}
+          <div className="absolute inset-0 z-10 bg-gradient-to-r from-[#020203] via-transparent to-transparent" />
+          <div className="absolute inset-0 z-10 bg-gradient-to-t from-[#020203] via-transparent to-transparent" />
           <img
             src="/trading-bg.png"
             alt="Trading and Investing"
-            className="h-full w-full object-cover opacity-80 mix-blend-screen"
+            className="h-full w-full object-cover"
           />
         </div>
 
@@ -39,7 +38,7 @@ export default function Home() {
               <img 
                 src="/logo.png?cb=20260430" 
                 alt="Next Capital logo" 
-                className="pointer-events-none absolute left-[-70px] top-1/2 z-50 w-[320px] max-w-none -translate-y-1/2 drop-shadow-lg md:w-[480px] lg:w-[600px]" 
+                className="pointer-events-none absolute left-[-90px] top-1/2 z-50 w-[320px] max-w-none -translate-y-1/2 drop-shadow-lg md:w-[480px] lg:w-[600px]" 
               />
             </div>
             
@@ -190,13 +189,19 @@ export default function Home() {
 
       <section className="mx-auto max-w-7xl px-6 pb-16">
         <div className="flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-6 sm:flex-row sm:items-start">
-          <p className="text-xs text-zinc-500">
+          <div className="text-xs text-zinc-500">
             Todas las inversiones conllevan riesgo. Los rendimientos no están garantizados. Los resultados pasados no aseguran resultados futuros.
             <br className="hidden sm:block" />
-            <Link href="/terms" className="mt-2 inline-block text-zinc-400 hover:text-white underline underline-offset-2">
-              Términos y Condiciones
-            </Link>
-          </p>
+            <div className="mt-2 flex items-center justify-center sm:justify-start gap-4">
+              <Link href="/terms" className="inline-block text-zinc-400 hover:text-white underline underline-offset-2">
+                Términos y Condiciones
+              </Link>
+              <span className="text-zinc-600">|</span>
+              <Link href="/policies" className="inline-block text-zinc-400 hover:text-white underline underline-offset-2">
+                Políticas del sitio
+              </Link>
+            </div>
+          </div>
           <Link href="/admin" className="text-zinc-700 transition-colors hover:text-white" title="Panel Administrativo">
             <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
