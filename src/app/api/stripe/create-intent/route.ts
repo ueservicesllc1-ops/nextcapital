@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/deposits?success=true`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/deposits?success=true&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/deposits?canceled=true`,
       client_reference_id: uid,
       metadata: { uid, planId: planId || "unknown" },

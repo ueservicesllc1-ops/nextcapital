@@ -123,6 +123,40 @@ export default function DepositsPage() {
     void loadDeposits();
   }, [firebaseUser?.uid]);
 
+  // Verificación instantánea de pagos de Stripe al volver de Checkout
+  useEffect(() => {
+    if (!firebaseUser) return;
+    const urlParams = new URLSearchParams(window.location.search);
+    const sessionId = urlParams.get("session_id");
+    const success = urlParams.get("success");
+
+    if (success === "true" && sessionId) {
+      // Limpiar la URL para evitar verificaciones duplicadas al recargar
+      window.history.replaceState({}, document.title, window.location.pathname);
+      
+      const verifyPayment = async () => {
+        try {
+          const token = await firebaseUser.getIdToken();
+          const res = await fetch(`/api/stripe/verify?session_id=${sessionId}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (res.ok) {
+            showToast("¡Pago procesado exitosamente! Tu saldo ha sido actualizado.", "success");
+            await loadDeposits();
+          }
+        } catch (e) {
+          console.error("Error verificando pago:", e);
+        }
+      };
+      
+      void verifyPayment();
+    } else if (urlParams.get("canceled") === "true") {
+      window.history.replaceState({}, document.title, window.location.pathname);
+      showToast("Cancelaste el proceso de pago.", "error");
+    }
+  }, [firebaseUser]);
+
   return (
     <main className="min-h-screen bg-[#020203]">
       <Topbar balance={0} />
