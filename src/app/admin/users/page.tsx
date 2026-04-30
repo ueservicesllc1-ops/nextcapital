@@ -31,7 +31,7 @@ export default function AdminUsersPage() {
               <th className="px-4 py-3 text-left">Email</th>
               <th className="px-4 py-3 text-left">Rol</th>
               <th className="px-4 py-3 text-left">Estado</th>
-              <th className="px-4 py-3 text-left">Detalle</th>
+              <th className="px-4 py-3 text-right">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -41,10 +41,27 @@ export default function AdminUsersPage() {
                 <td className="px-4 py-3">{user.email}</td>
                 <td className="px-4 py-3 capitalize">{user.role}</td>
                 <td className="px-4 py-3 capitalize">{user.status}</td>
-                <td className="px-4 py-3">
-                  <Link className="text-cyan-300" href={`/admin/users/${user.uid}`}>
+                <td className="px-4 py-3 text-right space-x-3">
+                  <Link className="text-cyan-300 hover:text-cyan-100" href={`/admin/users/${user.uid}`}>
                     Ver perfil
                   </Link>
+                  <button 
+                    onClick={async () => {
+                      if (!confirm(`¿Estás seguro de que deseas borrar al usuario ${user.email}? Esto no se puede deshacer.`)) return;
+                      try {
+                        const { doc, deleteDoc } = await import("firebase/firestore");
+                        await deleteDoc(doc(db, "users", user.uid));
+                        await deleteDoc(doc(db, "balances", user.uid));
+                        setUsers(prev => prev.filter(u => u.uid !== user.uid));
+                        alert("Usuario borrado correctamente.");
+                      } catch (e: any) {
+                        alert("Error al borrar el usuario: " + e.message);
+                      }
+                    }}
+                    className="text-rose-400 hover:text-rose-300 font-medium"
+                  >
+                    Borrar
+                  </button>
                 </td>
               </tr>
             ))}

@@ -27,8 +27,9 @@ export default function InvestorDashboardPage() {
         setDeposits(data.deposits);
         setTransactions(data.transactions);
         setGrowth(data.growth);
-      } catch {
-        setError("No se pudo cargar el dashboard.");
+      } catch (err: any) {
+        console.error("Dashboard error:", err);
+        setError("Error al cargar el dashboard: " + err.message);
       } finally {
         setLoading(false);
       }
@@ -36,12 +37,12 @@ export default function InvestorDashboardPage() {
     load();
   }, [firebaseUser]);
 
-  if (loading || !balance) {
-    return <div className="grid min-h-screen place-items-center">Cargando dashboard...</div>;
+  if (error) {
+    return <div className="grid min-h-screen place-items-center px-4 text-center text-rose-400">{error}</div>;
   }
 
-  if (error) {
-    return <div className="grid min-h-screen place-items-center text-rose-400">{error}</div>;
+  if (loading || !balance) {
+    return <div className="grid min-h-screen place-items-center">Cargando dashboard...</div>;
   }
 
   const dailyEstimate = balance.currentBalance * 0.01;

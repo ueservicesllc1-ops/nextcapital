@@ -38,11 +38,10 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [firebaseUser, setFirebaseUser] = useState<User | null>(null);
   const [appUser, setAppUser] = useState<AppUser | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(Boolean(auth && db));
 
   useEffect(() => {
     if (!auth || !db) {
-      setLoading(false);
       return;
     }
 
@@ -68,8 +67,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           createdAt: new Date().toISOString(),
           status: "active",
         };
-        await setDoc(ref, { ...newUser, createdAt: serverTimestamp() });
-        setAppUser(newUser);
+        try {
+          await setDoc(ref, { ...newUser, createdAt: serverTimestamp() });
+          setAppUser(newUser);
+        } catch (e: any) {
+          console.error("Error guardando usuario desde onAuthStateChanged:", e.message);
+          // Omitimos el error aquí para no romper el flujo si register ya lo está haciendo.
+        }
       }
 
       setLoading(false);
@@ -90,23 +94,38 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       register: async ({ name, email, password, role = "investor" }) => {
         if (!auth || !db) throw new Error("Firebase Auth/Firestore no configurado.");
         const credential = await createUserWithEmailAndPassword(auth, email, password);
-        await updateProfile(credential.user, { displayName: name });
-        await sendEmailVerification(credential.user);
-        await setDoc(doc(db, "users", credential.user.uid), {
-          uid: credential.user.uid,
-          name,
-          email,
-          role,
-          createdAt: serverTimestamp(),
-          status: "active",
-        });
-        await setDoc(doc(db, "balances", credential.user.uid), {
-          userId: credential.user.uid,
-          totalDeposited: 0,
-          totalProfit: 0,
-          currentBalance: 0,
-          updatedAt: serverTimestamp(),
-        });
+        
+        try {
+          await updateProfile(credential.user, { displayName: name });
+          await sendEmailVerification(credential.user);
+        } catch (e: any) {
+          throw new Error("Fallo al actualizar perfil/email: " + e.message);
+        }
+
+        try {
+          await setDoc(doc(db, "users", credential.user.uid), {
+            uid: credential.user.uid,
+            name,
+            email,
+            role,
+            createdAt: serverTimestamp(),
+            status: "active",
+          });
+        } catch (e: any) {
+          throw new Error("Error de permisos guardando usuario (users): " + e.message);
+        }
+
+        try {
+          await setDoc(doc(db, "balances", credential.user.uid), {
+            userId: credential.user.uid,
+            totalDeposited: 0,
+            totalProfit: 0,
+            currentBalance: 0,
+            updatedAt: serverTimestamp(),
+          });
+        } catch (e: any) {
+          throw new Error("Error de permisos guardando balance inicial (balances): " + e.message);
+        }
       },
       sendVerificationEmail: async () => {
         if (!auth) throw new Error("Firebase Auth no configurado.");

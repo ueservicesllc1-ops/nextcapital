@@ -37,9 +37,9 @@ export async function getInvestorData(userId: string) {
   const balancesRef = query(collection(db, "balances"), where("userId", "==", userId));
   try { 
     const fallbackBalanceSnap = await getDocs(balancesRef);
-    const depositsRef = query(collection(db, "deposits"), where("userId", "==", userId), orderBy("createdAt", "desc"));
-    const trxRef = query(collection(db, "transactions"), where("userId", "==", userId), orderBy("createdAt", "desc"));
-    const wdRef = query(collection(db, "withdrawals"), where("userId", "==", userId), orderBy("createdAt", "desc"));
+    const depositsRef = query(collection(db, "deposits"), where("userId", "==", userId));
+    const trxRef = query(collection(db, "transactions"), where("userId", "==", userId));
+    const wdRef = query(collection(db, "withdrawals"), where("userId", "==", userId));
 
     const [depositsSnap, trxSnap, wdSnap] = await Promise.all([getDocs(depositsRef), getDocs(trxRef), getDocs(wdRef)]);
 
@@ -52,9 +52,19 @@ export async function getInvestorData(userId: string) {
       currentBalance: 0,
       updatedAt: new Date().toISOString(),
     };
-    const deposits = depositsSnap.docs.map((d) => ({ id: d.id, ...d.data(), createdAt: normalizeDate(d.data().createdAt) })) as Deposit[];
-    const transactions = trxSnap.docs.map((d) => ({ id: d.id, ...d.data(), createdAt: normalizeDate(d.data().createdAt) })) as Transaction[];
-    const withdrawals = wdSnap.docs.map((d) => ({ id: d.id, ...d.data(), createdAt: normalizeDate(d.data().createdAt) })) as Withdrawal[];
+    
+    // Process and sort locally to avoid requiring Firebase composite indices
+    const deposits = depositsSnap.docs
+      .map((d) => ({ id: d.id, ...d.data(), createdAt: normalizeDate(d.data().createdAt) }))
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) as Deposit[];
+      
+    const transactions = trxSnap.docs
+      .map((d) => ({ id: d.id, ...d.data(), createdAt: normalizeDate(d.data().createdAt) }))
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) as Transaction[];
+      
+    const withdrawals = wdSnap.docs
+      .map((d) => ({ id: d.id, ...d.data(), createdAt: normalizeDate(d.data().createdAt) }))
+      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) as Withdrawal[];
 
     return {
       balance,

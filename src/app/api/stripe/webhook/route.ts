@@ -4,7 +4,7 @@ import Stripe from "stripe";
 import { adminDb, assertAdminSdk } from "@/lib/firebase/admin";
 
 const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2026-04-22.dahlia" })
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2023-10-16" })
   : null;
 
 export async function POST(request: Request) {
@@ -22,20 +22,20 @@ export async function POST(request: Request) {
     const event = stripe.webhooks.constructEvent(body, signature, process.env.STRIPE_WEBHOOK_SECRET);
     assertAdminSdk();
 
-    if (event.type === "payment_intent.succeeded") {
-      const paymentIntent = event.data.object;
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
       const query = await adminDb!
         .collection("deposits")
-        .where("stripePaymentIntentId", "==", paymentIntent.id)
+        .where("stripeSessionId", "==", session.id)
         .limit(1)
         .get();
 
       if (!query.empty) {
         const depositRef = query.docs[0].ref;
         const deposit = query.docs[0].data();
-        if (deposit.status !== "completed") {
+        if (deposit.status !== "approved") {
           await depositRef.update({
-            status: "completed",
+            status: "approved",
             processedAt: new Date().toISOString(),
           });
           const balanceRef = adminDb!.collection("balances").doc(deposit.userId);
@@ -59,26 +59,11 @@ export async function POST(request: Request) {
             userId: deposit.userId,
             type: "deposit",
             amount: deposit.amount,
-            status: "completed",
-            description: "Depósito Stripe confirmado por webhook",
+            status: "approved",
+            description: "Plan de inversión adquirido vía Stripe",
             createdAt: new Date().toISOString(),
           });
         }
-      }
-    }
-
-    if (event.type === "payment_intent.payment_failed") {
-      const paymentIntent = event.data.object;
-      const query = await adminDb!
-        .collection("deposits")
-        .where("stripePaymentIntentId", "==", paymentIntent.id)
-        .limit(1)
-        .get();
-      if (!query.empty) {
-        await query.docs[0].ref.update({
-          status: "failed",
-          processedAt: new Date().toISOString(),
-        });
       }
     }
 

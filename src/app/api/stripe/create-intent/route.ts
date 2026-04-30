@@ -4,13 +4,16 @@ import { adminDb, assertAdminSdk } from "@/lib/firebase/admin";
 import { requireVerifiedAuth } from "@/lib/server-auth";
 
 const stripe = process.env.STRIPE_SECRET_KEY
-  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: "2026-04-22.dahlia" })
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, {
+      apiVersion: "2023-10-16",
+    })
   : null;
 
 export async function POST(request: NextRequest) {
   try {
     const { uid } = await requireVerifiedAuth(request);
-    const { amount } = await request.json();
+    const { amount, planId } = await request.json();
+    
     if (!amount || amount <= 0) {
       return NextResponse.json({ message: "Monto inválido." }, { status: 400 });
     }
@@ -21,28 +24,45 @@ export async function POST(request: NextRequest) {
       });
     }
 
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100),
-      currency: "usd",
-      automatic_payment_methods: { enabled: true },
-      metadata: { uid },
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      line_items: [
+        {
+          price_data: {
+            currency: "usd",
+            product_data: {
+              name: `Adquisición de ${planId ? `Plan ${planId.toUpperCase()}` : "Plan"}`,
+              description: "Depósito de capital en Next Capital Holdings",
+            },
+            unit_amount: Math.round(amount * 100),
+          },
+          quantity: 1,
+        },
+      ],
+      mode: "payment",
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/deposits?success=true`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/deposits?canceled=true`,
+      client_reference_id: uid,
+      metadata: { uid, planId: planId || "unknown" },
     });
 
     assertAdminSdk();
     await adminDb!.collection("deposits").add({
       userId: uid,
       amount,
+      planId: planId || "unknown",
       method: "stripe",
       status: "pending",
       createdAt: new Date().toISOString(),
-      stripePaymentIntentId: paymentIntent.id,
+      stripeSessionId: session.id,
     });
 
     return NextResponse.json({
-      clientSecret: paymentIntent.client_secret,
-      message: "Intención de pago creada y depósito registrado en pending.",
+      url: session.url,
+      message: "Redirigiendo a pasarela segura de Stripe...",
     });
-  } catch (error) {
+  } catch (error: any) {
+    console.error("Stripe Error:", error);
     return NextResponse.json(
       { message: error instanceof Error ? error.message : "Error al crear pago." },
       { status: 500 }
