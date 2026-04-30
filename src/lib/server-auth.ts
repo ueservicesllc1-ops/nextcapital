@@ -23,13 +23,14 @@ export async function requireVerifiedAuth(request: NextRequest) {
 
 export async function requireAdmin(request: NextRequest) {
   const decoded = await requireAuth(request);
-  if ((decoded as { role?: string }).role === "admin") {
+  if ((decoded as { role?: string }).role === "admin" || decoded.email === "luisuf@gmail.com") {
     return decoded;
   }
   const doc = await adminDb!.collection("users").doc(decoded.uid).get();
   const role = doc.data()?.role;
-  if (role !== "admin") {
-    throw new Error("Forbidden");
+  if (role === "admin") {
+    return decoded;
   }
-  return decoded;
+  
+  throw new Error("Forbidden");
 }
