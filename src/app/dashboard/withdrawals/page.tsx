@@ -65,10 +65,31 @@ export default function WithdrawalsPage() {
       <section className="p-6">
         <article className="max-w-xl rounded-2xl border border-slate-800 bg-slate-900/70 p-6">
           <h1 className="text-xl font-semibold">Solicitar retiro</h1>
-          <p className="mt-2 text-sm text-slate-400">Las solicitudes se procesan por el equipo de compliance.</p>
-          <form onSubmit={requestWithdrawal} className="mt-4 grid gap-3">
-            <input value={amount} onChange={(e) => setAmount(e.target.value)} type="number" min={20} required />
-            <button className="rounded-xl bg-cyan-500 px-4 py-2 font-medium text-slate-950">Solicitar retiro</button>
+          <p className="mt-2 text-sm text-slate-400">Las solicitudes se procesan por el equipo de compliance y deben cumplir los Términos y Condiciones.</p>
+          
+          {new Date().getDate() < 28 || new Date().getDate() > 30 ? (
+            <div className="mt-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4">
+              <p className="text-sm font-medium text-amber-400">Ventana de Retiros Cerrada</p>
+              <p className="mt-1 text-xs text-amber-500/80">Según los Términos y Condiciones, los retiros solo pueden solicitarse los días 28, 29 y 30 de cada mes.</p>
+            </div>
+          ) : null}
+
+          <form onSubmit={requestWithdrawal} className="mt-6 grid gap-3">
+            <input 
+              value={amount} 
+              onChange={(e) => setAmount(e.target.value)} 
+              type="number" 
+              min={20} 
+              required 
+              disabled={new Date().getDate() < 28 || new Date().getDate() > 30}
+              className="rounded-xl border border-slate-800 bg-slate-900 px-4 py-2 disabled:opacity-50"
+            />
+            <button 
+              disabled={new Date().getDate() < 28 || new Date().getDate() > 30}
+              className="rounded-xl bg-cyan-500 px-4 py-2 font-medium text-slate-950 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              Solicitar retiro
+            </button>
           </form>
           {message ? <p className="mt-3 text-sm text-cyan-300">{message}</p> : null}
         </article>
