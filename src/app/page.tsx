@@ -39,12 +39,12 @@ export default function Home() {
               <img 
                 src="/logo.png?cb=20260430" 
                 alt="Next Capital logo" 
-                className="pointer-events-none absolute left-[-20px] top-1/2 z-50 w-[320px] max-w-none -translate-y-1/2 drop-shadow-lg md:w-[480px] lg:w-[600px]" 
+                className="pointer-events-none absolute left-[-70px] top-1/2 z-50 w-[320px] max-w-none -translate-y-1/2 drop-shadow-lg md:w-[480px] lg:w-[600px]" 
               />
             </div>
             
             {/* Text Content */}
-            <div className="ml-[30px]">
+            <div className="ml-[-20px]">
               <h1 className="mt-8 text-[32px] font-semibold leading-[1.1] tracking-tight text-white md:text-[44px] lg:mt-12 lg:text-[52px]">
                 La nueva era de las
                 <br />
