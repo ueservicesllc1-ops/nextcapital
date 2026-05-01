@@ -36,14 +36,18 @@ export async function GET(request: NextRequest) {
         const depositRef = query.docs[0].ref;
         const deposit = query.docs[0].data();
         
-        // Solo actualizamos si no ha sido aprobado ya (por el webhook u otro medio)
+        // Solo actualizamos si no ha sido aprobado ya
         if (deposit.status !== "approved") {
           await depositRef.update({
             status: "approved",
             processedAt: new Date().toISOString(),
           });
           
-          const balanceRef = adminDb!.collection("balances").doc(deposit.userId);
+          const isTrading = deposit.planId === "trading_wallet_topup" || deposit.planId === "wallet_topup";
+          const balanceColl = isTrading ? "trading_balances" : "balances";
+          const trxColl = isTrading ? "trading_transactions" : "transactions";
+          
+          const balanceRef = adminDb!.collection(balanceColl).doc(deposit.userId);
           const balanceSnap = await balanceRef.get();
           const current = balanceSnap.data() ?? {
             userId: deposit.userId,
@@ -62,12 +66,12 @@ export async function GET(request: NextRequest) {
             { merge: true }
           );
           
-          await adminDb!.collection("transactions").add({
+          await adminDb!.collection(trxColl).add({
             userId: deposit.userId,
             type: "deposit",
             amount: deposit.amount,
             status: "approved",
-            description: "Plan de inversión adquirido vía Stripe",
+            description: isTrading ? "Recarga de Billetera de Trading vía Stripe" : "Plan de inversión adquirido vía Stripe",
             createdAt: new Date().toISOString(),
           });
           

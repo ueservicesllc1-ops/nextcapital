@@ -25,8 +25,12 @@ function buildGrowth(transactions: Transaction[], startBalance: number) {
     const d = new Date(normalizeDate(item.createdAt));
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}`;
     const label = d.toLocaleDateString("es-ES", { month: "short", year: "2-digit" });
-    if (item.type === "withdrawal") running -= item.amount;
-    if (item.type === "deposit" || item.type === "profit") running += item.amount;
+    if (item.type === "withdrawal") {
+      if (item.status === "approved") running -= item.amount;
+    }
+    if (item.type === "deposit" || item.type === "profit") {
+      if (item.status === "approved") running += item.amount;
+    }
     byMonth.set(key, running);
   }
 
@@ -117,6 +121,7 @@ export async function getInvestorData(userId: string) {
   }
   // --- FIN LÓGICA AUTO-ACREDITACIÓN ---
 
+  // --- LÓGICA DE AUTO-SANACIÓN DE BALANCE (Integridad Financiera) ---
   const trxRef = query(collection(db, "transactions"), where("userId", "==", userId));
   const wdRef = query(collection(db, "withdrawals"), where("userId", "==", userId));
 
@@ -133,8 +138,41 @@ export async function getInvestorData(userId: string) {
     .map((d) => ({ id: d.id, ...d.data(), createdAt: normalizeDate(d.data().createdAt) }))
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()) as Withdrawal[];
 
+  // Recalcular balance real basado solo en lo APROBADO e INVERSIÓN
+  const realDeposited = deposits
+    .filter(d => d.status === 'approved' && d.planId !== 'trading_wallet_topup' && d.planId !== 'wallet_topup')
+    .reduce((acc, d) => acc + (d.amount || 0), 0);
+  
+  const realProfit = transactions
+    .filter(t => t.type === 'profit' && t.status === 'approved')
+    .reduce((acc, t) => acc + t.amount, 0);
+  
+  const realWithdrawn = withdrawals
+    .filter(w => w.status === 'approved')
+    .reduce((acc, w) => acc + w.amount, 0);
+
+  const calculatedBalance = realDeposited + realProfit - realWithdrawn;
+
+  // Si hay discrepancia, corregir Firestore silenciosamente
+  if (calculatedBalance !== balance.currentBalance || realDeposited !== balance.totalDeposited) {
+    const { writeBatch, doc: fsDoc } = await import("firebase/firestore");
+    const batch = writeBatch(db);
+    
+    balance = {
+      ...balance,
+      totalDeposited: realDeposited,
+      totalProfit: realProfit,
+      currentBalance: calculatedBalance,
+      updatedAt: new Date().toISOString()
+    };
+    
+    batch.set(doc(db, "balances", userId), balance, { merge: true });
+    await batch.commit();
+  }
+  // --- FIN AUTO-SANACIÓN ---
+
   const sortedForGrowth = [...transactions].filter(
-    (t) => t.status !== "rejected" && t.status !== "failed"
+    (t) => t.status === "approved"
   );
   const growth = buildGrowth(sortedForGrowth, 0);
 

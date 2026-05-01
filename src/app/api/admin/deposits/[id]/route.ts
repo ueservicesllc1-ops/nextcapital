@@ -25,6 +25,11 @@ export async function PATCH(
     if (deposit.status !== "pending") {
       return NextResponse.json({ message: "Este depósito ya fue procesado." }, { status: 409 });
     }
+
+    const isTrading = deposit.planId === "trading_wallet_topup" || deposit.planId === "wallet_topup" || deposit.isTrading === true;
+    const balanceColl = isTrading ? "trading_balances" : "balances";
+    const trxColl = isTrading ? "trading_transactions" : "transactions";
+
     await ref.update({
       status,
       approvedAt: status === "approved" ? new Date().toISOString() : null,
@@ -32,7 +37,7 @@ export async function PATCH(
     });
 
     if (status === "approved") {
-      const balanceRef = adminDb!.collection("balances").doc(deposit.userId);
+      const balanceRef = adminDb!.collection(balanceColl).doc(deposit.userId);
       const balanceSnap = await balanceRef.get();
       const data = balanceSnap.data() ?? {
         userId: deposit.userId,
@@ -46,12 +51,12 @@ export async function PATCH(
         currentBalance: (data.currentBalance ?? 0) + deposit.amount,
         updatedAt: new Date().toISOString(),
       });
-      await adminDb!.collection("transactions").add({
+      await adminDb!.collection(trxColl).add({
         userId: deposit.userId,
         type: "deposit",
         amount: deposit.amount,
         status: "approved",
-        description: "Depósito aprobado por admin",
+        description: isTrading ? "Depósito de Trading aprobado por admin" : "Depósito de Inversión aprobado por admin",
         createdAt: new Date().toISOString(),
       });
     }

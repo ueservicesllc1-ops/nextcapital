@@ -24,6 +24,9 @@ export async function POST(request: NextRequest) {
       });
     }
 
+    const isTrading = planId === "wallet_topup" || planId === "trading_wallet_topup";
+    const returnPath = isTrading ? "trading/wallet" : "dashboard/deposits";
+    
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ["card"],
       line_items: [
@@ -31,7 +34,7 @@ export async function POST(request: NextRequest) {
           price_data: {
             currency: "usd",
             product_data: {
-              name: `Adquisición de ${planId ? `Plan ${planId.toUpperCase()}` : "Plan"}`,
+              name: isTrading ? "Recarga de Billetera de Trading" : `Adquisición de Plan ${planId?.toUpperCase()}`,
               description: "Depósito de capital en Next Capital Holdings",
             },
             unit_amount: Math.round(amount * 100),
@@ -40,8 +43,8 @@ export async function POST(request: NextRequest) {
         },
       ],
       mode: "payment",
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/deposits?success=true&session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/dashboard/deposits?canceled=true`,
+      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/${returnPath}?success=true&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/${returnPath}?canceled=true`,
       client_reference_id: uid,
       metadata: { uid, planId: planId || "unknown" },
     });

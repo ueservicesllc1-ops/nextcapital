@@ -13,6 +13,7 @@ export type TransactionType = "deposit" | "profit" | "withdrawal";
 
 export interface AppUser {
   uid: string;
+  ncId?: string;
   name: string;
   email: string;
   role: UserRole;

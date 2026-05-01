@@ -92,8 +92,34 @@ export default function AdminWithdrawalsPage() {
                   <p className="text-xs text-zinc-500">
                     Fecha: {new Date(normalizeDate(withdrawal.createdAt)).toLocaleDateString("es-ES", { dateStyle: "medium" })}
                   </p>
+
+                  {/* Datos Bancarios */}
+                  <div className="mt-4 p-4 rounded-xl bg-white/[0.03] border border-white/5 space-y-2">
+                    <p className="text-[10px] font-bold uppercase tracking-widest text-zinc-500">Datos para Transferencia</p>
+                    <div className="grid grid-cols-2 gap-x-8 gap-y-2">
+                      <div>
+                        <p className="text-[10px] text-zinc-500 uppercase">Beneficiario</p>
+                        <p className="text-sm font-medium text-zinc-200">{(withdrawal as any).details?.fullName || "No especificado"}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-zinc-500 uppercase">Banco</p>
+                        <p className="text-sm font-medium text-zinc-200">{(withdrawal as any).details?.bankName || "No especificado"}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-zinc-500 uppercase">Tipo</p>
+                        <p className="text-sm font-medium text-zinc-200">{(withdrawal as any).details?.accountType || "No especificado"}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] text-zinc-500 uppercase">Nº de Cuenta</p>
+                        <p className="text-sm font-medium text-cyan-400 font-mono">{(withdrawal as any).details?.accountNumber || "No especificado"}</p>
+                      </div>
+                    </div>
+                    {!(withdrawal as any).details && withdrawal.bankAccount && (
+                      <p className="text-xs text-zinc-400 mt-2 italic">{withdrawal.bankAccount}</p>
+                    )}
+                  </div>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 self-start">
                   <button
                     disabled={withdrawal.status !== "pending"}
                     onClick={() => updateStatus(withdrawal.id, "approved")}

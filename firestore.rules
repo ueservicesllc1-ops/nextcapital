@@ -26,6 +26,14 @@ service cloud.firestore {
         && request.resource.data.role == resource.data.role
         && request.resource.data.uid == resource.data.uid) || isAdmin();
       allow delete: if isAdmin();
+
+      // Sub-colecciones de Trading (Posiciones e Historial)
+      match /positions/{posId} {
+        allow read, write: if isOwner(userId) || isAdmin();
+      }
+      match /history/{histId} {
+        allow read, write: if isOwner(userId) || isAdmin();
+      }
     }
 
     match /balances/{balanceId} {
@@ -58,6 +66,34 @@ service cloud.firestore {
     match /investmentPlans/{planId} {
       allow read: if true;
       allow write: if isAdmin();
+    }
+
+    match /trading_balances/{userId} {
+      allow read, create, update: if isOwner(userId) || isAdmin();
+    }
+
+    match /trading_transactions/{transactionId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /trading_withdrawals/{withdrawalId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
+    }
+
+    match /trading_bank_accounts/{accountId} {
+      allow read, delete: if isOwner(resource.data.userId);
+      allow create: if isOwner(request.resource.data.userId);
+      allow update: if isOwner(resource.data.userId);
+    }
+
+    match /trading_deposits/{depositId} {
+      allow read: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isSignedIn() && request.resource.data.userId == request.auth.uid;
+      allow update, delete: if isAdmin();
     }
   }
 }

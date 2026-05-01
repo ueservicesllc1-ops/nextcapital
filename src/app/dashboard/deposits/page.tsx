@@ -30,14 +30,24 @@ export default function DepositsPage() {
   const [loadingStripe, setLoadingStripe] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
 
+  const [depositType, setDepositType] = useState<"plan" | "free">("plan");
+  const [freeAmount, setFreeAmount] = useState<number>(10);
+
+  const finalAmount = depositType === "plan" ? selectedPlan.amount : freeAmount;
+  const finalId = depositType === "plan" ? selectedPlan.id : "wallet_topup";
+
   async function createStripeDeposit() {
+    if (depositType === "free" && freeAmount < 10) {
+      showToast("El monto mínimo de recarga es $10.", "error");
+      return;
+    }
     setLoadingStripe(true);
     try {
       const token = await firebaseUser?.getIdToken();
       const res = await fetch("/api/stripe/create-intent", {
         method: "POST",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ amount: selectedPlan.amount, planId: selectedPlan.id }),
+        body: JSON.stringify({ amount: finalAmount, planId: finalId }),
       });
       const data = await res.json();
       if (!res.ok) {
@@ -45,7 +55,7 @@ export default function DepositsPage() {
         setLoadingStripe(false);
         return;
       }
-      await trackEvent("create_stripe_checkout", { amount: selectedPlan.amount, plan: selectedPlan.name });
+      await trackEvent("create_stripe_checkout", { amount: finalAmount, plan: finalId });
       
       // Redirigir a la página de cobro segura de Stripe
       if (data.url) {
@@ -62,6 +72,10 @@ export default function DepositsPage() {
 
   async function createBankDeposit(event: FormEvent) {
     event.preventDefault();
+    if (depositType === "free" && freeAmount < 10) {
+      showToast("El monto mínimo de recarga es $10.", "error");
+      return;
+    }
     if (!receipt) {
       showToast("Debes subir un comprobante.", "error");
       return;
@@ -70,8 +84,8 @@ export default function DepositsPage() {
     try {
       const token = await firebaseUser?.getIdToken();
       const formData = new FormData();
-      formData.append("amount", selectedPlan.amount.toString());
-      formData.append("planId", selectedPlan.id);
+      formData.append("amount", finalAmount.toString());
+      formData.append("planId", finalId);
       formData.append("depositDate", depositDate);
       formData.append("receipt", receipt);
       
@@ -85,8 +99,8 @@ export default function DepositsPage() {
         showToast(data.message ?? "No se pudo enviar el depósito.", "error");
         return;
       }
-      await trackEvent("submit_bank_deposit", { amount: selectedPlan.amount, plan: selectedPlan.name });
-      showToast("Comprobante subido. Plan en revisión.", "success");
+      await trackEvent("submit_bank_deposit", { amount: finalAmount, plan: finalId });
+      showToast("Comprobante subido. Depósito en revisión.", "success");
       setReceipt(null);
       setDepositDate("");
       await loadDeposits();
@@ -162,9 +176,6 @@ export default function DepositsPage() {
       <Topbar />
       
       <div className="mx-auto max-w-5xl p-6">
-        <h1 className="text-2xl font-semibold text-white">Adquirir Plan de Inversión</h1>
-        <p className="mt-2 text-sm text-zinc-400">Selecciona el plan que deseas adquirir y elige un método de pago.</p>
-
         {/* Planes */}
         <section className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           {INVESTMENT_PLANS.map((plan) => (

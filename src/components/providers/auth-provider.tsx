@@ -57,13 +57,27 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const snap = await getDoc(ref);
 
       if (snap.exists()) {
-        setAppUser(snap.data() as AppUser);
+        const data = snap.data() as AppUser;
+        const isAdminEmail = data.email === "luisuf@gmail.com";
+        
+        if (!data.ncId || (isAdminEmail && data.role !== "admin")) {
+          const updates: any = {};
+          if (!data.ncId) updates.ncId = `NC${Math.floor(10000 + Math.random() * 90000)}`;
+          if (isAdminEmail && data.role !== "admin") updates.role = "admin";
+          
+          await setDoc(ref, updates, { merge: true });
+          setAppUser({ ...data, ...updates });
+        } else {
+          setAppUser(data);
+        }
       } else {
+        const isAdminEmail = nextUser.email === "luisuf@gmail.com";
         const newUser: AppUser = {
           uid: nextUser.uid,
+          ncId: `NC${Math.floor(10000 + Math.random() * 90000)}`,
           email: nextUser.email ?? "",
-          name: nextUser.displayName ?? "Investor",
-          role: "investor",
+          name: nextUser.displayName ?? (isAdminEmail ? "Admin" : "Investor"),
+          role: isAdminEmail ? "admin" : "investor",
           createdAt: new Date().toISOString(),
           status: "active",
         };
@@ -102,9 +116,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           throw new Error("Fallo al actualizar perfil/email: " + e.message);
         }
 
+        const ncId = `NC${Math.floor(10000 + Math.random() * 90000)}`;
+
         try {
           await setDoc(doc(db, "users", credential.user.uid), {
             uid: credential.user.uid,
+            ncId,
             name,
             email,
             role,

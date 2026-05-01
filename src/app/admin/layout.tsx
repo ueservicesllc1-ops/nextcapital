@@ -19,7 +19,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       router.replace("/login");
       return;
     }
-    if (appUser && appUser.role !== "admin") {
+    const isAdminEmail = firebaseUser?.email === "luisuf@gmail.com";
+    if (appUser && appUser.role !== "admin" && !isAdminEmail) {
       router.replace("/dashboard");
     }
   }, [firebaseUser, appUser, loading, router]);
@@ -28,7 +29,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return <div className="grid min-h-screen place-items-center bg-[#020203] text-white">Cargando acceso...</div>;
   }
 
-  if (appUser.role !== "admin") {
+  const isAdminEmail = firebaseUser?.email === "luisuf@gmail.com";
+  if (appUser.role !== "admin" && !isAdminEmail) {
     return null; // useEffect se encarga de redirigir
   }
 
