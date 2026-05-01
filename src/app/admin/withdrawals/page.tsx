@@ -9,6 +9,18 @@ import { normalizeDate } from "@/lib/firestore-client";
 import { Withdrawal } from "@/lib/types";
 import { formatCurrency } from "@/lib/utils";
 
+const STATUS_LABELS: Record<string, string> = {
+  pending: "Pendiente",
+  approved: "Aprobado",
+  rejected: "Rechazado",
+};
+
+const STATUS_COLORS: Record<string, string> = {
+  pending: "bg-amber-500/10 text-amber-400 border-amber-500/20",
+  approved: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  rejected: "bg-rose-500/10 text-rose-400 border-rose-500/20",
+};
+
 export default function AdminWithdrawalsPage() {
   const { firebaseUser } = useAuth();
   const { showToast } = useToast();
@@ -28,24 +40,8 @@ export default function AdminWithdrawalsPage() {
   }, []);
 
   useEffect(() => {
-    let active = true;
-    const run = async () => {
-      const snap = await getDocs(query(collection(db, "withdrawals"), orderBy("createdAt", "desc")));
-      if (!active) return;
-      setWithdrawals(
-        snap.docs.map((item) => ({
-          id: item.id,
-          ...item.data(),
-          createdAt: normalizeDate(item.data().createdAt),
-        })) as Withdrawal[]
-      );
-      setLoading(false);
-    };
-    void run();
-    return () => {
-      active = false;
-    };
-  }, []);
+    void loadWithdrawals();
+  }, [loadWithdrawals]);
 
   async function updateStatus(id: string, status: "approved" | "rejected") {
     const token = await firebaseUser?.getIdToken();
@@ -64,43 +60,62 @@ export default function AdminWithdrawalsPage() {
   }
 
   return (
-    <main className="p-6">
-      <h1 className="text-2xl font-semibold">Retiros</h1>
-      <p className="mt-1 text-sm text-slate-400">Aprobación y rechazo de solicitudes de retiro.</p>
-      {loading ? <p className="mt-4 text-sm text-slate-400">Cargando retiros...</p> : null}
-      <div className="mt-4 space-y-3">
-        {!loading && !withdrawals.length ? <p className="text-sm text-slate-400">No hay retiros registrados.</p> : null}
-        {withdrawals.map((withdrawal) => (
-          <article key={withdrawal.id} className="rounded-xl border border-slate-800 bg-slate-900 p-4">
-            <div className="flex flex-wrap items-center justify-between gap-3">
-              <div className="text-sm">
-                <p className="font-medium text-white">{formatCurrency(withdrawal.amount)}</p>
-                <p className="text-slate-400">Usuario: {withdrawal.userId}</p>
-                <p className="text-slate-400">Estado: {withdrawal.status}</p>
-                <p className="text-slate-400">
-                  Fecha: {new Date(normalizeDate(withdrawal.createdAt)).toLocaleDateString()}
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <button
-                  disabled={withdrawal.status !== "pending"}
-                  onClick={() => updateStatus(withdrawal.id, "approved")}
-                  className="rounded-lg bg-emerald-500 px-3 py-1 text-sm font-medium text-slate-950 disabled:opacity-50"
-                >
-                  Aprobar
-                </button>
-                <button
-                  disabled={withdrawal.status !== "pending"}
-                  onClick={() => updateStatus(withdrawal.id, "rejected")}
-                  className="rounded-lg bg-rose-500 px-3 py-1 text-sm font-medium text-white disabled:opacity-50"
-                >
-                  Rechazar
-                </button>
-              </div>
-            </div>
-          </article>
-        ))}
+    <main className="min-h-screen bg-[#020203] p-8">
+      <div className="mb-8">
+        <h1 className="text-2xl font-semibold text-white">Solicitudes de Retiro</h1>
+        <p className="mt-1 text-sm text-zinc-500">Aprobación y rechazo de solicitudes de retiro de inversores.</p>
       </div>
+
+      {loading ? (
+        <div className="grid place-items-center py-20 text-zinc-500 text-sm">Cargando retiros...</div>
+      ) : !withdrawals.length ? (
+        <div className="grid place-items-center py-20 text-zinc-500 text-sm">No hay solicitudes de retiro registradas.</div>
+      ) : (
+        <div className="space-y-3">
+          {withdrawals.map((withdrawal) => (
+            <article
+              key={withdrawal.id}
+              className="overflow-hidden rounded-[20px] border border-white/[0.06] bg-gradient-to-br from-zinc-900/80 to-zinc-950/90 p-6 shadow-xl backdrop-blur-xl transition-all hover:border-white/[0.10]"
+            >
+              <div className="flex flex-wrap items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-3">
+                    <span className="text-xs font-bold uppercase tracking-widest text-zinc-500">Retiro</span>
+                    <span className={`rounded-full border px-3 py-0.5 text-xs font-medium ${STATUS_COLORS[withdrawal.status] ?? STATUS_COLORS.pending}`}>
+                      {STATUS_LABELS[withdrawal.status] ?? withdrawal.status}
+                    </span>
+                  </div>
+                  <p className="text-xl font-bold text-white">{formatCurrency(withdrawal.amount)}</p>
+                  <p className="text-xs text-zinc-500">
+                    Usuario: <span className="font-mono text-zinc-400">{withdrawal.userId}</span>
+                  </p>
+                  <p className="text-xs text-zinc-500">
+                    Fecha: {new Date(normalizeDate(withdrawal.createdAt)).toLocaleDateString("es-ES", { dateStyle: "medium" })}
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    disabled={withdrawal.status !== "pending"}
+                    onClick={() => updateStatus(withdrawal.id, "approved")}
+                    className="rounded-full bg-emerald-500 px-5 py-2 text-sm font-semibold text-black shadow-[0_0_12px_rgba(16,185,129,0.2)] transition-transform hover:scale-105 disabled:pointer-events-none disabled:opacity-30"
+                  >
+                    Aprobar
+                  </button>
+                  <button
+                    disabled={withdrawal.status !== "pending"}
+                    onClick={() => updateStatus(withdrawal.id, "rejected")}
+                    className="rounded-full border border-rose-500/30 bg-rose-500/10 px-5 py-2 text-sm font-semibold text-rose-400 transition-transform hover:scale-105 disabled:pointer-events-none disabled:opacity-30"
+                  >
+                    Rechazar
+                  </button>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
     </main>
   );
 }
+
+

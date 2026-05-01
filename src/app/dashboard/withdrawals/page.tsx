@@ -67,7 +67,7 @@ export default function WithdrawalsPage() {
       </div>
 
       <div className="relative z-10">
-        <Topbar balance={0} />
+        <Topbar />
         
         <div className="mx-auto max-w-[1600px] p-8">
           <section className="grid gap-8 lg:grid-cols-2">

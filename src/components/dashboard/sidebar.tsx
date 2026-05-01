@@ -22,9 +22,12 @@ export function Sidebar({ admin }: { admin?: boolean }) {
   const links = admin ? adminLinks : investorLinks;
 
   return (
-    <aside className="w-full border-b border-slate-800 bg-slate-950 p-4 lg:min-h-screen lg:w-64 lg:border-b-0 lg:border-r">
-      <p className="text-lg font-semibold text-cyan-300">Next Capital</p>
-      <nav className="mt-6 grid gap-2">
+    <aside className="w-full border-b border-white/[0.06] bg-[#020203] p-6 lg:min-h-screen lg:w-64 lg:border-b-0 lg:border-r">
+      <p className="text-[11px] font-semibold uppercase tracking-widest text-zinc-500">
+        {admin ? "Panel Admin" : "Mi Portal"}
+      </p>
+      <p className="mt-1 text-lg font-bold text-white">Next Capital</p>
+      <nav className="mt-8 grid gap-1">
         {links.map((link) => {
           const active = pathname === link.href;
           return (
@@ -32,8 +35,10 @@ export function Sidebar({ admin }: { admin?: boolean }) {
               key={link.href}
               href={link.href}
               className={cn(
-                "rounded-xl px-3 py-2 text-sm text-slate-300 transition hover:bg-slate-900",
-                active && "bg-slate-900 text-cyan-300"
+                "rounded-xl px-4 py-2.5 text-sm font-medium transition-all",
+                active
+                  ? "bg-white/[0.08] text-white"
+                  : "text-zinc-400 hover:bg-white/[0.04] hover:text-zinc-200"
               )}
             >
               {link.label}
@@ -44,3 +49,4 @@ export function Sidebar({ admin }: { admin?: boolean }) {
     </aside>
   );
 }
+

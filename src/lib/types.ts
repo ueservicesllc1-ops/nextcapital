@@ -41,6 +41,7 @@ export interface Balance {
   totalProfit: number;
   currentBalance: number;
   updatedAt: string | number;
+  lastInterestCredit?: string;
 }
 
 export interface Transaction {

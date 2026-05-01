@@ -159,7 +159,7 @@ export default function DepositsPage() {
 
   return (
     <main className="min-h-screen bg-[#020203]">
-      <Topbar balance={0} />
+      <Topbar />
       
       <div className="mx-auto max-w-5xl p-6">
         <h1 className="text-2xl font-semibold text-white">Adquirir Plan de Inversión</h1>

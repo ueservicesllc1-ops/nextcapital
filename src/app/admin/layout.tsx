@@ -5,8 +5,10 @@ import { Sidebar } from "@/components/dashboard/sidebar";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
+const ADMIN_PIN = process.env.NEXT_PUBLIC_ADMIN_PIN ?? "1619";
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { firebaseUser, loading } = useAuth();
+  const { firebaseUser, appUser, loading } = useAuth();
   const router = useRouter();
   const [pin, setPin] = useState("");
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -17,18 +19,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       router.replace("/login");
       return;
     }
-    // Hardcoded allowed email
-    if (firebaseUser.email !== "luisuf@gmail.com") {
+    if (appUser && appUser.role !== "admin") {
       router.replace("/dashboard");
     }
-  }, [firebaseUser, loading, router]);
+  }, [firebaseUser, appUser, loading, router]);
 
-  if (loading || !firebaseUser) {
+  if (loading || !firebaseUser || !appUser) {
     return <div className="grid min-h-screen place-items-center bg-[#020203] text-white">Cargando acceso...</div>;
   }
 
-  if (firebaseUser.email !== "luisuf@gmail.com") {
-    return null; // Will redirect to dashboard via useEffect
+  if (appUser.role !== "admin") {
+    return null; // useEffect se encarga de redirigir
   }
 
   if (!isAuthenticated) {
@@ -37,7 +38,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         <form 
           onSubmit={(e) => {
             e.preventDefault();
-            if (pin === "1619") {
+            if (pin === ADMIN_PIN) {
               setIsAuthenticated(true);
             } else {
               alert("PIN incorrecto. Acceso denegado.");

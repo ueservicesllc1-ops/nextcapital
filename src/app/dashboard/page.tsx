@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { GrowthChart } from "@/components/dashboard/growth-chart";
+import { ProfitCountdown } from "@/components/dashboard/profit-countdown";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { Topbar } from "@/components/dashboard/topbar";
 import { useAuth } from "@/components/providers/auth-provider";
@@ -59,12 +60,13 @@ export default function InvestorDashboardPage() {
         <Topbar balance={balance.currentBalance} />
         
         <div className="mx-auto max-w-[1600px]">
-          <section className="grid gap-5 p-8 md:grid-cols-2 xl:grid-cols-5">
+          <section className="grid gap-5 p-8 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-6">
             <StatCard title="Total depositado" value={formatCurrency(balance.totalDeposited)} />
             <StatCard title="Balance actual" value={formatCurrency(balance.currentBalance)} positive />
             <StatCard title="Ganancias estimadas" value={formatCurrency(balance.totalProfit)} helper="rendimientos estimados" positive />
-            <StatCard title="Ganancia diaria estimada" value={formatCurrency(dailyEstimate)} helper="hasta 1% diario en condiciones favorables" />
-            <StatCard title="Rendimiento mensual estimado" value={formatCurrency(monthlyEstimate)} helper="hasta 30% mensual estimado" />
+            <StatCard title="Ganancia diaria" value={formatCurrency(dailyEstimate)} helper="hasta 1% diario" />
+            <StatCard title="Rendimiento mensual" value={formatCurrency(monthlyEstimate)} helper="hasta 30% mensual" />
+            <ProfitCountdown deposits={deposits} />
           </section>
 
           <section className="grid gap-6 px-8 pb-8 xl:grid-cols-3">
