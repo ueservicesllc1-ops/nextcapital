@@ -1,18 +1,40 @@
+"use client";
+
 import Link from "next/link";
+import { useAuth } from "@/components/providers/auth-provider";
 
 export default function Home() {
+  const { firebaseUser, logout } = useAuth();
+
   return (
     <main className="min-h-screen bg-[#020203] text-zinc-100">
       <header className="sticky top-0 z-40 border-b border-white/10 bg-[#020203]/90 backdrop-blur-xl">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-6">
           <div className="text-xl font-bold tracking-tight text-white">NextCapital</div>
-          <div className="flex items-center gap-2">
-            <Link href="/login" className="rounded-full px-4 py-2 text-sm text-zinc-400 transition hover:text-zinc-100">
-              Login
-            </Link>
-            <Link href="/register" className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm text-zinc-100 transition hover:bg-white/10">
-              Crear cuenta
-            </Link>
+          <div className="flex items-center gap-4">
+            {firebaseUser ? (
+              <div className="flex items-center gap-4">
+                <span className="hidden text-xs text-zinc-500 md:block">{firebaseUser.email}</span>
+                <Link href="/dashboard" className="rounded-full bg-white/5 border border-white/10 px-4 py-2 text-sm text-white transition hover:bg-white/10">
+                  Dashboard
+                </Link>
+                <button 
+                  onClick={() => logout()}
+                  className="text-xs text-rose-500 hover:text-rose-400 transition-colors"
+                >
+                  Cerrar Sesión
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link href="/login" className="rounded-full px-4 py-2 text-sm text-zinc-400 transition hover:text-zinc-100">
+                  Login
+                </Link>
+                <Link href="/register" className="rounded-full border border-white/20 bg-white/5 px-4 py-2 text-sm text-zinc-100 transition hover:bg-white/10">
+                  Crear cuenta
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>
@@ -56,12 +78,20 @@ export default function Home() {
               
               {/* Buttons */}
               <div className="mt-12 flex flex-wrap items-center gap-4">
-                <Link href="/register" className="group relative overflow-hidden rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-transform hover:scale-105 hover:bg-zinc-100">
-                  <span className="relative z-10">Crear cuenta</span>
-                </Link>
-                <Link href="/login" className="rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-sm font-semibold text-zinc-300 backdrop-blur-sm transition-colors hover:bg-white/10 hover:text-white">
-                  Ver acceso
-                </Link>
+                {firebaseUser ? (
+                  <Link href="/dashboard" className="group relative overflow-hidden rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-transform hover:scale-105 hover:bg-zinc-100">
+                    <span className="relative z-10">Ir a mi Panel</span>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/register" className="group relative overflow-hidden rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-transform hover:scale-105 hover:bg-zinc-100">
+                      <span className="relative z-10">Crear cuenta</span>
+                    </Link>
+                    <Link href="/login" className="rounded-full border border-white/10 bg-white/5 px-8 py-3.5 text-sm font-semibold text-zinc-300 backdrop-blur-sm transition-colors hover:bg-white/10 hover:text-white">
+                      Ver acceso
+                    </Link>
+                  </>
+                )}
               </div>
               
               <p className="mt-10 flex items-center text-[11px] text-zinc-500">
@@ -70,6 +100,71 @@ export default function Home() {
               </p>
             </div>
           </div>
+        </div>
+      </section>
+      
+      {/* Nueva Sección Publicitaria: Trading Platform */}
+      <section className="mx-auto max-w-7xl px-6 pb-24">
+        <div className="relative overflow-hidden rounded-[40px] border border-white/10 bg-gradient-to-br from-zinc-900 to-[#020203] p-8 md:p-16">
+          {/* Background Elements */}
+          <div className="absolute right-0 top-0 h-full w-1/2 opacity-20 md:opacity-100">
+            <div className="absolute inset-0 bg-gradient-to-l from-zinc-900 via-transparent to-transparent z-10" />
+            <img 
+              src="/trading-bg.png" 
+              alt="Trading Preview" 
+              className="h-full w-full object-cover grayscale opacity-50 transition-all group-hover:grayscale-0 group-hover:opacity-100"
+            />
+          </div>
+
+          <div className="relative z-20 max-w-xl">
+            <div className="inline-flex items-center gap-2 rounded-full bg-cyan-500/10 px-4 py-2 text-[10px] font-bold uppercase tracking-widest text-cyan-400 border border-cyan-500/20">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-500"></span>
+              </span>
+              Nuevo: NextCapital Trading
+            </div>
+            
+            <h2 className="mt-8 text-3xl font-bold leading-tight text-white md:text-5xl">
+              Opera en el mercado real con <br />
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">Precisión Institucional</span>
+            </h2>
+            
+            <p className="mt-6 text-lg text-zinc-400">
+              Hemos lanzado nuestra nueva plataforma de trading de alta velocidad. 
+              Ejecución instantánea, indicadores avanzados y una interfaz diseñada para profesionales.
+            </p>
+
+            <div className="mt-10 flex flex-wrap gap-4">
+              <Link href="/trading" className="flex items-center gap-3 rounded-full bg-cyan-500 px-8 py-4 text-sm font-bold text-black transition-all hover:scale-105 hover:bg-cyan-400">
+                Acceder a Trading
+                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </Link>
+              {!firebaseUser && (
+                <Link href="/register" className="flex items-center gap-3 rounded-full border border-white/10 bg-white/5 px-8 py-4 text-sm font-bold text-white backdrop-blur-md transition-colors hover:bg-white/10">
+                  Registrarse Ahora
+                </Link>
+              )}
+            </div>
+
+            <div className="mt-12 grid grid-cols-2 gap-8 border-t border-white/5 pt-8 md:grid-cols-3">
+              <div>
+                <p className="text-2xl font-bold text-white">0.0s</p>
+                <p className="text-[10px] uppercase tracking-wider text-zinc-500">Latencia</p>
+              </div>
+              <div>
+                <p className="text-2xl font-bold text-white">+50</p>
+                <p className="text-[10px] uppercase tracking-wider text-zinc-500">Activos Disponibles</p>
+              </div>
+              <div className="hidden md:block">
+                <p className="text-2xl font-bold text-white">24/7</p>
+                <p className="text-[10px] uppercase tracking-wider text-zinc-500">Soporte Crypto</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Ambient Glow */}
+          <div className="absolute -bottom-24 -right-24 h-64 w-64 rounded-full bg-cyan-500/10 blur-[100px]" />
         </div>
       </section>
 

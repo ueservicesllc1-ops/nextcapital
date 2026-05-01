@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { GrowthChart } from "@/components/dashboard/growth-chart";
 import { ProfitCountdown } from "@/components/dashboard/profit-countdown";
 import { StatCard } from "@/components/dashboard/stat-card";
@@ -66,6 +67,27 @@ export default function InvestorDashboardPage() {
             <StatCard title="Ganancias estimadas" value={formatCurrency(balance.totalProfit)} helper="rendimientos estimados" positive />
             <StatCard title="Ganancia diaria" value={formatCurrency(dailyEstimate)} helper="hasta 1% diario" />
             <StatCard title="Rendimiento mensual" value={formatCurrency(monthlyEstimate)} helper="hasta 30% mensual" />
+            
+            {/* Acceso a Trading CTA */}
+            <div className="group relative overflow-hidden rounded-[20px] border border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-600/10 p-5 shadow-lg shadow-cyan-500/5 transition-all hover:scale-[1.02] hover:border-cyan-500/50">
+              <div className="relative z-10 flex h-full flex-col justify-between">
+                <div>
+                  <h3 className="text-[11px] font-bold uppercase tracking-widest text-cyan-400">Nuevo Servicio</h3>
+                  <p className="mt-2 text-base font-bold text-white">Plataforma de Trading</p>
+                  <p className="mt-1 text-[10px] leading-relaxed text-zinc-400">Opera en mercados reales con ejecución instantánea.</p>
+                </div>
+                <Link 
+                  href="/trading" 
+                  className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-cyan-500 py-2.5 text-xs font-bold text-black transition-all hover:bg-cyan-400"
+                >
+                  Ir a Trading
+                  <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M14 5l7 7-7 7" /></svg>
+                </Link>
+              </div>
+              {/* Decorative Glow */}
+              <div className="absolute -right-4 -top-4 h-24 w-24 rounded-full bg-cyan-500/20 blur-2xl" />
+            </div>
+
             <ProfitCountdown deposits={deposits} />
           </section>
 

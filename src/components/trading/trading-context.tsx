@@ -259,10 +259,10 @@ export function TradingProvider({ children }: { children: React.ReactNode }) {
                     
                     // Pequeña fuerza magnética que arrastra el precio falso de vuelta al precio real 
                     // para que no se aleje demasiado de la realidad
-                    const drift = (actualPrice - prevDisplay) * 0.15; 
+                    const drift = (actualPrice - prevDisplay) * 0.08; 
                     
                     // Volatilidad incrementada para que el gráfico se vea muy activo
-                    const jitter = actualPrice * (Math.random() - 0.5) * (asset?.volatility || 0.001) * 0.4;
+                    const jitter = actualPrice * (Math.random() - 0.5) * (asset?.volatility || 0.001) * 0.8;
                     
                     displayPrice = prevDisplay + drift + jitter;
                   }
