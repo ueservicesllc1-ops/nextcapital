@@ -1,13 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { useAuth } from '@/components/providers/auth-provider';
 import { getInvestorData } from '@/lib/data';
 import { Balance, Deposit, Transaction } from '@/lib/types';
 import { useToast } from '@/components/providers/toast-provider';
 import { useRouter } from 'next/navigation';
 import { formatCurrency } from '@/lib/utils';
+import dynamic from 'next/dynamic';
 import { 
   Cpu, 
   Zap, 
@@ -26,6 +27,15 @@ import {
   Terminal,
   Award,
 } from 'lucide-react';
+
+// Dynamic imports (client-only heavy components)
+const MiningParticles    = dynamic(() => import('@/components/mining/MiningParticles'),    { ssr: false });
+const MiningWorldMap     = dynamic(() => import('@/components/mining/MiningWorldMap'),     { ssr: false });
+const MiningAchievements = dynamic(() => import('@/components/mining/MiningAchievements'), { ssr: false });
+const ProfitCalculator   = dynamic(() => import('@/components/mining/ProfitCalculator'),   { ssr: false });
+const ReferralPanel      = dynamic(() => import('@/components/mining/ReferralPanel'),      { ssr: false });
+const MiningNotifications= dynamic(() => import('@/components/mining/MiningNotifications'),{ ssr: false });
+const BtcPriceTicker     = dynamic(() => import('@/components/mining/BtcPriceTicker'),     { ssr: false });
 
 // ─────────────────────────────────────────────
 // Constants
@@ -459,7 +469,12 @@ export default function MinadoDashboardPage() {
   // 3. MAIN DASHBOARD
   // ─────────────────────────────────────────────
   return (
-    <div className="min-h-screen text-white bg-[#060608] flex flex-col lg:flex-row" style={{ fontFamily: 'var(--font-geist-sans), Inter, sans-serif' }}>
+    <div className="min-h-screen text-white bg-[#060608] flex flex-col lg:flex-row relative" style={{ fontFamily: 'var(--font-geist-sans), Inter, sans-serif' }}>
+      {/* Floating hash particles */}
+      <MiningParticles active={hasActivePlan} />
+
+      {/* Mining notifications toasts */}
+      <MiningNotifications active={hasActivePlan} hasActivePlan={hasActivePlan} btcEarnings={liveBtcEarnings} />
       
       {/* ── Sidebar ── */}
       <aside className="w-full lg:w-64 bg-[#09090e] border-b lg:border-b-0 lg:border-r border-white/5 flex flex-col flex-shrink-0">
@@ -531,7 +546,9 @@ export default function MinadoDashboardPage() {
             <span className="text-[10px] font-mono font-bold text-amber-500 tracking-wider">CORE_MINING_OS // CONTROLES</span>
             <h2 className="text-xl font-black tracking-tight text-white mt-1">Terminal de Monitoreo ASIC</h2>
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            {/* Live BTC price */}
+            <BtcPriceTicker />
             <Link 
               href="/minado/dashboard/deposits" 
               className="py-2.5 px-4 rounded-xl bg-amber-500 text-black font-bold text-xs hover:opacity-95 active:scale-[0.99] transition-all flex items-center gap-1.5 shadow-[0_0_15px_rgba(245,158,11,0.2)]"
@@ -942,6 +959,28 @@ export default function MinadoDashboardPage() {
               ))}
             </div>
           </section>
+
+          {/* ── WORLD MAP ── */}
+          <MiningWorldMap userHashrate={hasActivePlan ? liveHashrate : 0} />
+
+          {/* ── PROFIT CALCULATOR ── */}
+          <ProfitCalculator currentBalance={balance?.totalDeposited ?? 0} />
+
+          {/* ── ACHIEVEMENTS ── */}
+          <MiningAchievements
+            hasActivePlan={hasActivePlan}
+            totalProfit={balance?.totalProfit ?? 0}
+            activeContractCount={activeContracts.length}
+            planCodes={activeContracts.map(c => c.planId ?? '')}
+          />
+
+          {/* ── REFERRAL PANEL ── */}
+          {firebaseUser && (
+            <ReferralPanel
+              userId={firebaseUser.uid}
+              userName={appUser?.name ?? 'Inversor'}
+            />
+          )}
 
         </div>
       </main>
