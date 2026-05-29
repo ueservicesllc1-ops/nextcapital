@@ -7,6 +7,7 @@ import { getInvestorData } from '@/lib/data';
 import { Balance, Deposit, Transaction } from '@/lib/types';
 import { useToast } from '@/components/providers/toast-provider';
 import { useRouter } from 'next/navigation';
+import { formatCurrency } from '@/lib/utils';
 import { 
   Cpu, 
   Zap, 
@@ -697,7 +698,7 @@ export default function MinadoDashboardPage() {
                       href={`/minado/dashboard/deposits?plan=${plan.code}`}
                       className="block w-full py-3 rounded-xl font-bold text-xs text-center transition-all hover:scale-[1.01]"
                       style={plan.hot
-                        ? { bg: '#f59e0b', color: '#000', background: 'linear-gradient(135deg, #f59e0b, #f97316)', boxShadow: '0 5px 15px rgba(245,158,11,0.2)' }
+                        ? { color: '#000', background: 'linear-gradient(135deg, #f59e0b, #f97316)', boxShadow: '0 5px 15px rgba(245,158,11,0.2)' }
                         : { background: 'rgba(255,255,255,0.04)', color: '#fff', border: '1px solid rgba(255,255,255,0.08)' }
                       }
                     >

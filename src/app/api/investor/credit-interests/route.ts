@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { adminDb } from "@/lib/firebase/admin";
+import { adminDb, assertAdminSdk } from "@/lib/firebase/admin";
 import { normalizeDate } from "@/lib/firestore-client";
 
 const DAILY_RATE = 0.01;
@@ -10,15 +10,15 @@ export async function POST(request: Request) {
     const { userId } = await request.json();
     if (!userId) return NextResponse.json({ error: "userId required" }, { status: 400 });
 
-
+    assertAdminSdk();
 
     // 1. Leer balance
-    const balanceRef = adminDb.collection("balances").doc(userId);
+    const balanceRef = adminDb!.collection("balances").doc(userId);
     const balanceSnap = await balanceRef.get();
     const balance = balanceSnap.data() ?? { totalDeposited: 0, totalProfit: 0, currentBalance: 0 };
 
     // 2. Leer depósitos aprobados del plan
-    const depositsSnap = await adminDb
+    const depositsSnap = await adminDb!
       .collection("deposits")
       .where("userId", "==", userId)
       .where("status", "==", "approved")
@@ -38,7 +38,7 @@ export async function POST(request: Request) {
     const now = new Date();
 
     // 3. Verificar qué días ya fueron acreditados (por ID determinista)
-    const profitSnap = await adminDb
+    const profitSnap = await adminDb!
       .collection("transactions")
       .where("userId", "==", userId)
       .where("type", "==", "profit")
@@ -70,12 +70,12 @@ export async function POST(request: Request) {
     }
 
     // 5. Escribir en batch atómico
-    const batch = adminDb.batch();
+    const batch = adminDb!.batch();
     let totalToAdd = 0;
 
     for (const w of writes) {
       totalToAdd += w.amount;
-      const ref = adminDb.collection("transactions").doc(w.id);
+      const ref = adminDb!.collection("transactions").doc(w.id);
       batch.set(ref, {
         userId,
         type: "profit",

@@ -24,6 +24,7 @@ export interface AppUser {
 export interface Deposit {
   id: string;
   userId: string;
+  planId?: string;
   amount: number;
   method: DepositMethod;
   status: DepositStatus;
@@ -62,6 +63,8 @@ export interface Withdrawal {
   status: WithdrawalStatus;
   createdAt: string | number;
   processedAt?: string;
+  bankAccount?: string;
+  details?: string;
 }
 
 export interface InvestmentPlan {

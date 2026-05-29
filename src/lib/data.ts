@@ -13,7 +13,7 @@ import { normalizeDate } from "@/lib/firestore-client";
 const INVESTMENT_PLAN_EXCLUDE = ["wallet_topup", "trading_wallet_topup"];
 
 // ─── Gráfico: balance acumulado día a día ───────────────────
-function buildGrowth(events: Array<{ createdAt: string; amount: number; type: string; status: string }>) {
+function buildGrowth(events: Array<{ createdAt: string | number; amount: number; type: string; status: string }>) {
   const sorted = [...events].sort(
     (a, b) => new Date(normalizeDate(a.createdAt)).getTime() - new Date(normalizeDate(b.createdAt)).getTime()
   );
