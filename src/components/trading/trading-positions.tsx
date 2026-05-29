@@ -98,10 +98,15 @@ export function TradingPositions() {
                       {currentPrice ? currentPrice.toFixed(asset.type === 'forex' ? 4 : 2) : '---'}
                     </td>
                     <td className="px-4 py-4 text-right">
-                      <div className={`font-bold ${isProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
-                        {isProfit ? '+$' : '-$'}{pnl ? Math.abs(pnl).toFixed(2) : '0.00'}
-                        <span className="text-xs ml-1 opacity-70">({isProfit ? '+' : ''}{pnlPercent ? pnlPercent.toFixed(2) : '0.00'}%)</span>
+                      <div className={`flex flex-col items-end ${isProfit ? 'text-emerald-400' : 'text-rose-400'}`}>
+                        <span className="text-base font-black tracking-tight leading-none">
+                          {isProfit ? '+' : ''}{pnlPercent ? pnlPercent.toFixed(2) : '0.00'}%
+                        </span>
+                        <span className="text-[10px] font-bold opacity-60 mt-1">
+                          {isProfit ? '+$' : '-$'}{pnl ? Math.abs(pnl).toFixed(2) : '0.00'}
+                        </span>
                       </div>
+
                       {(pos.takeProfit || pos.stopLoss) && (
                         <div className="text-[9px] text-zinc-500 mt-1 flex justify-end gap-2 uppercase font-bold">
                           {pos.takeProfit && <span className="text-emerald-500/80">TP: {pos.takeProfit}%</span>}

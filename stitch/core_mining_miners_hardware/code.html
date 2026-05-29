@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Core Mining - Miners Telemetry</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "on-tertiary-fixed": "#131b2e",
+                        "surface-tint": "#abd600",
+                        "on-primary": "#283500",
+                        "secondary": "#bcc7de",
+                        "surface-container-high": "#1c2b3c",
+                        "surface-container": "#122131",
+                        "on-primary-fixed-variant": "#3c4d00",
+                        "on-surface-variant": "#c4c9ac",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#273647",
+                        "secondary-fixed": "#d8e3fb",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#aeb9d0",
+                        "secondary-fixed-dim": "#bcc7de",
+                        "on-primary-container": "#556d00",
+                        "surface-container-low": "#0d1c2d",
+                        "surface-variant": "#273647",
+                        "on-error": "#690005",
+                        "inverse-surface": "#d4e4fa",
+                        "inverse-on-surface": "#233143",
+                        "primary": "#ffffff",
+                        "tertiary-container": "#dae2fd",
+                        "primary-container": "#c3f400",
+                        "on-primary-fixed": "#161e00",
+                        "surface-container-lowest": "#010f1f",
+                        "primary-fixed": "#c3f400",
+                        "on-surface": "#d4e4fa",
+                        "error": "#ffb4ab",
+                        "background": "#051424",
+                        "inverse-primary": "#506600",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "on-tertiary-container": "#5c647a",
+                        "surface-bright": "#2c3a4c",
+                        "outline": "#8e9379",
+                        "on-secondary": "#263143",
+                        "secondary-container": "#3e495d",
+                        "outline-variant": "#444933",
+                        "surface-dim": "#051424",
+                        "on-background": "#d4e4fa",
+                        "on-secondary-fixed": "#111c2d",
+                        "tertiary": "#ffffff",
+                        "surface": "#051424",
+                        "on-tertiary": "#283044",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "tertiary-fixed": "#dae2fd",
+                        "primary-fixed-dim": "#abd600"
+                    },
+                    borderRadius: {
+                        DEFAULT: "0.25rem",
+                        lg: "0.5rem",
+                        xl: "0.75rem",
+                        full: "9999px"
+                    },
+                    spacing: {
+                        "margin-desktop": "40px",
+                        "container-max": "1440px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    fontFamily: {
+                        "headline-md": ["Geist"],
+                        "body-md": ["Geist"],
+                        "label-sm": ["JetBrains Mono"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Geist"],
+                        "headline-lg": ["Geist"],
+                        "body-lg": ["Geist"]
+                    },
+                    fontSize: {
+                        "headline-md": ["24px", { lineHeight: "1.3", fontWeight: "600" }],
+                        "body-md": ["16px", { lineHeight: "1.5", fontWeight: "400" }],
+                        "label-sm": ["12px", { lineHeight: "1.4", letterSpacing: "0.1em", fontWeight: "500" }],
+                        "label-md": ["14px", { lineHeight: "1.4", letterSpacing: "0.05em", fontWeight: "500" }],
+                        "headline-lg-mobile": ["32px", { lineHeight: "1.2", letterSpacing: "-0.01em", fontWeight: "700" }],
+                        "headline-lg": ["48px", { lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700" }],
+                        "body-lg": ["18px", { lineHeight: "1.6", fontWeight: "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .material-symbols-outlined.fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Custom scrollbar for industrial look */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #051424; 
+            border-left: 1px solid #444933;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #273647; 
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #abd600; 
+        }
+
+        /* Glitch effect utility */
+        .glitch-hover:hover {
+            animation: glitch 0.2s cubic-bezier(.25, .46, .45, .94) both infinite;
+        }
+        @keyframes glitch {
+            0% { transform: translate(0) }
+            20% { transform: translate(-2px, 2px) }
+            40% { transform: translate(-2px, -2px) }
+            60% { transform: translate(2px, 2px) }
+            80% { transform: translate(2px, -2px) }
+            100% { transform: translate(0) }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background h-screen flex overflow-hidden antialiased font-body-md">
+<!-- SideNavBar -->
+<aside class="bg-surface-container dark:bg-surface-container h-screen w-64 border-r border-outline-variant flex flex-col py-base shrink-0 z-20 hidden md:flex">
+<div class="px-gutter mb-8 mt-4 flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-highest border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-surface-tint fill" data-icon="memory">memory</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md text-surface-tint">NODE_01</h1>
+<p class="font-label-sm text-label-sm text-surface-tint opacity-80 tracking-widest">OPERATIONAL</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2 px-2">
+<!-- OVERVIEW - Inactive -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-all duration-200 active:translate-x-1 font-label-md text-label-md group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors" data-icon="dashboard">dashboard</span>
+                OVERVIEW
+            </a>
+<!-- MINERS - Active -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container border-l-4 border-surface-tint transition-all duration-200 active:translate-x-1 font-label-md text-label-md group" href="#">
+<span class="material-symbols-outlined fill" data-icon="memory">memory</span>
+                MINERS
+            </a>
+<!-- EARNINGS - Inactive -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-all duration-200 active:translate-x-1 font-label-md text-label-md group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors" data-icon="payments">payments</span>
+                EARNINGS
+            </a>
+<!-- WALLET - Inactive -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-all duration-200 active:translate-x-1 font-label-md text-label-md group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors" data-icon="account_balance_wallet">account_balance_wallet</span>
+                WALLET
+            </a>
+<!-- SECURITY - Inactive -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-all duration-200 active:translate-x-1 font-label-md text-label-md group" href="#">
+<span class="material-symbols-outlined group-hover:text-surface-tint transition-colors" data-icon="shield">shield</span>
+                SECURITY
+            </a>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full py-3 bg-surface-container-highest border border-surface-tint text-surface-tint font-label-sm text-label-sm hover:bg-surface-tint hover:text-on-primary-container transition-all duration-200 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                DEPLOY NEW RIG
+            </button>
+</div>
+</aside>
+<!-- Main Wrapper -->
+<div class="flex-1 flex flex-col h-screen overflow-hidden">
+<!-- TopNavBar -->
+<header class="bg-background dark:bg-background w-full border-b border-outline-variant shrink-0 z-10">
+<div class="flex justify-between items-center px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+<!-- Mobile Menu Button & Brand -->
+<div class="flex items-center gap-4">
+<button class="md:hidden text-on-surface-variant hover:text-surface-tint">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<div class="font-headline-md text-headline-md font-bold text-surface-tint dark:text-surface-tint tracking-tighter md:hidden">
+                        CORE_MINING
+                    </div>
+<!-- Brand text shown on web if desired, but side nav usually covers it. Keeping it as per JSON -->
+<div class="font-headline-md text-headline-md font-bold text-surface-tint dark:text-surface-tint tracking-tighter hidden md:block border-r border-outline-variant pr-6 mr-2">
+                        CORE_MINING
+                    </div>
+</div>
+<!-- Navigation Links (Web) -->
+<nav class="hidden md:flex items-center gap-8 h-full">
+<!-- DASHBOARD -->
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md uppercase tracking-widest h-full flex items-center border-b-2 border-transparent hover:border-surface-variant" href="#">DASHBOARD</a>
+<!-- MARKETPLACE -->
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md uppercase tracking-widest h-full flex items-center border-b-2 border-transparent hover:border-surface-variant" href="#">MARKETPLACE</a>
+<!-- FARM_OPS - Active -->
+<a class="text-surface-tint border-b-2 border-surface-tint font-label-md text-label-md uppercase tracking-widest h-full flex items-center text-primary dark:text-primary" href="#">FARM_OPS</a>
+<!-- SUPPORT -->
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-md text-label-md uppercase tracking-widest h-full flex items-center border-b-2 border-transparent hover:border-surface-variant" href="#">SUPPORT</a>
+</nav>
+<!-- Trailing Actions -->
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-all duration-200 hover:bg-surface-container-highest p-2 rounded-none active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-all duration-200 hover:bg-surface-container-highest p-2 rounded-none active:scale-95 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<div class="w-8 h-8 bg-surface-container-highest border border-outline-variant overflow-hidden ml-2 cursor-pointer hover:border-surface-tint transition-colors">
+<img alt="User technician profile" class="w-full h-full object-cover grayscale opacity-80 hover:grayscale-0 hover:opacity-100 transition-all" data-alt="A close-up portrait of a technical engineer with a serious expression, shot in dramatic low-key lighting. The background is dark and industrial, hinting at a high-tech environment. A subtle neon green reflection is visible in his eyes, suggesting the glow of a nearby monitor. The overall aesthetic is gritty, professional, and cyberpunk-adjacent." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkwnWzINzC5JBFsTxiN7a56-yGdWGLrqc04FhRfTK-l_CJOyZDMos6G9o1uG-r7q2gAiVFlBGytkUzVGS8aHFMxy2kS1lmSutMm5cgz7khTrwIHTUkKxi0XmCqZQx6z4K8r35FdtE7yX8LSR4w1xNwvWIU_esw1ua7NdsVGX1nCsP2UaTYjmf-HHhrD08-gxlUpB7ZMjPfdMrXcTKgSuZs9HjGfh20KC7l4IarSMNaNkFjV3WmGONxFLxiNvtNoqgZcDuw5wDX2n5R"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto w-full max-w-container-max mx-auto p-margin-mobile md:p-margin-desktop flex flex-col gap-8 relative">
+<!-- Background structural grid lines (Decorative) -->
+<div class="absolute inset-0 pointer-events-none opacity-5 flex justify-between px-margin-desktop z-0">
+<div class="h-full w-px bg-primary"></div>
+<div class="h-full w-px bg-primary"></div>
+<div class="h-full w-px bg-primary hidden md:block"></div>
+<div class="h-full w-px bg-primary hidden md:block"></div>
+</div>
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 z-10 relative">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 bg-surface-tint animate-pulse"></span>
+<span class="font-label-sm text-label-sm text-surface-tint tracking-widest uppercase">Live Telemetry Feed</span>
+</div>
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary uppercase">Active Fleet</h2>
+</div>
+<div class="flex items-center gap-3">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]" data-icon="search">search</span>
+<input class="bg-surface-container border border-outline-variant text-primary font-label-md text-label-md pl-10 pr-4 py-2 w-full md:w-64 focus:outline-none focus:border-surface-tint transition-colors rounded-none placeholder:text-on-surface-variant/50" placeholder="SEARCH ASIC ID..." type="text"/>
+</div>
+<button class="bg-surface-container border border-outline-variant hover:border-surface-tint text-on-surface-variant hover:text-primary p-2 transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</div>
+<!-- KPI Strip (Bento style) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 z-10">
+<!-- KPI 1 -->
+<div class="bg-surface-container border border-outline-variant p-4 flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-16 h-16 bg-surface-tint/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase">Total Hashrate</span>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-primary">124.5</span>
+<span class="font-label-sm text-label-sm text-surface-tint">PH/s</span>
+</div>
+<div class="mt-4 flex items-center gap-2 text-surface-tint font-label-sm text-[10px]">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                        +2.4% / 24H
+                    </div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container border border-outline-variant p-4 flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-16 h-16 bg-error/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase">Avg Core Temp</span>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-primary">72.4</span>
+<span class="font-label-sm text-label-sm text-error">°C</span>
+</div>
+<div class="mt-4 flex items-center gap-2 text-error font-label-sm text-[10px]">
+<span class="material-symbols-outlined text-[14px]" data-icon="warning">warning</span>
+                        3 UNITS &gt; 85°C
+                    </div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container border border-outline-variant p-4 flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-16 h-16 bg-surface-tint/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase">Power Draw</span>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-primary">3.24</span>
+<span class="font-label-sm text-label-sm text-surface-tint">MW</span>
+</div>
+<div class="mt-4 flex items-center gap-2 text-on-surface-variant font-label-sm text-[10px]">
+<span class="material-symbols-outlined text-[14px]" data-icon="bolt">bolt</span>
+                        NOMINAL LOAD
+                    </div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container border border-outline-variant p-4 flex flex-col relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-16 h-16 bg-surface-tint/5 rounded-bl-full -mr-8 -mt-8 transition-transform group-hover:scale-110"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant mb-1 uppercase">Active Units</span>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-md text-headline-md text-primary">1,024</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">/ 1,048</span>
+</div>
+<div class="mt-4 w-full bg-surface-container-highest h-1 flex">
+<div class="h-full bg-surface-tint" style="width: 97%"></div>
+<div class="h-full bg-error" style="width: 3%"></div>
+</div>
+</div>
+</div>
+<!-- Hardware List Header (Desktop) -->
+<div class="hidden md:grid grid-cols-12 gap-4 px-4 py-3 bg-surface-container-highest border-y border-outline-variant font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest z-10 sticky top-0">
+<div class="col-span-3">Hardware ID / Model</div>
+<div class="col-span-1 text-center">Status</div>
+<div class="col-span-2 text-right">Hashrate</div>
+<div class="col-span-3">Thermal Core</div>
+<div class="col-span-1 text-right">Fan RPM</div>
+<div class="col-span-2 text-right">Actions</div>
+</div>
+<!-- Hardware List Body -->
+<div class="flex flex-col gap-2 z-10">
+<!-- Miner Row 1 (Normal) -->
+<div class="bg-surface-container border border-outline-variant hover:border-surface-variant transition-colors flex flex-col md:grid md:grid-cols-12 md:items-center gap-4 p-4 md:py-3 relative group">
+<!-- Left active indicator -->
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-surface-tint opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="col-span-3 flex flex-col">
+<span class="font-label-md text-label-md text-primary">RIG-S19-001</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">Antminer S19 Pro</span>
+</div>
+<div class="col-span-1 flex items-center md:justify-center gap-2">
+<span class="w-2 h-2 bg-surface-tint shadow-[0_0_8px_#abd600]"></span>
+<span class="md:hidden font-label-sm text-label-sm text-surface-tint">ONLINE</span>
+</div>
+<div class="col-span-2 flex items-center md:justify-end gap-2">
+<span class="md:hidden font-label-sm text-label-sm text-on-surface-variant w-24">Hashrate:</span>
+<span class="font-label-md text-label-md text-primary">110.5</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">TH/s</span>
+</div>
+<div class="col-span-3 flex flex-col justify-center gap-1">
+<div class="flex justify-between items-end">
+<span class="md:hidden font-label-sm text-label-sm text-on-surface-variant w-24">Temp:</span>
+<span class="font-label-sm text-label-sm text-primary">68°C</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest flex gap-0.5">
+<div class="h-full bg-surface-tint flex-1"></div>
+<div class="h-full bg-surface-tint flex-1"></div>
+<div class="h-full bg-surface-tint flex-1"></div>
+<div class="h-full bg-surface-container-highest flex-1"></div>
+<div class="h-full bg-surface-container-highest flex-1"></div>
+</div>
+</div>
+<div class="col-span-1 flex items-center md:justify-end gap-2">
+<span class="md:hidden font-label-sm text-label-sm text-on-surface-variant w-24">Fans:</span>
+<span class="font-label-md text-label-md text-primary">4200</span>
+</div>
+<div class="col-span-2 flex items-center md:justify-end gap-2 mt-2 md:mt-0">
+<button class="flex-1 md:flex-none px-3 py-1.5 border border-outline-variant text-on-surface-variant hover:border-surface-tint hover:text-surface-tint font-label-sm text-[10px] uppercase transition-colors">Config</button>
+<button class="flex-1 md:flex-none px-3 py-1.5 bg-surface-container-highest border border-outline-variant text-primary hover:bg-surface-tint hover:text-background hover:border-surface-tint font-label-sm text-[10px] uppercase transition-colors">Reboot</button>
+</div>
+</div>
+<!-- Miner Row 2 (Warning) -->
+<div class="bg-surface-container border border-outline-variant hover:border-surface-variant transition-colors flex flex-col md:grid md:grid-cols-12 md:items-center gap-4 p-4 md:py-3 relative group">
+<div class="col-span-3 flex flex-col">
+<span class="font-label-md text-label-md text-primary">RIG-S19-002</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">Antminer S19 Pro</span>
+</div>
+<div class="col-span-1 flex items-center md:justify-center gap-2">
+<span class="w-2 h-2 bg-error shadow-[0_0_8px_#ffb4ab]"></span>
+<span class="md:hidden font-label-sm text-label-sm text-error">THERMAL</span>
+</div>
+<div class="col-span-2 flex items-center md:justify-end gap-2">
+<span class="md:hidden font-label-sm text-label-sm text-on-surface-variant w-24">Hashrate:</span>
+<span class="font-label-md text-label-md text-primary">95.2</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">TH/s</span>
+</div>
+<div class="col-span-3 flex flex-col justify-center gap-1">
+<div class="flex justify-between items-end">
+<span class="md:hidden font-label-sm text-label-sm text-on-surface-variant w-24">Temp:</span>
+<span class="font-label-sm text-label-sm text-error animate-pulse">88°C</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest flex gap-0.5">
+<div class="h-full bg-error flex-1"></div>
+<div class="h-full bg-error flex-1"></div>
+<div class="h-full bg-error flex-1"></div>
+<div class="h-full bg-error flex-1 opacity-50 animate-pulse"></div>
+<div class="h-full bg-surface-container-highest flex-1"></div>
+</div>
+</div>
+<div class="col-span-1 flex items-center md:justify-end gap-2">
+<span class="md:hidden font-label-sm text-label-sm text-on-surface-variant w-24">Fans:</span>
+<span class="font-label-md text-label-md text-error">6500</span>
+</div>
+<div class="col-span-2 flex items-center md:justify-end gap-2 mt-2 md:mt-0">
+<button class="flex-1 md:flex-none px-3 py-1.5 border border-outline-variant text-on-surface-variant hover:border-surface-tint hover:text-surface-tint font-label-sm text-[10px] uppercase transition-colors">Config</button>
+<button class="flex-1 md:flex-none px-3 py-1.5 bg-surface-container-highest border border-error text-error hover:bg-error hover:text-background font-label-sm text-[10px] uppercase transition-colors glitch-hover">Force Reboot</button>
+</div>
+</div>
+<!-- Miner Row 3 (Offline) -->
+<div class="bg-surface-container/50 border border-outline-variant/50 flex flex-col md:grid md:grid-cols-12 md:items-center gap-4 p-4 md:py-3 relative opacity-60 grayscale">
+<div class="col-span-3 flex flex-col">
+<span class="font-label-md text-label-md text-on-surface-variant">RIG-S19-003</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">Antminer S19 Pro</span>
+</div>
+<div class="col-span-1 flex items-center md:justify-center gap-2">
+<span class="w-2 h-2 bg-outline-variant"></span>
+<span class="md:hidden font-label-sm text-label-sm text-on-surface-variant">OFFLINE</span>
+</div>
+<div class="col-span-2 flex items-center md:justify-end gap-2">
+<span class="md:hidden font-label-sm text-label-sm text-on-surface-variant w-24">Hashrate:</span>
+<span class="font-label-md text-label-md text-on-surface-variant">0.0</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant">TH/s</span>
+</div>
+<div class="col-span-3 flex flex-col justify-center gap-1">
+<div class="flex justify-between items-end">
+<span class="md:hidden font-label-sm text-label-sm text-on-surface-variant w-24">Temp:</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">--°C</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-highest flex gap-0.5">
+<div class="h-full bg-surface-container-highest flex-1"></div>
+<div class="h-full bg-surface-container-highest flex-1"></div>
+<div class="h-full bg-surface-container-highest flex-1"></div>
+<div class="h-full bg-surface-container-highest flex-1"></div>
+<div class="h-full bg-surface-container-highest flex-1"></div>
+</div>
+</div>
+<div class="col-span-1 flex items-center md:justify-end gap-2">
+<span class="md:hidden font-label-sm text-label-sm text-on-surface-variant w-24">Fans:</span>
+<span class="font-label-md text-label-md text-on-surface-variant">0</span>
+</div>
+<div class="col-span-2 flex items-center md:justify-end gap-2 mt-2 md:mt-0">
+<button class="w-full md:w-auto px-3 py-1.5 border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary font-label-sm text-[10px] uppercase transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="power_settings_new">power_settings_new</span>
+                            Wake
+                        </button>
+</div>
+</div>
+</div>
+<!-- Spacer for bottom -->
+<div class="h-8"></div>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-surface-container-lowest w-full border-t border-outline-variant mt-auto shrink-0 z-10">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-gutter w-full max-w-container-max mx-auto gap-4">
+<div class="font-label-sm text-label-sm uppercase text-on-surface-variant dark:text-on-surface-variant">
+                    © 2024 CORE MINING INDUSTRIAL. ALL SYSTEMS NOMINAL.
+                </div>
+<div class="flex gap-6">
+<a class="font-label-sm text-label-sm uppercase text-on-surface-variant hover:text-surface-tint hover:underline decoration-surface-tint transition-opacity duration-300" href="#">TERMINAL_LOGS</a>
+<a class="font-label-sm text-label-sm uppercase text-on-surface-variant hover:text-surface-tint hover:underline decoration-surface-tint transition-opacity duration-300" href="#">LEGAL_PROTOCOL</a>
+<a class="font-label-sm text-label-sm uppercase text-on-surface-variant hover:text-surface-tint hover:underline decoration-surface-tint transition-opacity duration-300" href="#">API_DOCS</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

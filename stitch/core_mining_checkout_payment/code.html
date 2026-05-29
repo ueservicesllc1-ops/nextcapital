@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Checkout - CORE MINING</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#273647",
+                        "surface-container-high": "#1c2b3c",
+                        "secondary": "#bcc7de",
+                        "on-secondary": "#263143",
+                        "secondary-fixed-dim": "#bcc7de",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "surface-container": "#122131",
+                        "surface-bright": "#2c3a4c",
+                        "inverse-primary": "#506600",
+                        "on-primary-container": "#556d00",
+                        "inverse-surface": "#d4e4fa",
+                        "on-primary": "#283500",
+                        "primary-fixed-dim": "#abd600",
+                        "error": "#ffb4ab",
+                        "primary": "#ffffff",
+                        "on-background": "#d4e4fa",
+                        "outline-variant": "#444933",
+                        "primary-container": "#c3f400",
+                        "on-tertiary-container": "#5c647a",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "surface-container-lowest": "#010f1f",
+                        "surface-tint": "#abd600",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "inverse-on-surface": "#233143",
+                        "secondary-container": "#3e495d",
+                        "tertiary-container": "#dae2fd",
+                        "background": "#051424",
+                        "tertiary-fixed": "#dae2fd",
+                        "surface-container-low": "#0d1c2d",
+                        "on-surface-variant": "#c4c9ac",
+                        "error-container": "#93000a",
+                        "surface": "#051424",
+                        "secondary-fixed": "#d8e3fb",
+                        "outline": "#8e9379",
+                        "tertiary": "#ffffff",
+                        "on-secondary-fixed": "#111c2d",
+                        "on-primary-fixed-variant": "#3c4d00",
+                        "on-tertiary": "#283044",
+                        "surface-dim": "#051424",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#aeb9d0",
+                        "primary-fixed": "#c3f400",
+                        "on-tertiary-fixed": "#131b2e",
+                        "on-primary-fixed": "#161e00",
+                        "on-error": "#690005",
+                        "on-surface": "#d4e4fa",
+                        "surface-container-highest": "#273647",
+                        "neon-yellow": "#CCFF00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-max": "1440px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Geist"],
+                        "body-lg": ["Geist"],
+                        "label-md": ["JetBrains Mono"],
+                        "headline-lg": ["Geist"],
+                        "headline-lg-mobile": ["Geist"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-md": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #0F172A; /* Tertiary Level 0 */
+            color: #d4e4fa; /* on-surface */
+        }
+        .bg-surface-card {
+            background-color: #1E293B; /* Secondary Level 1 */
+        }
+        .border-subtle {
+            border-color: #334155; /* Overlay Level 2 */
+        }
+        .border-neon {
+            border-color: #CCFF00;
+        }
+        .text-neon {
+            color: #CCFF00;
+        }
+        .bg-neon {
+            background-color: #CCFF00;
+        }
+        /* Custom scrollbar for industrial feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0F172A; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #CCFF00; 
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col font-body-md text-body-md antialiased selection:bg-neon-yellow selection:text-black">
+<!-- TopNavBar (Transactional - Suppressed Nav links) -->
+<header class="flex justify-between items-center px-gutter w-full h-16 bg-surface-container border-b border-subtle">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-neon" style="font-variation-settings: 'FILL' 1;">memory</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary tracking-tighter uppercase">CORE MINING</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest hidden md:block">Secure Checkout</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined">close</span>
+<span class="font-label-md text-label-md hidden md:inline">Cancel</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow flex flex-col items-center py-margin-desktop px-margin-mobile md:px-gutter max-w-container-max mx-auto w-full gap-8">
+<!-- Stepper -->
+<div class="w-full max-w-4xl flex items-center justify-between relative mb-8">
+<div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-full h-[1px] bg-subtle z-0"></div>
+<div class="absolute left-0 top-1/2 transform -translate-y-1/2 w-1/2 h-[2px] bg-neon z-0"></div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-[#0F172A] px-2">
+<div class="w-8 h-8 rounded-full border border-neon flex items-center justify-center text-neon bg-[#0F172A]">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Select Plan</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-[#0F172A] px-2">
+<div class="w-8 h-8 rounded-full border border-neon flex items-center justify-center text-black bg-neon shadow-[0_0_10px_rgba(204,255,0,0.3)]">
+<span class="font-label-md text-label-md">2</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold">Payment</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-2 bg-[#0F172A] px-2">
+<div class="w-8 h-8 rounded-full border border-subtle flex items-center justify-center text-on-surface-variant bg-[#0F172A]">
+<span class="font-label-md text-label-md">3</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Activation</span>
+</div>
+</div>
+<div class="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Left Column: Payment Details -->
+<div class="lg:col-span-7 flex flex-col gap-6">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary uppercase">Secure Payment</h2>
+<!-- Payment Methods -->
+<div class="bg-surface-card border border-subtle p-6 flex flex-col gap-4">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest border-b border-subtle pb-2">Select Method</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="payment_method" type="radio"/>
+<div class="border border-subtle peer-checked:border-neon peer-checked:bg-[#273647] p-4 flex flex-col items-center justify-center gap-2 transition-all hover:bg-surface-variant">
+<span class="material-symbols-outlined text-3xl peer-checked:text-neon">currency_bitcoin</span>
+<span class="font-label-sm text-label-sm uppercase">Bitcoin</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="payment_method" type="radio"/>
+<div class="border border-subtle peer-checked:border-neon peer-checked:bg-[#273647] p-4 flex flex-col items-center justify-center gap-2 transition-all hover:bg-surface-variant">
+<span class="material-symbols-outlined text-3xl peer-checked:text-neon">account_balance_wallet</span>
+<span class="font-label-sm text-label-sm uppercase">USDT (TRC20)</span>
+</div>
+</label>
+<label class="cursor-pointer">
+<input class="peer sr-only" name="payment_method" type="radio"/>
+<div class="border border-subtle peer-checked:border-neon peer-checked:bg-[#273647] p-4 flex flex-col items-center justify-center gap-2 transition-all hover:bg-surface-variant">
+<span class="material-symbols-outlined text-3xl peer-checked:text-neon">credit_card</span>
+<span class="font-label-sm text-label-sm uppercase">Credit Card</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Crypto Payment Gateway (Active) -->
+<div class="bg-surface-card border border-subtle p-6 flex flex-col md:flex-row gap-8 items-center md:items-start relative overflow-hidden group">
+<!-- Tech decorative elements -->
+<div class="absolute top-0 right-0 p-2 opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity">
+<div class="w-16 h-16 border-t-2 border-r-2 border-neon"></div>
+</div>
+<div class="absolute bottom-0 left-0 p-2 opacity-20 pointer-events-none group-hover:opacity-40 transition-opacity">
+<div class="w-16 h-16 border-b-2 border-l-2 border-neon"></div>
+</div>
+<div class="flex-shrink-0 bg-white p-2 border border-subtle">
+<!-- Placeholder for QR Code -->
+<div class="w-48 h-48 bg-gray-200 flex items-center justify-center relative" style="background-image: repeating-linear-gradient(45deg, #ccc 25%, transparent 25%, transparent 75%, #ccc 75%, #ccc), repeating-linear-gradient(45deg, #ccc 25%, #fff 25%, #fff 75%, #ccc 75%, #ccc); background-position: 0 0, 10px 10px; background-size: 20px 20px;">
+<span class="material-symbols-outlined text-black text-4xl bg-white p-1 absolute">qr_code_scanner</span>
+</div>
+</div>
+<div class="flex flex-col gap-4 w-full">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Send exactly</span>
+<div class="font-label-md text-2xl text-neon flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined">currency_bitcoin</span>
+                                0.04281 BTC
+                            </div>
+</div>
+<div class="flex flex-col gap-1 w-full">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">To Address</span>
+<div class="flex items-center gap-2">
+<input class="bg-[#0F172A] border border-subtle text-on-surface font-label-sm text-label-sm p-3 w-full focus:outline-none focus:border-neon focus:ring-0" readonly="" type="text" value="bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh"/>
+<button class="bg-surface-variant hover:bg-[#334155] border border-subtle p-3 flex items-center justify-center transition-colors active:scale-95" title="Copy Address">
+<span class="material-symbols-outlined text-primary text-[20px]">content_copy</span>
+</button>
+</div>
+</div>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-sm text-label-sm mt-2">
+<span class="material-symbols-outlined text-neon animate-pulse text-[16px]">sync</span>
+<span>Awaiting payment... Time remaining: <span class="text-primary font-bold">14:59</span></span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Order Summary -->
+<div class="lg:col-span-5 flex flex-col gap-6">
+<div class="bg-surface-card border border-subtle flex flex-col relative overflow-hidden">
+<!-- Header -->
+<div class="p-6 border-b border-subtle bg-[#1c2b3c]">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase tracking-widest">Order Summary</h3>
+</div>
+<!-- Item Details -->
+<div class="p-6 flex flex-col gap-4 border-b border-subtle">
+<div class="flex justify-between items-start">
+<div class="flex flex-col gap-1">
+<span class="font-headline-md text-headline-md text-primary font-bold">Industrial Node</span>
+<span class="font-label-sm text-label-sm text-neon border border-neon px-2 py-1 inline-block w-fit uppercase">Tier 3</span>
+</div>
+<span class="font-label-md text-label-md text-primary">$2,499.00</span>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-2 bg-[#0F172A] p-4 border border-subtle">
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Hashrate</span>
+<span class="font-label-md text-label-md text-primary">500 TH/s</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Power</span>
+<span class="font-label-md text-label-md text-primary">3200W</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Algorithm</span>
+<span class="font-label-md text-label-md text-primary">SHA-256</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Duration</span>
+<span class="font-label-md text-label-md text-primary">24 Months</span>
+</div>
+</div>
+</div>
+<!-- Breakdown -->
+<div class="p-6 flex flex-col gap-3 border-b border-subtle font-label-md text-label-md text-on-surface-variant">
+<div class="flex justify-between">
+<span>Subtotal</span>
+<span class="text-primary">$2,499.00</span>
+</div>
+<div class="flex justify-between">
+<span>Service Fee (2.5%)</span>
+<span class="text-primary">$62.48</span>
+</div>
+<div class="flex justify-between text-neon">
+<span>Discount Code</span>
+<span>- $0.00</span>
+</div>
+</div>
+<!-- Total -->
+<div class="p-6 flex flex-col gap-6 bg-[#0F172A]">
+<div class="flex justify-between items-end">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Total Due</span>
+<div class="flex flex-col items-end gap-1">
+<span class="font-headline-md text-headline-md text-primary font-bold">$2,561.48</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">≈ 0.04281 BTC</span>
+</div>
+</div>
+<button class="w-full bg-neon text-black font-label-md text-label-md font-bold uppercase py-4 px-6 flex items-center justify-center gap-2 hover:bg-[#a6d900] transition-colors active:scale-95 group relative overflow-hidden">
+<span class="relative z-10">Confirm Payment</span>
+<span class="material-symbols-outlined relative z-10 group-hover:translate-x-1 transition-transform">arrow_forward</span>
+<div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out z-0"></div>
+</button>
+<div class="flex items-start gap-2 mt-2">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">lock</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant leading-tight">By confirming payment, you agree to the Core Mining Industrial <a class="text-primary underline hover:text-neon" href="#">Terms of Service</a> and <a class="text-primary underline hover:text-neon" href="#">Hardware Lease Agreement</a>.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Minimal for checkout) -->
+<footer class="flex justify-between items-center px-gutter py-4 w-full bg-surface-container-lowest border-t border-subtle mt-auto">
+<span class="font-label-sm text-label-sm text-on-surface-variant">© 2024 CORE MINING INDUSTRIAL</span>
+<div class="flex gap-4">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">support_agent</span> Help
+            </a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[16px]">lock</span> Security
+            </a>
+</div>
+</footer>
+</body></html>

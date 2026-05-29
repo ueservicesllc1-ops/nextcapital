@@ -275,7 +275,7 @@ export default function TradingWalletPage() {
     <main className="flex min-h-screen bg-[#020203] text-zinc-300">
       {/* SIDEBAR */}
       <aside className="w-64 border-r border-white/5 bg-[#050507] p-6 flex flex-col fixed h-screen z-50">
-        <Link href="/trading" className="mb-10 flex items-center gap-3 px-2">
+        <Link href="/next/trading" className="mb-10 flex items-center gap-3 px-2">
           <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center">
             <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
           </div>
@@ -295,7 +295,7 @@ export default function TradingWalletPage() {
           <SidebarItem active={activeView === "accounts"} onClick={() => setActiveView("accounts")} label="Mis Cuentas" icon={<svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>} />
         </nav>
 
-        <Link href="/trading" className="mt-auto group flex items-center gap-3 px-4 py-3 text-sm text-zinc-500 hover:text-white transition-colors">
+        <Link href="/next/trading" className="mt-auto group flex items-center gap-3 px-4 py-3 text-sm text-zinc-500 hover:text-white transition-colors">
           <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" /></svg>
           Regresar
         </Link>

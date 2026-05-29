@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CORE MINING OS - Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@700;900&amp;family=Hanken+Grotesk:wght@400&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "inverse-primary": "#506600",
+                "inverse-surface": "#d4e4fa",
+                "secondary": "#bcc7de",
+                "primary-fixed-dim": "#abd600",
+                "primary-container": "#c3f400",
+                "on-tertiary-fixed-variant": "#3f465c",
+                "on-primary-fixed": "#161e00",
+                "surface": "#051424",
+                "surface-dim": "#051424",
+                "error": "#ffb4ab",
+                "outline": "#8e9379",
+                "on-secondary-fixed-variant": "#3c475a",
+                "on-primary-container": "#556d00",
+                "on-surface-variant": "#c4c9ac",
+                "background": "#051424",
+                "secondary-container": "#3e495d",
+                "error-container": "#93000a",
+                "secondary-fixed-dim": "#bcc7de",
+                "on-error-container": "#ffdad6",
+                "on-surface": "#d4e4fa",
+                "surface-container-highest": "#273647",
+                "on-primary": "#283500",
+                "on-secondary": "#263143",
+                "on-background": "#d4e4fa",
+                "primary": "#ffffff",
+                "tertiary-fixed": "#dae2fd",
+                "on-primary-fixed-variant": "#3c4d00",
+                "surface-container-lowest": "#010f1f",
+                "on-tertiary-container": "#5c647a",
+                "on-error": "#690005",
+                "surface-tint": "#abd600",
+                "tertiary-fixed-dim": "#bec6e0",
+                "surface-container-high": "#1c2b3c",
+                "surface-bright": "#2c3a4c",
+                "tertiary": "#ffffff",
+                "surface-variant": "#273647",
+                "inverse-on-surface": "#233143",
+                "surface-container": "#122131",
+                "surface-container-low": "#0d1c2d",
+                "tertiary-container": "#dae2fd",
+                "on-secondary-fixed": "#111c2d",
+                "on-tertiary": "#283044",
+                "outline-variant": "#444933",
+                "primary-fixed": "#c3f400",
+                "secondary-fixed": "#d8e3fb",
+                "on-tertiary-fixed": "#131b2e",
+                "on-secondary-container": "#aeb9d0"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "margin-mobile": "16px",
+                "unit": "4px",
+                "panel-gap": "2px",
+                "container-max": "1440px",
+                "margin-desktop": "40px",
+                "gutter": "24px"
+        },
+        "fontFamily": {
+                "body-md": [
+                        "Geist"
+                ],
+                "label-md": [
+                        "JetBrains Mono"
+                ],
+                "headline-lg-mobile": [
+                        "Geist"
+                ],
+                "label-sm": [
+                        "JetBrains Mono"
+                ],
+                "headline-md": [
+                        "Geist"
+                ],
+                "headline-lg": [
+                        "Geist"
+                ],
+                "body-lg": [
+                        "Geist"
+                ],
+                "headline-md-mobile": [
+                        "Chivo"
+                ],
+                "data-mono": [
+                        "JetBrains Mono"
+                ],
+                "display-lg": [
+                        "Chivo"
+                ],
+                "label-caps": [
+                        "JetBrains Mono"
+                ]
+        },
+        "fontSize": {
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.4",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "32px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "1.4",
+                                "letterSpacing": "0.1em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-md": [
+                        "32px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "headline-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "headline-md-mobile": [
+                        "24px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ],
+                "data-mono": [
+                        "14px",
+                        {
+                                "lineHeight": "1.4",
+                                "letterSpacing": "0.02em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "display-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.04em",
+                                "fontWeight": "900"
+                        }
+                ],
+                "label-caps": [
+                        "12px",
+                        {
+                                "lineHeight": "1.2",
+                                "fontWeight": "700"
+                        }
+                ]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .industrial-panel {
+            background-color: theme('colors.surface-container');
+            border: 1px solid theme('colors.outline-variant');
+        }
+        .inset-data {
+            background-color: theme('colors.surface-container-lowest');
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.5);
+            border: 1px solid theme('colors.surface-container-highest');
+        }
+        .led-active {
+            box-shadow: 0 0 8px 2px theme('colors.primary-container');
+            background-color: theme('colors.primary-container');
+        }
+        .led-online {
+            box-shadow: 0 0 8px 1px theme('colors.primary-container');
+            background-color: theme('colors.primary-container');
+        }
+        .progress-segment {
+            width: 4px;
+            height: 12px;
+            margin-right: 2px;
+            background-color: theme('colors.surface-container-highest');
+        }
+        .progress-segment.active {
+            background-color: theme('colors.primary-container');
+        }
+        
+        /* Custom scrollbar for data dense areas */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: theme('colors.surface-container-lowest');
+            border-left: 1px solid theme('colors.outline-variant');
+        }
+        ::-webkit-scrollbar-thumb {
+            background: theme('colors.surface-container-highest');
+            border: 1px solid theme('colors.outline-variant');
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: theme('colors.outline-variant');
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background flex h-screen overflow-hidden font-body-md text-body-md antialiased selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar (Desktop) -->
+<nav class="hidden lg:flex flex-col h-screen fixed left-0 top-0 z-40 bg-surface-container-low border-r-2 border-outline-variant w-64">
+<div class="p-6 border-b border-outline-variant">
+<h1 class="font-display-lg text-headline-md tracking-tighter text-primary-container">CORE_MINING_OS</h1>
+</div>
+<div class="p-6 border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-sm bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover opacity-80" data-alt="A macro shot of a complex silicon microchip glowing with orange and blue hues in a dark industrial server environment. Sharp technical focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpC474osON__1M23v9d8qkuIz7xmhxIniajwBDMRWCD5Kz_CmD3VnyM19rLayu95FgwgRJNqguNwFIS2uPMqCxw6iKwJGZwV8vBpxZ8ZD5MObHmqgEUe6s1hawT7XFVPlpXDKzR1S3M76gOPp2BLjAch4jA2veIUGUC1p00PpPArpaEe258C4ZEAcsS3PZY1imiX_ucv-Ipn_D3-0Jp41Tt9X68XtmWWExk97M38EGR-nqdiSV6WPeAUjQR7SP3MPJES2x3QY8rS-f"/>
+</div>
+<div>
+<div class="font-data-mono text-data-mono text-on-surface">NODE_0721</div>
+<div class="font-label-caps text-label-caps text-primary-container flex items-center gap-2 mt-1">
+<span class="w-2 h-2 rounded-sm led-online"></span> STATUS: OPTIMAL
+                    </div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 px-4 bg-transparent border-2 border-primary-container text-primary-container font-label-caps text-label-caps hover:bg-primary-container hover:text-on-primary-container transition-colors uppercase tracking-widest flex justify-center items-center gap-2 group">
+                UPGRADE_HASH_RATE
+                <span class="material-symbols-outlined text-lg group-hover:translate-x-1 transition-transform" data-icon="rocket_launch">rocket_launch</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto py-4 flex flex-col gap-1">
+<a class="flex items-center gap-3 px-6 py-3 bg-primary-container text-on-primary-container border-l-4 border-primary-fixed-dim font-data-mono text-data-mono hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                OVERVIEW
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-on-surface font-data-mono text-data-mono border-l-4 border-transparent hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+                MINERS
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-on-surface font-data-mono text-data-mono border-l-4 border-transparent hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+                EARNINGS
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-on-surface font-data-mono text-data-mono border-l-4 border-transparent hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                WALLET
+            </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-on-surface font-data-mono text-data-mono border-l-4 border-transparent hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+                SECURITY
+            </a>
+</div>
+<div class="p-4 border-t border-outline-variant flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-on-surface font-data-mono text-data-mono hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="terminal">terminal</span>
+                SYSTEM_LOGS
+            </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:text-on-surface font-data-mono text-data-mono hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span>
+                LOGOUT
+            </a>
+</div>
+</nav>
+<!-- Main Content -->
+<div class="flex-1 lg:ml-64 flex flex-col h-screen overflow-hidden bg-background">
+<!-- TopNavBar (Mobile / Supplemental) -->
+<header class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 bg-surface-container border-b-2 border-outline-variant lg:hidden">
+<div class="font-display-lg text-headline-md-mobile tracking-tighter text-primary-container">CORE_MINING_OS</div>
+<div class="flex items-center gap-4 text-primary-container">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<main class="flex-1 overflow-y-auto p-4 md:p-gutter flex flex-col gap-panel-gap bg-background">
+<!-- Top Row: Earnings & Main Action -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-panel-gap">
+<!-- Total Earnings -->
+<div class="industrial-panel p-6 lg:col-span-2 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+<div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2 flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-primary-container rounded-sm"></span> GANANCIAS TOTALES
+                        </div>
+<div class="font-display-lg text-display-lg text-on-surface tracking-tighter">
+                            1.4092 <span class="text-headline-md text-on-surface-variant">BTC</span>
+</div>
+<div class="font-data-mono text-data-mono text-primary-container mt-1">
+                            ≈ $87,452.90 USD
+                        </div>
+</div>
+<button class="w-full md:w-auto py-4 px-8 bg-primary-container text-on-primary-container font-label-caps text-label-caps hover:bg-primary-fixed-dim transition-colors uppercase tracking-widest border-2 border-primary-fixed-dim flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(195,244,0,0.3)]">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                        RETIRAR FONDOS
+                    </button>
+</div>
+<!-- Quick Stats -->
+<div class="industrial-panel p-6 flex flex-col justify-between">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-4 border-b border-outline-variant pb-2">RENDIMIENTO GLOBAL</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<div class="font-data-mono text-data-mono text-on-surface-variant text-[10px]">UPTIME</div>
+<div class="font-data-mono text-data-mono text-on-surface">99.98%</div>
+</div>
+<div>
+<div class="font-data-mono text-data-mono text-on-surface-variant text-[10px]">TEMP PROM.</div>
+<div class="font-data-mono text-data-mono text-on-surface">68°C</div>
+</div>
+<div>
+<div class="font-data-mono text-data-mono text-on-surface-variant text-[10px]">CONSUMO (W)</div>
+<div class="font-data-mono text-data-mono text-on-surface">14.2k</div>
+</div>
+<div>
+<div class="font-data-mono text-data-mono text-on-surface-variant text-[10px]">EFICIENCIA</div>
+<div class="font-data-mono text-data-mono text-on-surface">29 J/TH</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Row: Mining Status & Active Plans -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-panel-gap flex-1 min-h-[400px]">
+<!-- Mining State (Live Graph Area) -->
+<div class="industrial-panel lg:col-span-2 flex flex-col relative overflow-hidden">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low z-10">
+<div class="font-label-caps text-label-caps text-primary-container flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="monitoring">monitoring</span>
+                            ESTADO DE MINADO
+                        </div>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-container-highest border border-outline-variant font-data-mono text-[10px] text-on-surface">1H</span>
+<span class="px-2 py-1 bg-primary-container text-on-primary-container border border-primary-container font-data-mono text-[10px]">24H</span>
+<span class="px-2 py-1 bg-surface-container-highest border border-outline-variant font-data-mono text-[10px] text-on-surface">7D</span>
+</div>
+</div>
+<div class="flex-1 p-6 relative flex flex-col justify-between inset-data m-4">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-data-mono text-data-mono text-on-surface-variant text-[10px]">HASH RATE ACTUAL</div>
+<div class="font-headline-md text-headline-md text-primary-container tracking-tighter">485.2 <span class="text-body-md text-on-surface-variant">TH/s</span></div>
+</div>
+<div class="text-right">
+<div class="font-data-mono text-data-mono text-on-surface-variant text-[10px]">RED (DIFICULTAD)</div>
+<div class="font-data-mono text-data-mono text-on-surface">86.39 T</div>
+</div>
+</div>
+<!-- Faux Graph Visualization -->
+<div class="absolute bottom-0 left-0 w-full h-32 opacity-40 flex items-end px-4 gap-1 pb-4">
+<!-- JS will populate these bars to look like a live chart -->
+<div class="w-full h-full flex items-end gap-[1px]" id="hashrate-chart"></div>
+</div>
+<div class="flex justify-between items-end z-10 font-data-mono text-[10px] text-on-surface-variant border-t border-outline-variant/30 pt-2 mt-16">
+<span>00:00</span>
+<span>06:00</span>
+<span>12:00</span>
+<span>18:00</span>
+<span>AHORA</span>
+</div>
+</div>
+</div>
+<!-- Active Plans List -->
+<div class="industrial-panel flex flex-col">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center">
+<div class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="developer_board">developer_board</span>
+                            MIS PLANES ACTIVOS
+                        </div>
+<span class="bg-primary-container/20 text-primary-container px-2 py-0.5 text-[10px] font-data-mono border border-primary-container/50">3 ONLINE</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+<!-- Rig Item -->
+<div class="bg-surface-container-low border border-outline-variant p-3 flex flex-col gap-3 group hover:border-primary-container transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-data-mono text-data-mono text-on-surface font-bold">ANTMINER S19 PRO</div>
+<div class="font-data-mono text-[10px] text-on-surface-variant mt-0.5">ID: HW-992-A</div>
+</div>
+<div class="w-2 h-2 rounded-sm led-online"></div>
+</div>
+<div class="grid grid-cols-2 gap-2 p-2 inset-data">
+<div>
+<div class="font-data-mono text-[9px] text-on-surface-variant">HASH RATE</div>
+<div class="font-data-mono text-[12px] text-primary-container">110 TH/s</div>
+</div>
+<div>
+<div class="font-data-mono text-[9px] text-on-surface-variant">TEMP</div>
+<div class="font-data-mono text-[12px] text-on-surface">65°C</div>
+</div>
+</div>
+</div>
+<!-- Rig Item -->
+<div class="bg-surface-container-low border border-outline-variant p-3 flex flex-col gap-3 group hover:border-primary-container transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-data-mono text-data-mono text-on-surface font-bold">ANTMINER S19j</div>
+<div class="font-data-mono text-[10px] text-on-surface-variant mt-0.5">ID: HW-441-B</div>
+</div>
+<div class="w-2 h-2 rounded-sm led-online"></div>
+</div>
+<div class="grid grid-cols-2 gap-2 p-2 inset-data">
+<div>
+<div class="font-data-mono text-[9px] text-on-surface-variant">HASH RATE</div>
+<div class="font-data-mono text-[12px] text-primary-container">104 TH/s</div>
+</div>
+<div>
+<div class="font-data-mono text-[9px] text-on-surface-variant">TEMP</div>
+<div class="font-data-mono text-[12px] text-on-surface">68°C</div>
+</div>
+</div>
+</div>
+<!-- Rig Item (Warning) -->
+<div class="bg-surface-container-low border border-error/50 p-3 flex flex-col gap-3">
+<div class="flex justify-between items-start">
+<div>
+<div class="font-data-mono text-data-mono text-error font-bold">WHATSMINER M30S++</div>
+<div class="font-data-mono text-[10px] text-error/70 mt-0.5">ID: HW-102-X</div>
+</div>
+<div class="w-2 h-2 rounded-sm bg-error shadow-[0_0_8px_1px_theme('colors.error')] animate-pulse"></div>
+</div>
+<div class="grid grid-cols-2 gap-2 p-2 inset-data border-error/30">
+<div>
+<div class="font-data-mono text-[9px] text-error/70">HASH RATE</div>
+<div class="font-data-mono text-[12px] text-error">85 TH/s (↓)</div>
+</div>
+<div>
+<div class="font-data-mono text-[9px] text-error/70">TEMP</div>
+<div class="font-data-mono text-[12px] text-error">82°C (WARN)</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Row: Marketplace -->
+<div class="industrial-panel flex flex-col">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-highest">
+<div class="font-label-caps text-label-caps text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="shopping_cart">shopping_cart</span>
+                        MERCADO DE PLANES (QUICK-BUY)
+                    </div>
+<a class="font-data-mono text-[10px] text-primary-container hover:underline" href="#">VER TODO EL INVENTARIO -&gt;</a>
+</div>
+<div class="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+<!-- Market Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant flex flex-col relative overflow-hidden group hover:border-primary-container transition-colors">
+<div class="h-24 overflow-hidden border-b border-outline-variant relative">
+<img class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" data-alt="Close up of a sleek, brushed aluminum ASIC cryptocurrency miner unit sitting on a dark concrete floor. Cool industrial blue LED lights emanate from the cooling fans. High contrast, technical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnQrU4aDDfT56AfS2HlaOdv2GqRdcn-xQ53iQr_1RFWRNC8Q7_VNbEmDwnBlpyX5xsJkHBWbPisylZu-T1NqLewzylg57dHFR2rDNqL0yTej5t26RXX7AHVeuhRXHIe1G9qUtVPX8bbVkzVbb8wLHqKwqy6qtjjRiGSpFM9iCau5yWHkrbKQPbgegOZW0-ukPMid32UEG0UqKHVs_Rl_sLBUlHa4EQcFM2R5TjSHipSgafeqchTDYD_m7CHCM0fn137-R2qbyXLhG4"/>
+<div class="absolute top-2 left-2 bg-surface text-on-surface border border-outline-variant px-2 py-0.5 font-data-mono text-[9px]">STOCK: ALTO</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<h3 class="font-data-mono text-sm text-on-surface mb-1">PRO-HASH 120T</h3>
+<div class="font-data-mono text-[10px] text-on-surface-variant mb-4">120 TH/s • 3250W</div>
+<div class="flex justify-between items-center mb-2 font-data-mono text-[10px]"><span class="text-on-surface-variant">DAILY ROI</span><span class="text-primary-container font-bold">0.5%</span></div><div class="mt-auto flex justify-between items-end">
+<div class="font-headline-md text-xl text-primary-container">$2,450</div>
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container border border-outline-variant hover:bg-primary-container hover:text-on-primary-container hover:border-primary-container transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Market Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant flex flex-col relative overflow-hidden group hover:border-primary-container transition-colors">
+<div class="h-24 overflow-hidden border-b border-outline-variant relative">
+<img class="w-full h-full object-cover grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" data-alt="Macro view of complex server racks in a data center, heavy cabling glowing slightly with orange warning lights. Dark, moody industrial atmosphere with intense shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBXOu6mYrvQRkjRiL6bUSnww5ZAsR66lqeb9jZC0Jw7QUP_2vECs5eNUcDJeQjHrdTn1LWaSz0t3RaDWzRiMjdSziZMvNXGiI3bjvHazf6V3MFxBSLMxf_Ui-zSAEBLC1ida89N85B6qX6aLxpaudd5Vv2CeGg43e4UxyD-pUD0iVyQosel1ZwTTfrPFB7JF5a0TqUojDEKpU50ILxFN55EB8wgX7Ctb4hyc8rrkx3pawLSA4bCGRJk13YYXuUZ7VXRSAUpb20Zcj9l"/>
+<div class="absolute top-2 left-2 bg-surface text-on-surface border border-outline-variant px-2 py-0.5 font-data-mono text-[9px]">STOCK: MEDIO</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<h3 class="font-data-mono text-sm text-on-surface mb-1">MEGA-NODE X</h3>
+<div class="font-data-mono text-[10px] text-on-surface-variant mb-4">140 TH/s • 3010W</div>
+<div class="flex justify-between items-center mb-2 font-data-mono text-[10px]"><span class="text-on-surface-variant">DAILY ROI</span><span class="text-primary-container font-bold">1.0%</span></div><div class="mt-auto flex justify-between items-end">
+<div class="font-headline-md text-xl text-primary-container">$3,100</div>
+<button class="w-8 h-8 flex items-center justify-center bg-surface-container border border-outline-variant hover:bg-primary-container hover:text-on-primary-container hover:border-primary-container transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Market Card 3 (Premium) -->
+<div class="bg-surface-container-lowest border border-primary-container/50 flex flex-col relative overflow-hidden group hover:border-primary-container transition-colors shadow-[0_0_20px_rgba(195,244,0,0.05)]">
+<div class="absolute top-0 right-0 w-0 h-0 border-t-[30px] border-l-[30px] border-t-primary-container border-l-transparent z-10"></div>
+<span class="material-symbols-outlined absolute top-1 right-1 text-on-primary-container text-[12px] z-20" data-icon="star">star</span>
+<div class="h-24 overflow-hidden border-b border-outline-variant relative">
+<div class="absolute inset-0 bg-primary-container/10 mix-blend-overlay"></div>
+<img class="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition-all duration-500" data-alt="Highly detailed rendering of a futuristic server chassis with exposed heatsinks and bright amber LED indicators. The metal textures are sharp and utilitarian, set against a pitch-black background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5OnacUDlbN_apwF-304-LIkQ5BjwecRFAyRvd7SihS_Kf9Zug0nKuCY2h4s-5H5CBCBQaxXqdX2lwGCRUnxHHO0iWWrLXpKcjFQZ8iCygAbXRtqcWDV6nQIvZYDap7WJww_ZxQ7GEZBey1Yi3FD-ulXuQb1ySei8fhL5vZBK-AhsfvSG-a0TDArcgllLrUYfldvVZUYGt7QoK_fCOEl-fhVqrkeyXacDQh60uOq2l9-CucPO5hTWQIm5mDigMYdY0sUSRocz8WIHF"/>
+<div class="absolute bottom-2 left-2 bg-primary-container text-on-primary-container border border-primary-fixed-dim px-2 py-0.5 font-data-mono text-[9px] font-bold">EDICIÓN LIMITADA</div>
+</div>
+<div class="p-4 flex flex-col flex-1">
+<h3 class="font-data-mono text-sm text-primary-container font-bold mb-1">QUANTUM-CORE V2</h3>
+<div class="font-data-mono text-[10px] text-on-surface-variant mb-4">200 TH/s • 2800W (ALTA EFICIENCIA)</div>
+<div class="flex justify-between items-center mb-2 font-data-mono text-[10px]"><span class="text-on-surface-variant">DAILY ROI</span><span class="text-primary-container font-bold">1.5%</span></div><div class="mt-auto flex justify-between items-end">
+<div class="font-headline-md text-xl text-primary-container">$5,800</div>
+<button class="w-8 h-8 flex items-center justify-center bg-primary-container text-on-primary-container border border-primary-container hover:bg-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Faux power load visualizer -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 flex flex-col justify-between">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2">CAPACIDAD DE RED LOCAL</div>
+<div class="flex-1 flex flex-col justify-end gap-2 my-4">
+<div class="flex justify-between font-data-mono text-[10px] text-on-surface-variant">
+<span>CARGA ACTUAL</span>
+<span class="text-primary-container">82%</span>
+</div>
+<div class="h-6 w-full flex border border-outline-variant p-0.5 bg-surface-container">
+<!-- JS will fill this with led blocks -->
+<div class="flex gap-[1px] w-full h-full" id="power-blocks"></div>
+</div>
+<div class="font-data-mono text-[9px] text-on-surface-variant text-right mt-1">DISPONIBLE: 4.8 MW</div>
+</div>
+<button class="w-full py-2 border border-outline-variant text-on-surface font-data-mono text-[10px] hover:bg-primary-container hover:text-on-primary-container hover:border-primary-container transition-colors">
+                            SOLICITAR EXPANSIÓN
+                        </button>
+</div>
+</div>
+</div>
+<!-- Footer (from JSON structure, simplified for dashboard context) -->
+<footer class="w-full py-6 flex flex-col md:flex-row justify-between items-center gap-4 border-t-2 border-outline-variant mt-4 opacity-70">
+<div class="font-label-caps text-label-caps text-on-surface-variant">© 2024 INDUSTRIAL_COMPUTE_CORP // HASH_OR_DIE</div>
+<div class="flex gap-4 font-label-caps text-label-caps text-on-surface-variant">
+<a class="hover:text-primary-container underline" href="#">TERMS_OF_SERVICE</a>
+<a class="hover:text-primary-container underline" href="#">API_DOCS</a>
+</div>
+</footer>
+</main>
+</div>
+<script>
+        // Generate faux live hashrate graph bars
+        const chartContainer = document.getElementById('hashrate-chart');
+        if (chartContainer) {
+            const numBars = 60;
+            for (let i = 0; i < numBars; i++) {
+                const bar = document.createElement('div');
+                // Random height between 40% and 100%, slightly weighted to top
+                const height = Math.floor(Math.random() * 60) + 40;
+                bar.className = 'flex-1 bg-primary-container/40 hover:bg-primary-container transition-colors cursor-crosshair border-t border-primary-container';
+                bar.style.height = `${height}%`;
+                
+                // Dim older data
+                if (i < 20) bar.className = bar.className.replace('bg-primary-container/40', 'bg-primary-container/10 border-primary-container/30');
+                else if (i < 40) bar.className = bar.className.replace('bg-primary-container/40', 'bg-primary-container/20 border-primary-container/50');
+                
+                chartContainer.appendChild(bar);
+            }
+        }
+
+        // Generate power load led blocks
+        const powerContainer = document.getElementById('power-blocks');
+        if (powerContainer) {
+            const totalBlocks = 20;
+            const activeBlocks = 16; // ~80%
+            
+            for (let i = 0; i < totalBlocks; i++) {
+                const block = document.createElement('div');
+                block.className = 'flex-1 h-full';
+                if (i < activeBlocks) {
+                    if (i > 17) block.classList.add('bg-error'); // Danger zone
+                    else if (i > 14) block.classList.add('bg-primary-container'); // Warning zone
+                    else block.classList.add('bg-primary-container', 'opacity-80'); // Safe zone
+                } else {
+                    block.classList.add('bg-surface-container-highest');
+                }
+                powerContainer.appendChild(block);
+            }
+        }
+    </script>
+</body></html>

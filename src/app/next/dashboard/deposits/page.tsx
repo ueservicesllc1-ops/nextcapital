@@ -16,6 +16,9 @@ const INVESTMENT_PLANS = [
   { id: "plata", name: "Plan Plata", amount: 500, daily: "0.75% diario" },
   { id: "oro", name: "Plan Oro", amount: 1000, daily: "1% diario" },
   { id: "platinium", name: "Plan Platinium", amount: 2000, daily: "1.25% diario" },
+  { id: "NC-S1", name: "Minería Starter (NC-S1)", amount: 149, daily: "0.75% - 1.10% diario" },
+  { id: "NC-P2", name: "Minería Pro (NC-P2)", amount: 329, daily: "0.80% - 1.10% diario" },
+  { id: "NC-I3", name: "Minería Industrial (NC-I3)", amount: 599, daily: "0.85% - 1.10% diario" },
 ];
 
 export default function DepositsPage() {
@@ -35,6 +38,19 @@ export default function DepositsPage() {
 
   const finalAmount = depositType === "plan" ? selectedPlan.amount : freeAmount;
   const finalId = depositType === "plan" ? selectedPlan.id : "wallet_topup";
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const urlParams = new URLSearchParams(window.location.search);
+      const planParam = urlParams.get("plan");
+      if (planParam) {
+        const found = INVESTMENT_PLANS.find(p => p.id.toLowerCase() === planParam.toLowerCase());
+        if (found) {
+          setSelectedPlan(found);
+        }
+      }
+    }
+  }, []);
 
   async function createStripeDeposit() {
     if (depositType === "free" && freeAmount < 10) {

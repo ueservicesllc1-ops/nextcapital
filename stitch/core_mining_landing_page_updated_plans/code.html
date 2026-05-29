@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CORE_MINING_OS - Poder Industrial en la Nube</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Chivo:wght@700;900&amp;family=Hanken+Grotesk:wght@400&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+  tailwind.config = {
+    darkMode: "class",
+    theme: {
+      extend: {
+        "colors": {
+                "inverse-primary": "#506600",
+                "inverse-surface": "#d4e4fa",
+                "secondary": "#bcc7de",
+                "primary-fixed-dim": "#abd600",
+                "primary-container": "#c3f400",
+                "on-tertiary-fixed-variant": "#3f465c",
+                "on-primary-fixed": "#161e00",
+                "surface": "#051424",
+                "surface-dim": "#051424",
+                "error": "#ffb4ab",
+                "outline": "#8e9379",
+                "on-secondary-fixed-variant": "#3c475a",
+                "on-primary-container": "#556d00",
+                "on-surface-variant": "#c4c9ac",
+                "background": "#051424",
+                "secondary-container": "#3e495d",
+                "error-container": "#93000a",
+                "secondary-fixed-dim": "#bcc7de",
+                "on-error-container": "#ffdad6",
+                "on-surface": "#d4e4fa",
+                "surface-container-highest": "#273647",
+                "on-primary": "#283500",
+                "on-secondary": "#263143",
+                "on-background": "#d4e4fa",
+                "primary": "#c3f400",
+                "tertiary-fixed": "#dae2fd",
+                "on-primary-fixed-variant": "#3c4d00",
+                "surface-container-lowest": "#010f1f",
+                "on-tertiary-container": "#5c647a",
+                "on-error": "#690005",
+                "surface-tint": "#abd600",
+                "tertiary-fixed-dim": "#bec6e0",
+                "surface-container-high": "#1c2b3c",
+                "surface-bright": "#2c3a4c",
+                "tertiary": "#ffffff",
+                "surface-variant": "#273647",
+                "inverse-on-surface": "#233143",
+                "surface-container": "#122131",
+                "surface-container-low": "#0d1c2d",
+                "tertiary-container": "#dae2fd",
+                "on-secondary-fixed": "#111c2d",
+                "on-tertiary": "#283044",
+                "outline-variant": "#444933",
+                "primary-fixed": "#c3f400",
+                "secondary-fixed": "#d8e3fb",
+                "on-tertiary-fixed": "#131b2e",
+                "on-secondary-container": "#aeb9d0"
+        },
+        "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+        },
+        "spacing": {
+                "margin-mobile": "16px",
+                "base": "8px",
+                "gutter": "24px",
+                "margin-desktop": "40px",
+                "container-max": "1440px"
+        },
+        "fontFamily": {
+                "body-md": [
+                        "Geist"
+                ],
+                "label-md": [
+                        "JetBrains Mono"
+                ],
+                "headline-lg-mobile": [
+                        "Geist"
+                ],
+                "label-sm": [
+                        "JetBrains Mono"
+                ],
+                "headline-md": [
+                        "Geist"
+                ],
+                "headline-lg": [
+                        "Geist"
+                ],
+                "body-lg": [
+                        "Geist"
+                ],
+                "data-mono": ["JetBrains Mono"],
+                "display-lg": ["Chivo"],
+                "label-caps": ["JetBrains Mono"]
+        },
+        "fontSize": {
+                "body-md": [
+                        "16px",
+                        {
+                                "lineHeight": "1.5",
+                                "fontWeight": "400"
+                        }
+                ],
+                "label-md": [
+                        "14px",
+                        {
+                                "lineHeight": "1.4",
+                                "letterSpacing": "0.05em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-lg-mobile": [
+                        "32px",
+                        {
+                                "lineHeight": "1.2",
+                                "letterSpacing": "-0.01em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "label-sm": [
+                        "12px",
+                        {
+                                "lineHeight": "1.4",
+                                "letterSpacing": "0.1em",
+                                "fontWeight": "500"
+                        }
+                ],
+                "headline-md": [
+                        "24px",
+                        {
+                                "lineHeight": "1.3",
+                                "fontWeight": "600"
+                        }
+                ],
+                "headline-lg": [
+                        "48px",
+                        {
+                                "lineHeight": "1.1",
+                                "letterSpacing": "-0.02em",
+                                "fontWeight": "700"
+                        }
+                ],
+                "body-lg": [
+                        "18px",
+                        {
+                                "lineHeight": "1.6",
+                                "fontWeight": "400"
+                        }
+                ],
+                "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "900"}],
+                "label-caps": ["12px", {"lineHeight": "1.2", "fontWeight": "700"}]
+        }
+},
+    },
+  }
+</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .icon-fill {
+            font-variation-settings: 'FILL' 1;
+        }
+        
+        /* Industrial Grids & Patterns */
+        .bg-grid-pattern {
+            background-size: 40px 40px;
+            background-image: 
+                linear-gradient(to right, rgba(195, 244, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(195, 244, 0, 0.05) 1px, transparent 1px);
+        }
+        
+        .scanline {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: linear-gradient(to bottom, transparent, rgba(195, 244, 0, 0.1), transparent);
+            animation: scan 6s linear infinite;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100vh); }
+        }
+
+        /* LED Glow Effects */
+        .glow-primary {
+            box-shadow: 0 0 15px rgba(195, 244, 0, 0.4);
+        }
+        
+        .text-glow {
+            text-shadow: 0 0 8px rgba(195, 244, 0, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col antialiased selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<!-- TopNavBar -->
+<nav class="bg-surface-container dark:bg-surface-container flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 border-b-2 border-outline-variant fixed top-0 z-50">
+<div class="flex items-center gap-8">
+<a class="font-display-lg text-[32px] tracking-tighter text-primary dark:text-primary flex items-center gap-2" href="#">
+<span class="material-symbols-outlined icon-fill text-primary" style="font-size: 28px;">memory</span>
+                CORE_MINING_OS
+            </a>
+<div class="hidden md:flex items-center gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-colors px-2 py-4" href="#">MARKETPLACE</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-colors px-2 py-4" href="#">FARM_OPS</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-colors px-2 py-4" href="#">SUPPORT</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="hidden md:flex font-label-caps text-label-caps text-primary border-2 border-primary px-4 py-2 hover:bg-primary hover:text-on-primary transition-all items-center gap-2">
+<span class="material-symbols-outlined text-[16px]">login</span>
+                ACCEDER
+            </button>
+<div class="md:hidden flex items-center">
+<button class="text-on-surface-variant hover:text-primary">
+<span class="material-symbols-outlined text-[24px]">menu</span>
+</button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="flex-grow pt-16 relative">
+<div class="bg-grid-pattern absolute inset-0 pointer-events-none opacity-50 z-0"></div>
+<!-- Hero Section -->
+<section class="relative w-full min-h-[85vh] flex items-center border-b-2 border-outline-variant bg-surface-container-lowest overflow-hidden z-10">
+<div class="absolute inset-0 z-0">
+<img alt="Industrial cloud mining server room with glowing blue cooling fans and neon lighting, heavy duty cables running across the floor, high tech facility." class="w-full h-full object-cover opacity-30 mix-blend-luminosity grayscale-[50%]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWeswxO2DXfl9K9RibVq0f9OpHeCOrtAtpJ2QtZOn_nDy0RQ54moChX84yEktDc3IU069l6JfiqlbKK8jD_P5PWy5ketRoTZAYGHgu0GgcNhHGmHZ8qb9218WN_SIdhMCA1BGUtGeoi6b1_u3MDm1o2XxtJdcHXprAkojh3FQZ5ZrL-yuWTT-WQgw9VDiUb8aDN0Qjew1IU5Z6hq97uyoC0ab21bVYyGT6V_qYnRhkdgOAFrRdqjcebgMFwAxptPlt_JalxAUgdcLh"/>
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent"></div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="scanline"></div>
+</div>
+<div class="container mx-auto px-margin-mobile md:px-margin-desktop relative z-10">
+<div class="max-w-3xl flex flex-col gap-6">
+<div class="inline-flex items-center gap-2 bg-surface-container-high border border-outline-variant px-3 py-1 w-fit">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse glow-primary"></span>
+<span class="font-data-mono text-data-mono text-primary uppercase tracking-widest text-[10px]">SISTEMA EN LÍNEA: OPERATIVO</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tighter uppercase leading-none text-glow">
+                        Poder Industrial <br/>
+<span class="text-primary">en la Nube.</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl border-l-4 border-outline-variant pl-4">
+                        Despliega clústeres de minería de alto rendimiento al instante. Hardware dedicado, enfriamiento por inmersión y monitoreo telemétrico en tiempo real. Cero excusas, máximo hash rate.
+                    </p>
+<div class="flex flex-col sm:flex-row gap-4 mt-4">
+<button class="bg-primary text-on-primary font-label-caps text-label-caps px-8 py-4 border-2 border-primary hover:bg-transparent hover:text-primary transition-all flex items-center justify-center gap-2 group">
+                            INICIAR DESPLIEGUE
+                            <span class="material-symbols-outlined text-[18px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</button>
+<button class="bg-surface-container border-2 border-outline-variant text-on-surface font-label-caps text-label-caps px-8 py-4 hover:border-primary hover:text-primary transition-all flex items-center justify-center gap-2">
+                            VER ESPECIFICACIONES
+                            <span class="material-symbols-outlined text-[18px]">terminal</span>
+</button>
+</div>
+<!-- Live Stats -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-[2px] bg-outline-variant mt-12 p-[2px]">
+<div class="bg-surface-container p-4 flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">speed</span> GLOBAL_HASH</span>
+<span class="font-data-mono text-data-mono text-primary text-lg">142.5 EH/s</span>
+</div>
+<div class="bg-surface-container p-4 flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">bolt</span> POWER_DRAW</span>
+<span class="font-data-mono text-data-mono text-on-surface text-lg">450 MW</span>
+</div>
+<div class="bg-surface-container p-4 flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">thermostat</span> AVG_TEMP</span>
+<span class="font-data-mono text-data-mono text-on-surface text-lg">68.2 °C</span>
+</div>
+<div class="bg-surface-container p-4 flex flex-col gap-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">dns</span> ACTIVE_NODES</span>
+<span class="font-data-mono text-data-mono text-primary text-lg">12,408</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Pricing / Hardware Plans -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop bg-surface z-10 relative">
+<div class="container mx-auto max-w-container-max">
+<div class="flex flex-col items-center mb-16 text-center gap-4">
+<span class="font-label-caps text-label-caps text-primary border-b border-primary pb-1">CONTRATOS DE ASIGNACIÓN</span>
+<h2 class="font-headline-md text-headline-md uppercase tracking-tight">Capacidad de Cómputo</h2>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">Selecciona el módulo de hardware adecuado para tu operación. Todos los planes incluyen mantenimiento continuo y energía redundante.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+<!-- Card 1: STARTER -->
+<div class="bg-surface-container-low border-2 border-outline-variant flex flex-col relative group hover:border-primary transition-colors">
+<div class="absolute top-0 right-0 bg-surface-container-high border-b-2 border-l-2 border-outline-variant px-3 py-1">
+<span class="font-data-mono text-[10px] text-on-surface-variant">RACK_A1</span>
+</div>
+<div class="p-6 border-b-2 border-outline-variant bg-surface-container-lowest">
+<h3 class="font-headline-md text-[24px] uppercase tracking-tighter mb-1">STARTER</h3>
+<div class="flex items-baseline gap-1">
+<span class="font-data-mono text-data-mono text-primary text-2xl">100 TH/s</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">/ SHA-256</span>
+</div>
+</div>
+<div class="h-48 relative border-b-2 border-outline-variant overflow-hidden bg-[#1a1c1e] flex items-center justify-center p-4">
+<img alt="A high-end industrial ASIC cryptocurrency miner, metallic silver casing, heavy duty cooling fans, digital readout screen, set against a dark industrial steel wall background." class="object-contain h-full w-full opacity-80 mix-blend-lighten group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7hanGdvAdIVUsZJXodcWy_IgYmYyRlgHZho2gua_qnFtWihn6sg0B841m0hc3BjeOjDwp5-yhd3mXP_1xigvGXwKR74Hb0V3-y26JrTRqCSUCtTyZfzkoeNayMpiHiHOkUs8jbStGY7XqFWcoNHE8SQ6syygaZ77WIApXw6L9w0HGDSjTVIH5HmvYHnQrZh4yKCSac5EmSSoiQl2VJz9ZDiyGRp7wSoE_5o2xFJC6Vn1QTqOn8hIp9haw0IEeblBN1An0veF7aQOF"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent opacity-50"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow gap-6 bg-surface-container">
+<ul class="flex flex-col gap-3 font-data-mono text-[13px] text-on-surface-variant">
+<li class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span>CONSUMO EST.</span>
+<span class="text-on-surface">3.2 kW</span>
+</li>
+<li class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span>UPTIME</span>
+<span class="text-on-surface">99.5%</span>
+</li><li class="flex justify-between border-b border-outline-variant/50 pb-2"><span>RENDIMIENTO DIARIO</span><span class="text-on-surface">0.5%</span></li>
+<li class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span>DURACIÓN</span>
+<span class="text-on-surface">12 MESES</span>
+</li>
+</ul>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PRECIO/MES</span>
+<span class="font-data-mono text-xl text-on-surface">$149.00</span>
+</div>
+<button class="w-full bg-surface-container-highest border-2 border-outline-variant text-on-surface font-label-caps text-label-caps py-3 hover:bg-primary hover:border-primary hover:text-on-primary transition-all uppercase">
+                                    Comprar Plan
+                                </button>
+</div>
+</div>
+</div>
+<!-- Card 2: PRO (Highlighted) -->
+<div class="bg-surface-container border-2 border-primary flex flex-col relative transform md:-translate-y-4 shadow-[0_0_30px_rgba(195,244,0,0.1)] z-10">
+<div class="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-primary text-on-primary px-4 py-1 border border-primary z-20">
+<span class="font-label-caps text-[10px] tracking-widest flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px] icon-fill">star</span> RENDIMIENTO ÓPTIMO
+                            </span>
+</div>
+<div class="absolute top-0 right-0 bg-primary-container/20 border-b-2 border-l-2 border-primary px-3 py-1">
+<span class="font-data-mono text-[10px] text-primary">RACK_B2</span>
+</div>
+<div class="p-6 border-b-2 border-outline-variant bg-surface-container-low">
+<h3 class="font-headline-md text-[24px] uppercase tracking-tighter text-primary mb-1">PRO</h3>
+<div class="flex items-baseline gap-1">
+<span class="font-data-mono text-data-mono text-on-surface text-2xl">250 TH/s</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">/ SHA-256</span>
+</div>
+</div>
+<div class="h-48 relative border-b-2 border-outline-variant overflow-hidden bg-[#1a1c1e] flex items-center justify-center p-4">
+<img alt="A high-end industrial ASIC cryptocurrency miner, metallic silver casing, heavy duty cooling fans, digital readout screen, set against a dark industrial steel wall background." class="object-contain h-full w-full opacity-90 mix-blend-lighten scale-105 drop-shadow-[0_0_15px_rgba(195,244,0,0.3)]" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7hanGdvAdIVUsZJXodcWy_IgYmYyRlgHZho2gua_qnFtWihn6sg0B841m0hc3BjeOjDwp5-yhd3mXP_1xigvGXwKR74Hb0V3-y26JrTRqCSUCtTyZfzkoeNayMpiHiHOkUs8jbStGY7XqFWcoNHE8SQ6syygaZ77WIApXw6L9w0HGDSjTVIH5HmvYHnQrZh4yKCSac5EmSSoiQl2VJz9ZDiyGRp7wSoE_5o2xFJC6Vn1QTqOn8hIp9haw0IEeblBN1An0veF7aQOF"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container to-transparent opacity-50"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow gap-6 bg-surface-container-high">
+<ul class="flex flex-col gap-3 font-data-mono text-[13px] text-on-surface-variant">
+<li class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span>CONSUMO EST.</span>
+<span class="text-primary">7.8 kW</span>
+</li>
+<li class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span>UPTIME</span>
+<span class="text-on-surface">99.9%</span>
+</li><li class="flex justify-between border-b border-outline-variant/50 pb-2"><span class="text-primary">RENDIMIENTO DIARIO</span><span class="text-primary">1.0%</span></li>
+<li class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span>DURACIÓN</span>
+<span class="text-on-surface">12 MESES</span>
+</li>
+<li class="flex justify-between border-b border-outline-variant/50 pb-2 text-primary">
+<span>SOPORTE</span>
+<span>PRIORITARIO L2</span>
+</li>
+</ul>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PRECIO/MES</span>
+<span class="font-data-mono text-xl text-primary glow-text">$329.00</span>
+</div>
+<button class="w-full bg-primary border-2 border-primary text-on-primary font-label-caps text-label-caps py-3 hover:bg-transparent hover:text-primary transition-all uppercase flex justify-center items-center gap-2">
+                                    Comprar Plan
+                                    <span class="material-symbols-outlined text-[16px]">shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Card 3: INDUSTRIAL -->
+<div class="bg-surface-container-low border-2 border-outline-variant flex flex-col relative group hover:border-primary transition-colors">
+<div class="absolute top-0 right-0 bg-surface-container-high border-b-2 border-l-2 border-outline-variant px-3 py-1">
+<span class="font-data-mono text-[10px] text-on-surface-variant">RACK_C3</span>
+</div>
+<div class="p-6 border-b-2 border-outline-variant bg-surface-container-lowest">
+<h3 class="font-headline-md text-[24px] uppercase tracking-tighter mb-1">INDUSTRIAL</h3>
+<div class="flex items-baseline gap-1">
+<span class="font-data-mono text-data-mono text-primary text-2xl">500 TH/s</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">/ SHA-256</span>
+</div>
+</div>
+<div class="h-48 relative border-b-2 border-outline-variant overflow-hidden bg-[#1a1c1e] flex items-center justify-center p-4">
+<img alt="A high-end industrial ASIC cryptocurrency miner, metallic silver casing, heavy duty cooling fans, digital readout screen, set against a dark industrial steel wall background." class="object-contain h-full w-full opacity-80 mix-blend-lighten group-hover:opacity-100 group-hover:scale-105 transition-all duration-500" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7hanGdvAdIVUsZJXodcWy_IgYmYyRlgHZho2gua_qnFtWihn6sg0B841m0hc3BjeOjDwp5-yhd3mXP_1xigvGXwKR74Hb0V3-y26JrTRqCSUCtTyZfzkoeNayMpiHiHOkUs8jbStGY7XqFWcoNHE8SQ6syygaZ77WIApXw6L9w0HGDSjTVIH5HmvYHnQrZh4yKCSac5EmSSoiQl2VJz9ZDiyGRp7wSoE_5o2xFJC6Vn1QTqOn8hIp9haw0IEeblBN1An0veF7aQOF"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-low to-transparent opacity-50"></div>
+</div>
+<div class="p-6 flex flex-col flex-grow gap-6 bg-surface-container">
+<ul class="flex flex-col gap-3 font-data-mono text-[13px] text-on-surface-variant">
+<li class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span>CONSUMO EST.</span>
+<span class="text-on-surface">15.5 kW</span>
+</li>
+<li class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span>UPTIME</span>
+<span class="text-on-surface">99.99% SLA</span>
+</li><li class="flex justify-between border-b border-outline-variant/50 pb-2"><span>RENDIMIENTO DIARIO</span><span class="text-on-surface">1.5%</span></li>
+<li class="flex justify-between border-b border-outline-variant/50 pb-2">
+<span>DURACIÓN</span>
+<span class="text-on-surface">24 MESES</span>
+</li>
+</ul>
+<div class="mt-auto">
+<div class="flex justify-between items-end mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PRECIO/MES</span>
+<span class="font-data-mono text-xl text-on-surface">$599.00</span>
+</div>
+<button class="w-full bg-surface-container-highest border-2 border-outline-variant text-on-surface font-label-caps text-label-caps py-3 hover:bg-primary hover:border-primary hover:text-on-primary transition-all uppercase">
+                                    Comprar Plan
+                                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Why Us / Features Bento Grid -->
+<section class="py-24 px-margin-mobile md:px-margin-desktop bg-surface-container-lowest border-t-2 border-outline-variant z-10 relative">
+<div class="container mx-auto max-w-container-max">
+<div class="flex flex-col items-start mb-12 gap-2 border-l-4 border-primary pl-4">
+<span class="font-data-mono text-data-mono text-primary uppercase">MÓDULO DE DIAGNÓSTICO</span>
+<h2 class="font-display-lg text-[48px] uppercase tracking-tighter">Arquitectura Robusta</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 auto-rows-[240px]">
+<!-- Feature 1: Large -->
+<div class="md:col-span-8 bg-surface-container border-2 border-outline-variant p-8 flex flex-col justify-between relative overflow-hidden group">
+<div class="absolute -right-10 -bottom-10 opacity-10 group-hover:opacity-20 transition-opacity">
+<span class="material-symbols-outlined text-[240px] icon-fill">precision_manufacturing</span>
+</div>
+<div class="relative z-10">
+<div class="w-12 h-12 bg-surface-container-high border-2 border-outline-variant flex items-center justify-center mb-6 text-primary">
+<span class="material-symbols-outlined icon-fill">aod</span>
+</div>
+<h3 class="font-headline-md text-headline-md uppercase mb-2">Hardware Dedicado 1:1</h3>
+<p class="font-body-md text-on-surface-variant max-w-md">No fraccionamos el poder de cómputo. Cuando contratas un plan, se te asigna un ASIC físico específico en nuestras instalaciones, garantizando el 100% del rendimiento nominal sin dilución por virtualización.</p>
+</div>
+<div class="relative z-10 font-data-mono text-[12px] text-on-surface-variant flex gap-4 mt-4">
+<span class="bg-surface-container-highest px-2 py-1 border border-outline-variant">ISOLATION: TRUE</span>
+<span class="bg-surface-container-highest px-2 py-1 border border-outline-variant">SHARE: 0.00%</span>
+</div>
+</div>
+<!-- Feature 2: Small -->
+<div class="md:col-span-4 bg-surface-container-low border-2 border-outline-variant p-6 flex flex-col relative">
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center mb-4 border border-outline-variant text-primary">
+<span class="material-symbols-outlined">electric_bolt</span>
+</div>
+<h3 class="font-headline-md text-[20px] uppercase mb-2">Energía Industrial</h3>
+<p class="font-body-md text-sm text-on-surface-variant flex-grow">Acuerdos PPA directos con plantas hidroeléctricas. Costos de energía fijos y estables durante la duración de tu contrato.</p>
+<div class="h-2 w-full bg-surface-container-highest flex">
+<div class="w-1/4 h-full bg-primary border-r border-background"></div>
+<div class="w-1/4 h-full bg-primary border-r border-background"></div>
+<div class="w-1/4 h-full bg-primary border-r border-background"></div>
+<div class="w-1/4 h-full bg-primary opacity-30"></div>
+</div>
+</div>
+<!-- Feature 3: Small -->
+<div class="md:col-span-4 bg-surface-container-high border-2 border-outline-variant p-6 flex flex-col relative">
+<div class="w-10 h-10 bg-surface-container flex items-center justify-center mb-4 border border-outline-variant text-primary">
+<span class="material-symbols-outlined">ac_unit</span>
+</div>
+<h3 class="font-headline-md text-[20px] uppercase mb-2">Enfriamiento Inmersión</h3>
+<p class="font-body-md text-sm text-on-surface-variant">Sistemas de enfriamiento líquido de dos fases que aumentan la vida útil del hardware y permiten un overclocking seguro y sostenido.</p>
+<div class="mt-auto font-data-mono text-primary text-[14px] flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                            TEMP_STABLE: 45°C
+                        </div>
+</div>
+<!-- Feature 4: Medium Horizontal -->
+<div class="md:col-span-8 bg-surface-container border-2 border-outline-variant p-6 flex items-center relative overflow-hidden">
+<div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyMCIgaGVpZ2h0PSIyMCI+PGNpcmNsZSBjeD0iMiIgY3k9IjIiIHI9IjEiIGZpbGw9InJnYmEoMTYzLCAxNDEsIDEyMiwgMC4xKSIvPjwvc3ZnPg==')] opacity-50 pointer-events-none"></div>
+<div class="flex-grow z-10 pr-6 border-r-2 border-outline-variant">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary">query_stats</span>
+<h3 class="font-headline-md text-[24px] uppercase">Telemetría Cruda</h3>
+</div>
+<p class="font-body-md text-on-surface-variant">Acceso API completo a los logs de tu minero. Monitorea temperatura de chips, velocidad de ventiladores y tasas de rechazo en tiempo real a través de nuestro dashboard OS.</p>
+</div>
+<div class="w-1/3 pl-6 z-10 hidden md:flex flex-col gap-2 font-data-mono text-[10px] text-on-surface-variant opacity-70">
+<div>&gt; INIT_CONNECTION... OK</div>
+<div>&gt; FETCHING_DATA... OK</div>
+<div class="text-primary">&gt; HASH_RATE: 250.4 TH/s</div>
+<div>&gt; TEMP_BOARD: 65C</div>
+<div>&gt; FAN_SPEED: 4500RPM</div>
+<div class="text-primary">&gt; STATUS: MINING</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-8 px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-4 bg-surface-container-lowest dark:bg-surface-container-lowest border-t-2 border-outline-variant mt-auto relative z-20">
+<div class="font-label-caps text-label-caps text-on-surface-variant font-bold tracking-wider">
+            © 2024 INDUSTRIAL_COMPUTE_CORP // HASH_OR_DIE
+        </div>
+<div class="flex flex-wrap justify-center gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary underline transition-colors" href="#">TERMS_OF_SERVICE</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary underline transition-colors" href="#">PRIVACY_POLICY</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary underline transition-colors" href="#">API_DOCS</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary underline transition-colors" href="#">HARDWARE_SPECS</a>
+</div>
+</footer>
+</body></html>

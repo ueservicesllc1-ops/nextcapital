@@ -2,11 +2,13 @@
 
 import {
   createUserWithEmailAndPassword,
+  GoogleAuthProvider,
   onAuthStateChanged,
   reload,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
   updateProfile,
   User,
@@ -21,6 +23,7 @@ interface AuthContextValue {
   appUser: AppUser | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   register: (payload: {
     name: string;
     email: string;
@@ -104,6 +107,34 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       login: async (email, password) => {
         if (!auth) throw new Error("Firebase Auth no configurado.");
         await signInWithEmailAndPassword(auth, email, password);
+      },
+      loginWithGoogle: async () => {
+        if (!auth || !db) throw new Error("Firebase Auth no configurado.");
+        const provider = new GoogleAuthProvider();
+        const credential = await signInWithPopup(auth, provider);
+        const user = credential.user;
+        const ref = doc(db, "users", user.uid);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) {
+          const isAdminEmail = user.email === "luisuf@gmail.com";
+          const newUser: AppUser = {
+            uid: user.uid,
+            ncId: `NC${Math.floor(10000 + Math.random() * 90000)}`,
+            email: user.email ?? "",
+            name: user.displayName ?? "Investor",
+            role: isAdminEmail ? "admin" : "investor",
+            createdAt: new Date().toISOString(),
+            status: "active",
+          };
+          await setDoc(ref, { ...newUser, createdAt: serverTimestamp() });
+          await setDoc(doc(db, "balances", user.uid), {
+            userId: user.uid,
+            totalDeposited: 0,
+            totalProfit: 0,
+            currentBalance: 0,
+            updatedAt: serverTimestamp(),
+          });
+        }
       },
       register: async ({ name, email, password, role = "investor" }) => {
         if (!auth || !db) throw new Error("Firebase Auth/Firestore no configurado.");

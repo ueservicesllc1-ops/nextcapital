@@ -54,21 +54,22 @@ export function TradingPanel() {
 
         <div className="mb-6">
           <label className="text-xs font-medium text-zinc-500 uppercase tracking-wider mb-2 block">Multiplicador</label>
-          <div className="flex gap-2">
-            {[1, 2, 5].map(m => (
+          <div className="flex flex-wrap gap-2">
+            {[1, 5, 20, 50, 100, 500, 999].map(m => (
               <button
                 key={m}
                 onClick={() => setMultiplier(m)}
-                className={`flex-1 py-2 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-2 rounded-lg text-[10px] font-bold transition-all ${
                   multiplier === m 
-                    ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/50" 
-                    : "bg-white/[0.04] text-zinc-400 border border-transparent hover:bg-white/[0.08]"
+                    ? "bg-cyan-500 text-black shadow-[0_0_15px_rgba(6,182,212,0.4)]" 
+                    : "bg-white/[0.04] text-zinc-500 border border-white/[0.05] hover:bg-white/[0.08]"
                 }`}
               >
                 x{m}
               </button>
             ))}
           </div>
+
         </div>
 
         <div className="mb-8">

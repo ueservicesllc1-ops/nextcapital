@@ -58,61 +58,55 @@ export async function GET(request: NextRequest) {
 
         const lastCredit = balance.lastInterestCredit 
           ? new Date(balance.lastInterestCredit) 
-          : null;
+          : referenceDate;
 
-        // 4. ¿Ha pasado el ciclo de 24 horas?
-        // El ciclo se cumple si:
-        // - Nunca se ha acreditado Y ya pasó la hora de referencia hoy
-        // - O han pasado más de 23.5 horas desde el último crédito (margen de error de cron)
-        
-        let shouldCredit = false;
-        if (!lastCredit) {
-          // Si nunca se ha acreditado, verificamos si ya pasó la hora hoy
-          const todayTarget = new Date(now);
-          todayTarget.setHours(referenceDate.getHours(), referenceDate.getMinutes(), referenceDate.getSeconds(), 0);
-          if (now.getTime() >= todayTarget.getTime()) {
-            shouldCredit = true;
-          }
-        } else {
-          const hoursSinceLast = (now.getTime() - lastCredit.getTime()) / (1000 * 60 * 60);
-          if (hoursSinceLast >= 23.5) {
-            shouldCredit = true;
-          }
-        }
+        // 4. Calcular cuántos días han pasado desde el último crédito
+        const msSinceLast = now.getTime() - lastCredit.getTime();
+        const daysSinceLast = Math.floor(msSinceLast / (1000 * 60 * 60 * 24));
+        const DAILY_RATE_SIMPLE = 0.01; // 1% fijo diario
 
-        if (shouldCredit) {
-          // 5. Calcular interés variable (0.7% a 0.9%)
-          const fluctuation = (Math.random() * 0.002) - 0.001; // -0.1% a +0.1%
-          const finalRate = DAILY_RATE_BASE + fluctuation;
-          const profitAmount = Number((balance.currentBalance * finalRate).toFixed(2));
+        if (daysSinceLast >= 1) {
+          const batch = adminDb!.batch();
+          let newTotalProfit = balance.totalProfit ?? 0;
+          let newCurrentBalance = balance.currentBalance ?? 0;
+          let lastDate = new Date(lastCredit);
 
-          if (profitAmount > 0) {
-            const batch = adminDb!.batch();
+          for (let i = 0; i < daysSinceLast; i++) {
+            lastDate.setDate(lastDate.getDate() + 1);
             
-            // Actualizar Balance
-            batch.set(doc.ref, {
-              totalProfit: (balance.totalProfit ?? 0) + profitAmount,
-              currentBalance: (balance.currentBalance ?? 0) + profitAmount,
-              lastInterestCredit: now.toISOString(),
-              updatedAt: now.toISOString(),
-            }, { merge: true });
+            // Interés Simple: Siempre sobre el total depositado
+            const profitAmount = Number((balance.totalDeposited * DAILY_RATE_SIMPLE).toFixed(2));
 
-            // Crear Transacción
-            const trxRef = adminDb!.collection("transactions").doc();
-            batch.set(trxRef, {
-              userId,
-              type: "profit",
-              amount: profitAmount,
-              status: "approved",
-              description: `Rendimiento diario automatizado (${(finalRate * 100).toFixed(2)}%)`,
-              createdAt: now.toISOString(),
-            });
+            if (profitAmount > 0) {
+              newTotalProfit += profitAmount;
+              newCurrentBalance += profitAmount;
 
-            await batch.commit();
-            results.credited++;
-            results.details.push(`Usuario ${userId}: +${profitAmount}`);
+              const trxRef = adminDb!.collection("transactions").doc();
+              batch.set(trxRef, {
+                userId,
+                type: "profit",
+                amount: profitAmount,
+                status: "approved",
+                description: `Rendimiento diario fijo (1.00%)`,
+                createdAt: lastDate.toISOString(),
+              });
+            }
           }
+
+
+          // Actualizar Balance
+          batch.set(doc.ref, {
+            totalProfit: newTotalProfit,
+            currentBalance: newCurrentBalance,
+            lastInterestCredit: lastDate.toISOString(),
+            updatedAt: now.toISOString(),
+          }, { merge: true });
+
+          await batch.commit();
+          results.credited++;
+          results.details.push(`Usuario ${userId}: ${daysSinceLast} días acreditados`);
         }
+
       } catch (err) {
         results.errors++;
         console.error(`Error procesando intereses para ${userId}:`, err);

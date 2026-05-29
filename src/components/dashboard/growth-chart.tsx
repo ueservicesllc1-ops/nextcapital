@@ -6,7 +6,10 @@ import { formatCurrency } from "@/lib/utils";
 export function GrowthChart({ data }: { data: Array<{ name: string; balance: number }> }) {
   return (
     <div className="h-72 w-full overflow-hidden rounded-[20px] border border-white/[0.06] bg-gradient-to-br from-zinc-900/80 to-zinc-950/90 p-6 shadow-2xl backdrop-blur-xl transition-all duration-300 hover:border-white/[0.12]">
-      <h3 className="mb-6 text-[13px] font-medium uppercase tracking-wide text-zinc-500">Crecimiento de capital</h3>
+      <div className="mb-6 flex items-center justify-between">
+        <h3 className="text-[13px] font-medium uppercase tracking-wide text-zinc-500">Capital + Interés</h3>
+        <span className="text-xl font-bold text-white">{formatCurrency(data[data.length - 1]?.balance ?? 0)}</span>
+      </div>
       <ResponsiveContainer width="100%" height="85%">
         <AreaChart data={data}>
           <defs>

@@ -24,6 +24,14 @@ export default function InvestorDashboardPage() {
     async function load() {
       if (!firebaseUser) return;
       try {
+        // 1. Acreditar intereses en el servidor (idempotente, seguro contra race conditions)
+        await fetch("/api/investor/credit-interests", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ userId: firebaseUser.uid }),
+        });
+
+        // 2. Leer datos actualizados (solo lectura)
         const data = await getInvestorData(firebaseUser.uid);
         setBalance(data.balance);
         setDeposits(data.deposits);
@@ -47,8 +55,8 @@ export default function InvestorDashboardPage() {
     return <div className="grid min-h-screen place-items-center">Cargando dashboard...</div>;
   }
 
-  const dailyEstimate = balance.currentBalance * 0.01;
-  const monthlyEstimate = balance.currentBalance * 0.3;
+  const dailyEstimate = balance.totalDeposited * 0.01;
+  const monthlyEstimate = balance.totalDeposited * 0.3;
 
   return (
     <main className="relative min-h-screen bg-[#020203]">
@@ -65,7 +73,7 @@ export default function InvestorDashboardPage() {
             <StatCard title="Total depositado" value={formatCurrency(balance.totalDeposited)} />
             <StatCard title="Balance actual" value={formatCurrency(balance.currentBalance)} positive />
             <StatCard title="Ganancias estimadas" value={formatCurrency(balance.totalProfit)} helper="rendimientos estimados" positive />
-            <StatCard title="Ganancia diaria" value={formatCurrency(dailyEstimate)} helper="hasta 1% diario" />
+            <StatCard title="Ganancia diaria" value={formatCurrency(dailyEstimate)} helper="1% fijo diario" />
             <StatCard title="Rendimiento mensual" value={formatCurrency(monthlyEstimate)} helper="hasta 30% mensual" />
             
             {/* Acceso a Trading CTA */}
@@ -77,7 +85,7 @@ export default function InvestorDashboardPage() {
                   <p className="mt-1 text-[10px] leading-relaxed text-zinc-400">Opera en mercados reales con ejecución instantánea.</p>
                 </div>
                 <Link 
-                  href="/trading" 
+                  href="/next/trading" 
                   className="mt-4 flex items-center justify-center gap-2 rounded-xl bg-cyan-500 py-2.5 text-xs font-bold text-black transition-all hover:bg-cyan-400"
                 >
                   Ir a Trading

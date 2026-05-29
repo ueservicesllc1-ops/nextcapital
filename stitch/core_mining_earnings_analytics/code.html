@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Core Mining - Earnings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#131b2e",
+                        "surface-tint": "#abd600",
+                        "on-primary": "#283500",
+                        "secondary": "#bcc7de",
+                        "surface-container-high": "#1c2b3c",
+                        "surface-container": "#122131",
+                        "on-primary-fixed-variant": "#3c4d00",
+                        "on-surface-variant": "#c4c9ac",
+                        "error-container": "#93000a",
+                        "surface-container-highest": "#273647",
+                        "secondary-fixed": "#d8e3fb",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#aeb9d0",
+                        "secondary-fixed-dim": "#bcc7de",
+                        "on-primary-container": "#556d00",
+                        "surface-container-low": "#0d1c2d",
+                        "surface-variant": "#273647",
+                        "on-error": "#690005",
+                        "inverse-surface": "#d4e4fa",
+                        "inverse-on-surface": "#233143",
+                        "primary": "#ffffff",
+                        "tertiary-container": "#dae2fd",
+                        "primary-container": "#c3f400",
+                        "on-primary-fixed": "#161e00",
+                        "surface-container-lowest": "#010f1f",
+                        "primary-fixed": "#c3f400",
+                        "on-surface": "#d4e4fa",
+                        "error": "#ffb4ab",
+                        "background": "#051424",
+                        "inverse-primary": "#506600",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "on-tertiary-container": "#5c647a",
+                        "surface-bright": "#2c3a4c",
+                        "outline": "#8e9379",
+                        "on-secondary": "#263143",
+                        "secondary-container": "#3e495d",
+                        "outline-variant": "#444933",
+                        "surface-dim": "#051424",
+                        "on-background": "#d4e4fa",
+                        "on-secondary-fixed": "#111c2d",
+                        "tertiary": "#ffffff",
+                        "surface": "#051424",
+                        "on-tertiary": "#283044",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "tertiary-fixed": "#dae2fd",
+                        "primary-fixed-dim": "#abd600"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "container-max": "1440px",
+                        "base": "8px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Geist", "sans-serif"],
+                        "body-md": ["Geist", "sans-serif"],
+                        "label-sm": ["JetBrains Mono", "monospace"],
+                        "label-md": ["JetBrains Mono", "monospace"],
+                        "headline-lg-mobile": ["Geist", "sans-serif"],
+                        "headline-lg": ["Geist", "sans-serif"],
+                        "body-lg": ["Geist", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", { "lineHeight": "1.3", "fontWeight": "600" }],
+                        "body-md": ["16px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-sm": ["12px", { "lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "headline-lg-mobile": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+                        "headline-lg": ["48px", { "lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-lg": ["18px", { "lineHeight": "1.6", "fontWeight": "400" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Minimal custom scrollbar for technical feel */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #051424; }
+        ::-webkit-scrollbar-thumb { background: #334155; }
+        ::-webkit-scrollbar-thumb:hover { background: #abd600; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md text-body-md antialiased h-screen flex overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-screen w-64 border-r border-outline-variant bg-surface-container py-base flex-shrink-0 z-20">
+<div class="px-gutter pb-gutter mb-base border-b border-outline-variant">
+<div class="flex items-center gap-base mb-2">
+<span class="material-symbols-outlined text-surface-tint" data-icon="memory" style="font-variation-settings: 'FILL' 1;">memory</span>
+<span class="font-headline-md text-headline-md text-surface-tint uppercase">NODE_01</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant flex items-center gap-2">
+<div class="w-2 h-2 bg-surface-tint rounded-full animate-pulse"></div>
+                OPERATIONAL
+            </div>
+</div>
+<nav class="flex-1 overflow-y-auto px-base space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant hover:text-primary hover:bg-surface-container-highest transition-colors active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+                OVERVIEW
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant hover:text-primary hover:bg-surface-container-highest transition-colors active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+                MINERS
+            </a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-4 py-3 font-label-md text-label-md bg-primary-container text-on-primary-container border-l-4 border-surface-tint transition-colors active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                EARNINGS
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant hover:text-primary hover:bg-surface-container-highest transition-colors active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+                WALLET
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-md text-label-md text-on-surface-variant hover:bg-surface-variant hover:text-primary hover:bg-surface-container-highest transition-colors active:translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+                SECURITY
+            </a>
+</nav>
+<div class="p-4 mt-auto border-t border-outline-variant">
+<button class="w-full py-3 px-4 bg-primary-container text-on-primary-container font-label-md text-label-md uppercase hover:bg-surface-tint transition-colors border border-surface-tint flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                DEPLOY NEW RIG
+            </button>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col h-full overflow-hidden relative">
+<!-- TopNavBar -->
+<header class="w-full border-b border-outline-variant bg-background flex-shrink-0 z-10">
+<div class="flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<span class="md:hidden material-symbols-outlined cursor-pointer text-primary" data-icon="menu">menu</span>
+<span class="font-headline-md text-headline-md font-bold text-surface-tint tracking-tighter uppercase">CORE_MINING</span>
+</div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest px-3 py-2 active:scale-95 transition-transform" href="#">DASHBOARD</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest px-3 py-2 active:scale-95 transition-transform" href="#">MARKETPLACE</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest px-3 py-2 active:scale-95 transition-transform" href="#">FARM_OPS</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest px-3 py-2 active:scale-95 transition-transform" href="#">SUPPORT</a>
+</nav>
+<div class="flex items-center gap-4 text-primary">
+<button class="p-2 hover:bg-surface-container-highest transition-all duration-200 active:scale-95 rounded">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="p-2 hover:bg-surface-container-highest transition-all duration-200 active:scale-95 rounded relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-surface-tint rounded-full"></span>
+</button>
+<img alt="User technician profile" class="w-8 h-8 object-cover border border-outline-variant rounded" data-alt="A highly detailed close-up portrait of a technical systems operator in a dimly lit, futuristic control room. The operator wears dark, functional industrial clothing. The lighting is dominated by high-contrast neon yellow and deep slate blue reflections from multiple screens, creating a gritty, cyber-industrial aesthetic. The mood is focused, intense, and strictly professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuXTE4Pjh5nUCKLt__fnKPwDqavS1_GshFKiY6GqnzzIGczXAfHytQelvQSg-6I9NGbecYeAzs_eNCmv8zknLgi3lbbsyYeAtNh2clyeYQ8YYEEGYGzEdxSnz0Umpvl17GVAVGKJs8AobmGgwTH09QqGtOGjF0_01aLtgIklBsS_VKRoqEuUvstmZR-3eJmA7BTRjpr_Rdiun8ZQThFoborYE0FXRopJALGGr6mtrw9iiJPJ7-8J_E2sVvx2tDQJpDAbFCiPJ8eRX4"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-surface-lowest">
+<div class="max-w-container-max mx-auto space-y-gutter">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant pb-4">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-primary uppercase">Earnings Analytics</h1>
+<p class="font-label-md text-label-md text-on-surface-variant mt-2 uppercase">Real-time revenue metrics and historical data</p>
+</div>
+<div class="flex bg-surface-container border border-outline-variant p-1">
+<button class="px-4 py-1 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors">1D</button>
+<button class="px-4 py-1 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors">1W</button>
+<button class="px-4 py-1 font-label-sm text-label-sm bg-primary-container text-on-primary-container border border-surface-tint">1M</button>
+<button class="px-4 py-1 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors">1Y</button>
+<button class="px-4 py-1 font-label-sm text-label-sm text-on-surface-variant hover:text-primary transition-colors">ALL</button>
+</div>
+</div>
+<!-- Stats Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Stat 1 -->
+<div class="bg-surface-container border border-outline-variant p-6 flex flex-col justify-between hover:border-surface-tint transition-colors group">
+<div class="flex justify-between items-start mb-8">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Average Daily Revenue</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-surface-tint transition-colors" data-icon="moving">moving</span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-primary">0.0452 <span class="text-body-lg text-on-surface-variant">BTC</span></div>
+<div class="flex items-center gap-2 mt-2 font-label-sm text-label-sm text-surface-tint">
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_upward">arrow_upward</span>
+<span>+12.4% vs last month</span>
+</div>
+</div>
+</div>
+<!-- Stat 2 -->
+<div class="bg-surface-container border border-outline-variant p-6 flex flex-col justify-between hover:border-surface-tint transition-colors group">
+<div class="flex justify-between items-start mb-8">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Projected Monthly</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-surface-tint transition-colors" data-icon="monitoring">monitoring</span>
+</div>
+<div>
+<div class="font-headline-lg text-headline-lg text-primary">1.3560 <span class="text-body-lg text-on-surface-variant">BTC</span></div>
+<div class="flex items-center gap-2 mt-2 font-label-sm text-label-sm text-on-surface-variant">
+<span>ESTIMATED based on current hashrate</span>
+</div>
+</div>
+</div>
+<!-- Stat 3 -->
+<div class="bg-surface-container border border-outline-variant p-6 flex flex-col justify-between hover:border-surface-tint transition-colors group relative overflow-hidden">
+<!-- Abstract background element -->
+<div class="absolute -right-10 -bottom-10 opacity-5 pointer-events-none text-surface-tint font-mono text-9xl">∑</div>
+<div class="flex justify-between items-start mb-8 relative z-10">
+<span class="font-label-md text-label-md text-on-surface-variant uppercase">Total Mined (YTD)</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-surface-tint transition-colors" data-icon="inventory_2">inventory_2</span>
+</div>
+<div class="relative z-10">
+<div class="font-headline-lg text-headline-lg text-primary">18.9021 <span class="text-body-lg text-on-surface-variant">BTC</span></div>
+<div class="flex items-center gap-2 mt-2 font-label-sm text-label-sm text-on-surface-variant">
+<span>Across 12 active nodes</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Chart Area (Brutalist CSS representation) -->
+<div class="bg-surface-container border border-outline-variant p-6">
+<div class="flex justify-between items-center mb-8 border-b border-outline-variant pb-4">
+<h2 class="font-label-md text-label-md text-primary uppercase tracking-widest">Revenue Over Time (30 Days)</h2>
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-surface-tint flex items-center gap-2 transition-colors">
+<span class="material-symbols-outlined" data-icon="download">download</span> EXPORT CSV
+                        </button>
+</div>
+<div class="h-64 flex items-end gap-1 relative pt-4">
+<!-- Y-Axis Labels -->
+<div class="absolute left-0 top-0 bottom-0 flex flex-col justify-between font-label-sm text-label-sm text-on-surface-variant opacity-50 w-12 border-r border-outline-variant pb-6">
+<span>0.06</span>
+<span>0.04</span>
+<span>0.02</span>
+<span>0.00</span>
+</div>
+<!-- Grid Lines -->
+<div class="absolute left-12 right-0 top-4 h-[1px] bg-outline-variant opacity-30"></div>
+<div class="absolute left-12 right-0 top-[50%] h-[1px] bg-outline-variant opacity-30"></div>
+<div class="absolute left-12 right-0 bottom-6 h-[1px] bg-outline-variant opacity-30"></div>
+<!-- Brutalist Bar Chart -->
+<div class="flex-1 flex items-end gap-[2px] ml-14 h-[calc(100%-24px)] mb-6">
+<!-- Procedurally generated bars for visual effect -->
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 40%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 45%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 38%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 50%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 60%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 55%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 70%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 65%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 80%;"></div>
+<div class="flex-1 bg-surface-tint" style="height: 75%;"></div> <!-- Highlighted Day -->
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 85%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 90%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 82%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 78%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 88%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 95%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 92%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 100%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 85%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 70%;"></div>
+<div class="flex-1 bg-surface-variant hover:bg-surface-tint transition-colors" style="height: 75%;"></div>
+</div>
+<!-- X-Axis Labels -->
+<div class="absolute left-14 right-0 bottom-0 flex justify-between font-label-sm text-label-sm text-on-surface-variant opacity-50">
+<span>01</span>
+<span>05</span>
+<span>10</span>
+<span>15</span>
+<span>20</span>
+<span>25</span>
+<span>30</span>
+</div>
+</div>
+</div>
+<!-- Recent Payouts Table -->
+<div class="bg-surface-container border border-outline-variant overflow-x-auto">
+<div class="p-6 border-b border-outline-variant">
+<h2 class="font-label-md text-label-md text-primary uppercase tracking-widest">Recent Payouts</h2>
+</div>
+<table class="w-full text-left font-label-md text-label-md whitespace-nowrap">
+<thead class="bg-surface-container-highest border-b-2 border-surface-tint">
+<tr>
+<th class="px-6 py-4 text-on-surface-variant uppercase font-medium">Timestamp (UTC)</th>
+<th class="px-6 py-4 text-on-surface-variant uppercase font-medium">TXID</th>
+<th class="px-6 py-4 text-on-surface-variant uppercase font-medium text-right">Amount (BTC)</th>
+<th class="px-6 py-4 text-on-surface-variant uppercase font-medium text-right">Fee (BTC)</th>
+<th class="px-6 py-4 text-on-surface-variant uppercase font-medium">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="px-6 py-4 text-on-background">2024-05-20 14:22:01</td>
+<td class="px-6 py-4 text-surface-tint hover:underline cursor-pointer group-hover:text-primary transition-colors">0x8f2a...c91b</td>
+<td class="px-6 py-4 text-primary text-right">0.04520000</td>
+<td class="px-6 py-4 text-on-surface-variant text-right">0.00012000</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-1 bg-primary-container text-on-primary-container border border-surface-tint font-label-sm text-label-sm">
+                                        CONFIRMED
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="px-6 py-4 text-on-background">2024-05-19 14:18:45</td>
+<td class="px-6 py-4 text-surface-tint hover:underline cursor-pointer group-hover:text-primary transition-colors">0x3a1b...d42e</td>
+<td class="px-6 py-4 text-primary text-right">0.04310000</td>
+<td class="px-6 py-4 text-on-surface-variant text-right">0.00011500</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-1 bg-primary-container text-on-primary-container border border-surface-tint font-label-sm text-label-sm">
+                                        CONFIRMED
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="px-6 py-4 text-on-background">2024-05-18 14:15:22</td>
+<td class="px-6 py-4 text-surface-tint hover:underline cursor-pointer group-hover:text-primary transition-colors">0x9c4f...a11d</td>
+<td class="px-6 py-4 text-primary text-right">0.04680000</td>
+<td class="px-6 py-4 text-on-surface-variant text-right">0.00013000</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-1 border border-on-surface-variant text-on-surface-variant font-label-sm text-label-sm opacity-50">
+                                        ARCHIVED
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="px-6 py-4 text-on-background">2024-05-17 14:10:05</td>
+<td class="px-6 py-4 text-surface-tint hover:underline cursor-pointer group-hover:text-primary transition-colors">0x2d8e...f88c</td>
+<td class="px-6 py-4 text-primary text-right">0.04150000</td>
+<td class="px-6 py-4 text-on-surface-variant text-right">0.00010500</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center px-2 py-1 border border-on-surface-variant text-on-surface-variant font-label-sm text-label-sm opacity-50">
+                                        ARCHIVED
+                                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 border-t border-outline-variant flex justify-center">
+<button class="font-label-sm text-label-sm text-on-surface-variant hover:text-surface-tint transition-colors flex items-center gap-2">
+                            VIEW ALL TRANSACTIONS <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full border-t border-outline-variant bg-surface-container-lowest flex-shrink-0">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-mobile md:px-margin-desktop py-gutter w-full max-w-container-max mx-auto gap-4">
+<div class="font-label-sm text-label-sm uppercase text-on-surface-variant">
+                    © 2024 CORE MINING INDUSTRIAL. ALL SYSTEMS NOMINAL.
+                </div>
+<div class="flex items-center gap-6">
+<a class="font-label-sm text-label-sm uppercase text-on-surface-variant hover:text-surface-tint hover:underline decoration-surface-tint transition-opacity duration-300" href="#">TERMINAL_LOGS</a>
+<a class="font-label-sm text-label-sm uppercase text-on-surface-variant hover:text-surface-tint hover:underline decoration-surface-tint transition-opacity duration-300" href="#">LEGAL_PROTOCOL</a>
+<a class="font-label-sm text-label-sm uppercase text-on-surface-variant hover:text-surface-tint hover:underline decoration-surface-tint transition-opacity duration-300" href="#">API_DOCS</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

@@ -1,113 +1,162 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { auth } from "@/lib/firebase/client";
-import { useRouter } from "next/navigation";
-import { FormEvent, useState } from "react";
-import { useAuth } from "@/components/providers/auth-provider";
-import { trackEvent } from "@/lib/analytics-events";
-import { useToast } from "@/components/providers/toast-provider";
+import Link from 'next/link';
+import { FormEvent, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/components/providers/auth-provider';
+import { useToast } from '@/components/providers/toast-provider';
+import { auth } from '@/lib/firebase/client';
+import { Zap } from 'lucide-react';
+
+function GoogleIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+      <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 01-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
+      <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 009 18z" fill="#34A853"/>
+      <path d="M3.964 10.71A5.41 5.41 0 013.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 000 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
+      <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 00.957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+    </svg>
+  );
+}
 
 export default function LoginPage() {
-  const { login } = useAuth();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const { login, loginWithGoogle } = useAuth();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const [error, setError] = useState('');
   const router = useRouter();
   const { showToast } = useToast();
 
-  async function handleSubmit(event: FormEvent) {
-    event.preventDefault();
-    setError("");
+  async function handleSubmit(e: FormEvent) {
+    e.preventDefault();
+    setError('');
     setLoading(true);
     try {
       await login(email, password);
-      await trackEvent("login_success", { method: "password" });
       if (!auth?.currentUser?.emailVerified) {
-        showToast("Verifica tu email antes de continuar.", "info");
-        router.push("/verify-email");
+        showToast('Verifica tu email antes de continuar.', 'info');
+        router.push('/verify-email');
       } else {
-        showToast("Sesión iniciada correctamente.", "success");
-        router.push("/dashboard");
+        showToast('Bienvenido de vuelta.', 'success');
+        router.push('/');
       }
     } catch {
-      await trackEvent("login_error", { method: "password" });
-      showToast("No se pudo iniciar sesión.", "error");
-      setError("No se pudo iniciar sesión. Verifica tus credenciales.");
+      setError('Credenciales incorrectas. Verifica tu correo y contraseña.');
     } finally {
       setLoading(false);
     }
   }
 
-  return (
-    <main className="relative grid min-h-screen place-items-center bg-[#020203] px-4 text-zinc-100">
-      {/* Background glow */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-500/10 blur-[120px]" />
-      
-      <div className="relative z-10 w-full max-w-md">
-        <Link href="/" className="mb-2 block text-center">
-          <div className="relative mx-auto h-16 w-56">
-            <img 
-              src="/logo.png?cb=20260430" 
-              alt="Next Capital" 
-              className="absolute left-1/2 top-1/2 w-[300px] max-w-none -translate-x-1/2 -translate-y-1/2 drop-shadow-lg" 
-            />
-          </div>
-        </Link>
-        
-        <form onSubmit={handleSubmit} className="group relative rounded-[24px] border border-white/10 bg-zinc-950/50 p-8 shadow-2xl backdrop-blur-xl transition-all duration-500 hover:border-white/20">
-          <div className="absolute inset-0 rounded-[24px] bg-gradient-to-br from-white/5 to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
-          
-          <div className="relative z-10">
-            <h1 className="text-3xl font-semibold tracking-tight text-white">
-              Iniciar sesión
-            </h1>
-            <p className="mt-2 text-sm text-zinc-400">Accede a tu dashboard de inversión.</p>
-            
-            <div className="mt-8 grid gap-5">
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-zinc-400">Correo electrónico</label>
-                <input 
-                  type="email" 
-                  value={email} 
-                  onChange={(e) => setEmail(e.target.value)} 
-                  required 
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-zinc-600 outline-none transition-all focus:border-white/20 focus:bg-white/10 focus:ring-2 focus:ring-white/10"
-                  placeholder="ejemplo@correo.com"
-                />
-              </div>
-              
-              <div className="space-y-1.5">
-                <label className="text-xs font-medium text-zinc-400">Contraseña</label>
-                <input 
-                  type="password" 
-                  value={password} 
-                  onChange={(e) => setPassword(e.target.value)} 
-                  required 
-                  className="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder-zinc-600 outline-none transition-all focus:border-white/20 focus:bg-white/10 focus:ring-2 focus:ring-white/10"
-                  placeholder="••••••••"
-                />
-              </div>
+  async function handleGoogle() {
+    setError('');
+    setGoogleLoading(true);
+    try {
+      await loginWithGoogle();
+      showToast('Sesión iniciada con Google.', 'success');
+      router.push('/');
+    } catch (err: any) {
+      setError('No se pudo iniciar sesión con Google.');
+    } finally {
+      setGoogleLoading(false);
+    }
+  }
 
-              {error ? <p className="text-sm font-medium text-rose-400">{error}</p> : null}
-              
-              <button disabled={loading} className="mt-2 w-full rounded-full bg-white px-8 py-3.5 text-sm font-semibold text-black shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-transform hover:scale-[1.02] hover:bg-zinc-100 disabled:opacity-50 disabled:hover:scale-100">
-                {loading ? "Ingresando..." : "Ingresar"}
-              </button>
-            </div>
-            
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 border-t border-white/10 pt-6">
-              <Link href="/register" className="text-sm font-medium text-zinc-400 transition-colors hover:text-white">
-                ¿No tienes cuenta? <span className="text-white">Crear cuenta</span>
-              </Link>
-              <Link href="/forgot-password" className="text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-300">
-                ¿Olvidaste tu contraseña?
-              </Link>
-            </div>
-          </div>
-        </form>
+  return (
+    <div className="min-h-screen flex items-center justify-center px-4 py-12" style={{ background: '#060608', fontFamily: 'var(--font-geist-sans), Inter, sans-serif' }}>
+      {/* Ambient blobs */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 rounded-full bg-amber-500/5 blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 rounded-full bg-orange-500/4 blur-3xl" />
       </div>
-    </main>
+
+      <div className="relative w-full max-w-md">
+        {/* Logo */}
+        <Link href="/" className="flex items-center justify-center gap-2 mb-8">
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center" style={{ background: 'rgba(245,158,11,0.15)', border: '1px solid rgba(245,158,11,0.3)' }}>
+            <Zap size={16} className="text-amber-400" />
+          </div>
+          <span className="font-bold text-white">Next<span className="text-amber-400">Capital</span></span>
+          <span className="ml-1 px-2 py-0.5 text-[10px] font-bold tracking-widest text-amber-600 border border-amber-700/40 rounded" style={{ background: 'rgba(245,158,11,0.07)' }}>MINING</span>
+        </Link>
+
+        {/* Card */}
+        <div className="rounded-2xl p-8" style={{ background: '#0d0d14', border: '1px solid rgba(255,255,255,0.07)' }}>
+          <h1 className="text-2xl font-black text-white mb-1" style={{ letterSpacing: '-0.03em' }}>Iniciar Sesión</h1>
+          <p className="text-sm text-slate-500 mb-8">Accede a tu dashboard de minería.</p>
+
+          {/* Google button */}
+          <button
+            onClick={handleGoogle}
+            disabled={googleLoading || loading}
+            className="w-full flex items-center justify-center gap-3 py-3 rounded-xl font-semibold text-sm text-white transition-all hover:scale-[1.01] mb-6 disabled:opacity-50"
+            style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)' }}
+          >
+            <GoogleIcon />
+            {googleLoading ? 'Conectando...' : 'Continuar con Google'}
+          </button>
+
+          {/* Divider */}
+          <div className="flex items-center gap-3 mb-6">
+            <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.07)' }} />
+            <span className="text-xs text-slate-600">o con correo</span>
+            <div className="flex-1 h-px" style={{ background: 'rgba(255,255,255,0.07)' }} />
+          </div>
+
+          {/* Email form */}
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">Correo electrónico</label>
+              <input
+                type="email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                required
+                placeholder="nombre@correo.com"
+                className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-600 outline-none transition-all"
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                onFocus={e => e.target.style.borderColor = 'rgba(245,158,11,0.4)'}
+                onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.08)'}
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-medium text-slate-500 mb-1.5">Contraseña</label>
+              <input
+                type="password"
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+                className="w-full px-4 py-3 rounded-xl text-sm text-white placeholder-slate-600 outline-none transition-all"
+                style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}
+                onFocus={e => e.target.style.borderColor = 'rgba(245,158,11,0.4)'}
+                onBlur={e => e.target.style.borderColor = 'rgba(255,255,255,0.08)'}
+              />
+            </div>
+
+            {error && <p className="text-sm text-red-400 font-medium">{error}</p>}
+
+            <button
+              type="submit"
+              disabled={loading || googleLoading}
+              className="w-full py-3.5 rounded-xl font-bold text-sm text-black transition-all hover:scale-[1.01] disabled:opacity-50 disabled:cursor-not-allowed"
+              style={{ background: 'linear-gradient(135deg, #f59e0b, #f97316)', boxShadow: '0 6px 20px rgba(245,158,11,0.25)' }}
+            >
+              {loading ? 'Ingresando...' : 'Ingresar →'}
+            </button>
+          </form>
+
+          <div className="flex flex-col items-center gap-2 mt-6 pt-6" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+            <Link href="/register" className="text-sm text-slate-500 hover:text-white transition-colors">
+              ¿No tienes cuenta? <span className="text-amber-400">Crear cuenta</span>
+            </Link>
+            <Link href="/forgot-password" className="text-xs text-slate-600 hover:text-slate-400 transition-colors">
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

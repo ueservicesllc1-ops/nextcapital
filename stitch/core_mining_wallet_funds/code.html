@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Core Mining - Wallet</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#131b2e",
+                    "surface-tint": "#abd600",
+                    "on-primary": "#283500",
+                    "secondary": "#bcc7de",
+                    "surface-container-high": "#1c2b3c",
+                    "surface-container": "#122131",
+                    "on-primary-fixed-variant": "#3c4d00",
+                    "on-surface-variant": "#c4c9ac",
+                    "error-container": "#93000a",
+                    "surface-container-highest": "#273647",
+                    "secondary-fixed": "#d8e3fb",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-container": "#aeb9d0",
+                    "secondary-fixed-dim": "#bcc7de",
+                    "on-primary-container": "#556d00",
+                    "surface-container-low": "#0d1c2d",
+                    "surface-variant": "#273647",
+                    "on-error": "#690005",
+                    "inverse-surface": "#d4e4fa",
+                    "inverse-on-surface": "#233143",
+                    "primary": "#ffffff",
+                    "tertiary-container": "#dae2fd",
+                    "primary-container": "#c3f400",
+                    "on-primary-fixed": "#161e00",
+                    "surface-container-lowest": "#010f1f",
+                    "primary-fixed": "#c3f400",
+                    "on-surface": "#d4e4fa",
+                    "error": "#ffb4ab",
+                    "background": "#051424",
+                    "inverse-primary": "#506600",
+                    "tertiary-fixed-dim": "#bec6e0",
+                    "on-tertiary-container": "#5c647a",
+                    "surface-bright": "#2c3a4c",
+                    "outline": "#8e9379",
+                    "on-secondary": "#263143",
+                    "secondary-container": "#3e495d",
+                    "outline-variant": "#444933",
+                    "surface-dim": "#051424",
+                    "on-background": "#d4e4fa",
+                    "on-secondary-fixed": "#111c2d",
+                    "tertiary": "#ffffff",
+                    "surface": "#051424",
+                    "on-tertiary": "#283044",
+                    "on-secondary-fixed-variant": "#3c475a",
+                    "on-tertiary-fixed-variant": "#3f465c",
+                    "tertiary-fixed": "#dae2fd",
+                    "primary-fixed-dim": "#abd600"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "40px",
+                    "container-max": "1440px",
+                    "base": "8px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": [
+                            "Geist"
+                    ],
+                    "body-md": [
+                            "Geist"
+                    ],
+                    "label-sm": [
+                            "JetBrains Mono"
+                    ],
+                    "label-md": [
+                            "JetBrains Mono"
+                    ],
+                    "headline-lg-mobile": [
+                            "Geist"
+                    ],
+                    "headline-lg": [
+                            "Geist"
+                    ],
+                    "body-lg": [
+                            "Geist"
+                    ]
+            },
+            "fontSize": {
+                    "headline-md": [
+                            "24px",
+                            {
+                                    "lineHeight": "1.3",
+                                    "fontWeight": "600"
+                            }
+                    ],
+                    "body-md": [
+                            "16px",
+                            {
+                                    "lineHeight": "1.5",
+                                    "fontWeight": "400"
+                            }
+                    ],
+                    "label-sm": [
+                            "12px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "0.1em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "label-md": [
+                            "14px",
+                            {
+                                    "lineHeight": "1.4",
+                                    "letterSpacing": "0.05em",
+                                    "fontWeight": "500"
+                            }
+                    ],
+                    "headline-lg-mobile": [
+                            "32px",
+                            {
+                                    "lineHeight": "1.2",
+                                    "letterSpacing": "-0.01em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "headline-lg": [
+                            "48px",
+                            {
+                                    "lineHeight": "1.1",
+                                    "letterSpacing": "-0.02em",
+                                    "fontWeight": "700"
+                            }
+                    ],
+                    "body-lg": [
+                            "18px",
+                            {
+                                    "lineHeight": "1.6",
+                                    "fontWeight": "400"
+                            }
+                    ]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        /* Custom scrollbar for brutalist technical feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #051424; 
+            border-left: 1px solid #444933;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #273647; 
+            border: 1px solid #444933;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #abd600; 
+        }
+    </style>
+</head>
+<body class="bg-background text-primary min-h-screen flex font-body-md selection:bg-surface-tint selection:text-on-primary">
+<!-- SideNavBar Component -->
+<aside class="hidden md:flex flex-col h-screen w-64 border-r border-outline-variant bg-surface-container py-base fixed left-0 top-0 z-20">
+<!-- Header -->
+<div class="px-gutter pb-gutter mb-base border-b border-outline-variant flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-tint flex items-center justify-center border border-outline-variant rounded-none">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">terminal</span>
+</div>
+<div>
+<h2 class="font-headline-md text-headline-md text-surface-tint">NODE_01</h2>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">OPERATIONAL</p>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="flex-1 px-base flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-primary hover:bg-surface-container-highest active:translate-x-1 transition-transform font-label-md text-label-md border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                OVERVIEW
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-primary hover:bg-surface-container-highest active:translate-x-1 transition-transform font-label-md text-label-md border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined">memory</span>
+                MINERS
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-primary hover:bg-surface-container-highest active:translate-x-1 transition-transform font-label-md text-label-md border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined">payments</span>
+                EARNINGS
+            </a>
+<!-- Active State -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container border-l-4 border-surface-tint active:translate-x-1 transition-transform font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+                WALLET
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-primary hover:bg-surface-container-highest active:translate-x-1 transition-transform font-label-md text-label-md border-l-4 border-transparent" href="#">
+<span class="material-symbols-outlined">shield</span>
+                SECURITY
+            </a>
+</nav>
+<!-- CTA -->
+<div class="p-base mt-auto">
+<button class="w-full py-3 border border-surface-tint text-surface-tint font-label-md text-label-md uppercase hover:bg-surface-tint hover:text-on-primary transition-colors active:scale-95 flex justify-center items-center gap-2">
+<span class="material-symbols-outlined">add</span>
+                DEPLOY NEW RIG
+            </button>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<div class="flex-1 flex flex-col md:ml-64 min-w-0">
+<!-- TopNavBar Component -->
+<header class="bg-background w-full border-b border-outline-variant sticky top-0 z-10">
+<div class="flex justify-between items-center px-margin-desktop h-16 w-full max-w-container-max mx-auto">
+<!-- Brand -->
+<div class="font-headline-md text-headline-md font-bold text-surface-tint tracking-tighter flex items-center gap-2">
+<span class="material-symbols-outlined">dataset</span>
+                    CORE_MINING
+                </div>
+<!-- Navigation (Hidden on Mobile) -->
+<nav class="hidden md:flex items-center gap-8 h-full">
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest h-full flex items-center px-2 border-b-2 border-transparent" href="#">DASHBOARD</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest h-full flex items-center px-2 border-b-2 border-transparent" href="#">MARKETPLACE</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest h-full flex items-center px-2 border-b-2 border-transparent" href="#">FARM_OPS</a>
+<a class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant hover:text-primary transition-colors hover:bg-surface-container-highest h-full flex items-center px-2 border-b-2 border-transparent" href="#">SUPPORT</a>
+</nav>
+<!-- Actions -->
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-surface-tint transition-colors active:scale-95 p-2 flex items-center justify-center">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-on-surface-variant hover:text-surface-tint transition-colors active:scale-95 p-2 flex items-center justify-center relative">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-surface-tint rounded-full"></span>
+</button>
+<div class="w-8 h-8 bg-surface-container border border-outline-variant overflow-hidden ml-2">
+<!-- Pseudo profile image element -->
+<div aria-label="User technician profile" class="w-full h-full bg-surface-variant flex items-center justify-center text-label-sm text-on-surface-variant font-label-sm">U1</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="flex-1 p-margin-mobile md:p-margin-desktop w-full max-w-container-max mx-auto overflow-y-auto">
+<div class="mb-8 flex items-center justify-between border-b border-outline-variant pb-4">
+<h1 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary uppercase tracking-tight">Wallet Operations</h1>
+<div class="flex items-center gap-2 text-on-surface-variant font-label-md text-label-md">
+<span class="w-2 h-2 bg-surface-tint rounded-full animate-pulse"></span>
+                    SYNCED: JUST NOW
+                </div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-gutter">
+<!-- Main Balance Card (Spans 8 cols) -->
+<section class="lg:col-span-8 bg-surface-container border border-outline-variant flex flex-col justify-between">
+<div class="p-8 border-b border-outline-variant flex-1 flex flex-col justify-center">
+<p class="font-label-md text-label-md text-on-surface-variant uppercase mb-2">Available Balance</p>
+<div class="flex items-end gap-4 mb-2">
+<span class="font-headline-lg text-headline-lg-mobile md:text-[64px] md:leading-none text-surface-tint font-bold tracking-tighter">14.28054</span>
+<span class="font-headline-md text-headline-md text-on-surface-variant pb-2">BTC</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">≈ $912,450.20 USD</p>
+</div>
+<div class="p-4 bg-surface-container-highest flex justify-end gap-4">
+<button class="px-6 py-3 border border-outline-variant text-on-surface-variant font-label-md text-label-md uppercase hover:bg-surface-variant transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined">swap_horiz</span>
+                            Convert
+                        </button>
+<button class="px-8 py-3 bg-surface-tint text-on-primary font-bold font-label-md text-label-md uppercase hover:bg-primary-container transition-colors active:scale-95 flex items-center gap-2 shadow-[4px_4px_0px_rgba(0,0,0,0.5)]">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">publish</span>
+                            Withdraw Funds
+                        </button>
+</div>
+</section>
+<!-- Deposit Card (Spans 4 cols) -->
+<section class="lg:col-span-4 bg-surface-container border border-outline-variant flex flex-col">
+<div class="p-4 border-b border-outline-variant">
+<h3 class="font-label-md text-label-md text-on-surface-variant uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">qr_code_scanner</span>
+                            Deposit Address
+                        </h3>
+</div>
+<div class="p-6 flex-1 flex flex-col items-center justify-center gap-6">
+<div class="w-48 h-48 bg-white p-2 border-2 border-outline-variant">
+<!-- Image Generation Placeholder -->
+<img alt="Deposit QR Code" class="w-full h-full object-cover" data-alt="A highly detailed, starkly contrasting black and white QR code graphic. The image should look like a functional, dense technical barcode suitable for a brutalist, industrial software interface. No background elements, just the pure geometric patterns of a complex QR code isolated on a white square." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALolwhq40a8eninnrnv2rovNroXQvIetiU3Vn9hNU6dGVVuNdRjwcK6Lq0vCV4XD_z8ryzthNYfl-rkgjzi24hqjdTJj6pOSYmCmyH5fF_3KasuN2n1fwpsikYVEj4HrHsZOdecIuYW8ufjSB4_P088a9fO2_XTfFE2v1ft90xi3Lt0eL6aK1F-Tw0KVD8ELrIl_G0NirC_4xSQ3pRVtbIy627_3T--c1nynH-4bOw4zLzYg_h0ShorwhKrtwcvRcU159jRC24-Ji6"/>
+</div>
+<div class="w-full">
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-2 text-center uppercase">Network: Bitcoin (BTC)</p>
+<div class="flex items-center border border-outline-variant bg-background p-2">
+<code class="font-label-sm text-label-sm text-primary truncate flex-1 pl-2">bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh</code>
+<button class="p-2 text-on-surface-variant hover:text-surface-tint transition-colors active:scale-95 ml-2 border-l border-outline-variant">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Transaction History Table -->
+<section class="bg-surface-container border border-outline-variant">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-highest">
+<h3 class="font-label-md text-label-md text-primary uppercase">Transaction Log</h3>
+<button class="text-on-surface-variant hover:text-surface-tint flex items-center gap-1 font-label-sm text-label-sm uppercase transition-colors">
+<span class="material-symbols-outlined text-[16px]">download</span>
+                        Export CSV
+                    </button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase border-b-2 border-surface-tint bg-surface-container w-48">Date / Time</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase border-b-2 border-surface-tint bg-surface-container">Type</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase border-b-2 border-surface-tint bg-surface-container text-right">Amount (BTC)</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase border-b-2 border-surface-tint bg-surface-container w-48 text-center">Status</th>
+<th class="p-4 font-label-md text-label-md text-on-surface-variant uppercase border-b-2 border-surface-tint bg-surface-container w-32">TxID</th>
+</tr>
+</thead>
+<tbody class="font-label-sm text-label-sm text-primary">
+<!-- Row 1: Incoming -->
+<tr class="border-b border-outline-variant hover:bg-surface-variant transition-colors group">
+<td class="p-4 text-on-surface-variant">2024-10-27 14:32:01</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 px-2 py-1 border border-surface-tint text-surface-tint bg-[#abd6001a]">
+<span class="material-symbols-outlined text-[14px]">south_east</span>
+                                        INCOMING
+                                    </span>
+</td>
+<td class="p-4 text-right text-surface-tint font-bold">+ 0.05120000</td>
+<td class="p-4 text-center">
+<span class="text-surface-tint flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                        CONFIRMED
+                                    </span>
+</td>
+<td class="p-4 text-on-surface-variant truncate max-w-[120px] group-hover:text-primary cursor-pointer" title="a1b2c3d4e5f6...">a1b2c3d4...</td>
+</tr>
+<!-- Row 2: Outgoing -->
+<tr class="border-b border-outline-variant hover:bg-surface-variant transition-colors group">
+<td class="p-4 text-on-surface-variant">2024-10-25 09:15:44</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 px-2 py-1 border border-outline text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+                                        OUTGOING
+                                    </span>
+</td>
+<td class="p-4 text-right">- 2.50000000</td>
+<td class="p-4 text-center">
+<span class="text-surface-tint flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                        CONFIRMED
+                                    </span>
+</td>
+<td class="p-4 text-on-surface-variant truncate max-w-[120px] group-hover:text-primary cursor-pointer" title="f6e5d4c3b2a1...">f6e5d4c3...</td>
+</tr>
+<!-- Row 3: Incoming -->
+<tr class="border-b border-outline-variant hover:bg-surface-variant transition-colors group">
+<td class="p-4 text-on-surface-variant">2024-10-24 22:01:12</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 px-2 py-1 border border-surface-tint text-surface-tint bg-[#abd6001a]">
+<span class="material-symbols-outlined text-[14px]">south_east</span>
+                                        INCOMING
+                                    </span>
+</td>
+<td class="p-4 text-right text-surface-tint font-bold">+ 0.04980000</td>
+<td class="p-4 text-center">
+<span class="text-surface-tint flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+                                        CONFIRMED
+                                    </span>
+</td>
+<td class="p-4 text-on-surface-variant truncate max-w-[120px] group-hover:text-primary cursor-pointer" title="9x8y7z6w5v4u...">9x8y7z6w...</td>
+</tr>
+<!-- Row 4: Pending Outgoing -->
+<tr class="border-b border-outline-variant hover:bg-surface-variant transition-colors group">
+<td class="p-4 text-on-surface-variant">2024-10-28 08:00:00</td>
+<td class="p-4">
+<span class="inline-flex items-center gap-1 px-2 py-1 border border-outline text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">north_east</span>
+                                        OUTGOING
+                                    </span>
+</td>
+<td class="p-4 text-right">- 0.10000000</td>
+<td class="p-4 text-center">
+<span class="text-on-surface-variant flex items-center justify-center gap-1 animate-pulse">
+<span class="material-symbols-outlined text-[16px]">pending</span>
+                                        PROCESSING
+                                    </span>
+</td>
+<td class="p-4 text-on-surface-variant truncate max-w-[120px] group-hover:text-primary cursor-pointer italic" title="Pending network broadcast">Pending...</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="bg-surface-container-lowest w-full border-t border-outline-variant mt-auto">
+<div class="flex flex-col md:flex-row justify-between items-center px-margin-desktop py-gutter w-full max-w-container-max mx-auto">
+<div class="font-label-sm text-label-sm uppercase text-on-surface-variant mb-4 md:mb-0">
+                    © 2024 CORE MINING INDUSTRIAL. ALL SYSTEMS NOMINAL.
+                </div>
+<div class="flex items-center gap-6">
+<a class="font-label-sm text-label-sm uppercase text-on-surface-variant hover:text-surface-tint hover:underline decoration-surface-tint transition-opacity duration-300" href="#">TERMINAL_LOGS</a>
+<a class="font-label-sm text-label-sm uppercase text-on-surface-variant hover:text-surface-tint hover:underline decoration-surface-tint transition-opacity duration-300" href="#">LEGAL_PROTOCOL</a>
+<a class="font-label-sm text-label-sm uppercase text-on-surface-variant hover:text-surface-tint hover:underline decoration-surface-tint transition-opacity duration-300" href="#">API_DOCS</a>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

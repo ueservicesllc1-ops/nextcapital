@@ -376,14 +376,15 @@ export function TradingProvider({ children }: { children: React.ReactNode }) {
       const volatilitySpike = Math.random() > 0.8 ? 3 : 1; 
 
       if (assetType === 'crypto') {
-        return 0.001 * volatilitySpike;
+        return 0.0004 * volatilitySpike;
       } else if (assetType === 'forex') {
-        return isWeekend ? 0.005 : (0.0002 * volatilitySpike);
+        return isWeekend ? 0.0008 : (0.0001 * volatilitySpike);
       } else {
-        if (isWeekend) return 0.015;
-        if (!isMarketOpen) return 0.008;
-        return 0.001 * volatilitySpike;
+        if (isWeekend) return 0.0015;
+        if (!isMarketOpen) return 0.001;
+        return 0.0004 * volatilitySpike;
       }
+
     };
 
     const spreadPercentage = getDynamicSpread(asset?.type);
