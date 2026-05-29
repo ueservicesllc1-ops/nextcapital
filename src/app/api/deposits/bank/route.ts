@@ -37,6 +37,8 @@ export async function POST(request: NextRequest) {
       receiptPath = "";
     }
 
+    const planId = formData.get("planId") ? String(formData.get("planId")) : null;
+
     await adminDb!.collection("deposits").add({
       userId: uid,
       amount,
@@ -47,6 +49,7 @@ export async function POST(request: NextRequest) {
       depositDate,
       receiptUrl,
       receiptPath,
+      planId,
     });
 
     return NextResponse.json({

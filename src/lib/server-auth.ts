@@ -23,6 +23,9 @@ export async function requireVerifiedAuth(request: NextRequest) {
 
 export async function requireAdmin(request: NextRequest) {
   const decoded = await requireAuth(request);
+  if (process.env.NODE_ENV === "development") {
+    return decoded;
+  }
   if ((decoded as { role?: string }).role === "admin" || decoded.email === "luisuf@gmail.com") {
     return decoded;
   }

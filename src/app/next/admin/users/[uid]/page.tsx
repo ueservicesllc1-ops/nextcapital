@@ -46,7 +46,7 @@ export default function AdminUserProfilePage() {
       ]);
 
       if (!userSnap.exists()) {
-        router.replace("/admin/users");
+        router.replace("/next/admin/users");
         return;
       }
 
@@ -137,7 +137,7 @@ export default function AdminUserProfilePage() {
       {/* Header */}
       <div className="mb-8">
         <button
-          onClick={() => router.push("/admin/users")}
+          onClick={() => router.push("/next/admin/users")}
           className="mb-4 flex items-center gap-2 text-xs font-medium text-zinc-500 transition-colors hover:text-zinc-300"
         >
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">

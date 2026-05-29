@@ -4,6 +4,7 @@ export type EntityStatus = "active" | "inactive";
 export type DepositMethod = "stripe" | "bank";
 export type DepositStatus =
   | "pending"
+  | "processing"
   | "approved"
   | "rejected"
   | "completed"

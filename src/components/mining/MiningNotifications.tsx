@@ -28,9 +28,11 @@ interface Props {
   active: boolean;
   hasActivePlan: boolean;
   btcEarnings: number;
+  coinSymbol?: string;
+  coinPrice?: number;
 }
 
-export default function MiningNotifications({ active, hasActivePlan, btcEarnings }: Props) {
+export default function MiningNotifications({ active, hasActivePlan, btcEarnings, coinSymbol = 'BTC', coinPrice = 87452 }: Props) {
   const [notifications, setNotifications] = useState<MiningNotification[]>([]);
 
   function addNotif(n: Omit<MiningNotification, 'id'>) {
@@ -50,18 +52,26 @@ export default function MiningNotifications({ active, hasActivePlan, btcEarnings
 
     // Block validation notifications every 25-45s
     const blockId = setInterval(() => {
-      const reward = (0.000005 + Math.random() * 0.00002).toFixed(8);
+      const rewardVal = coinSymbol === 'BTC' ? (0.000005 + Math.random() * 0.00002) :
+                        coinSymbol === 'LTC' ? (0.005 + Math.random() * 0.02) :
+                        coinSymbol === 'DOGE' ? (1.2 + Math.random() * 3.8) :
+                        coinSymbol === 'ETC' ? (0.015 + Math.random() * 0.075) :
+                        (15.0 + Math.random() * 55.0);
+      
+      const decimals = coinSymbol === 'BTC' ? 8 : (coinSymbol === 'DOGE' || coinSymbol === 'RVN' ? 2 : 4);
+      const reward = rewardVal.toFixed(decimals);
       const blockNum = (843000 + Math.floor(Math.random() * 3000)).toLocaleString('en-US');
+      
       addNotif({
         type: 'block',
         title: '⛏ Bloque validado',
-        body: `Block #${blockNum} — Recompensa: ${reward} BTC`,
+        body: `Block #${blockNum} — Recompensa: ${reward} ${coinSymbol}`,
       });
     }, 25000 + Math.random() * 20000);
 
     // Earnings milestone every 60s
     const earningsId = setInterval(() => {
-      const usdEarned = (btcEarnings * 87452).toFixed(2);
+      const usdEarned = (btcEarnings * coinPrice).toFixed(2);
       addNotif({
         type: 'earnings',
         title: '💰 Acumulando ganancias',

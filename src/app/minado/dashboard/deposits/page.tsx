@@ -23,7 +23,8 @@ import {
   Calendar, 
   UploadCloud,
   CheckCircle,
-  Clock
+  Clock,
+  Smartphone
 } from 'lucide-react';
 
 const CLOUD_MINING_PLANS = [
@@ -45,7 +46,10 @@ export default function MinadoDepositsPage() {
   const [receipt, setReceipt] = useState<File | null>(null);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
   const [loadingStripe, setLoadingStripe] = useState(false);
+  const [loadingPayphone, setLoadingPayphone] = useState(false);
   const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [payphonePhone, setPayphonePhone] = useState('');
+  const [payphoneSuccess, setPayphoneSuccess] = useState(false);
 
   // URL parsing to auto-select plan
   useEffect(() => {
@@ -147,6 +151,40 @@ export default function MinadoDepositsPage() {
     } catch (e) {
       showToast("Error de conexión con Stripe.", "error");
       setLoadingStripe(false);
+    }
+  }
+
+  async function createPayphoneDeposit() {
+    if (!payphonePhone || payphonePhone.replace(/\D/g,'').length < 7) {
+      showToast('Ingresa un número de teléfono válido registrado en PayPhone.', 'error');
+      return;
+    }
+    setLoadingPayphone(true);
+    try {
+      const token = await firebaseUser?.getIdToken();
+      const res = await fetch('/api/payphone/sale', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          amount: selectedPlan.amount,
+          planId: selectedPlan.id,
+          phoneNumber: payphonePhone,
+          userId: firebaseUser?.uid,
+          userName: appUser?.name ?? '',
+          userEmail: firebaseUser?.email ?? '',
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showToast(data.message ?? 'Error al enviar la solicitud a PayPhone.', 'error');
+        return;
+      }
+      setPayphoneSuccess(true);
+      showToast('¡Solicitud enviada! Revisa tu app PayPhone para confirmar el pago.', 'success');
+    } catch (e) {
+      showToast('Error de conexión con PayPhone.', 'error');
+    } finally {
+      setLoadingPayphone(false);
     }
   }
 
@@ -315,7 +353,7 @@ export default function MinadoDepositsPage() {
           </div>
 
           {/* Payment Methods */}
-          <div className={`grid grid-cols-1 lg:grid-cols-2 gap-6 transition-all ${!acceptedTerms ? 'opacity-40 pointer-events-none' : ''}`}>
+          <div className={`grid grid-cols-1 lg:grid-cols-3 gap-6 transition-all ${!acceptedTerms ? 'opacity-40 pointer-events-none' : ''}`}>
             
             {/* Stripe card */}
             <article className="rounded-2xl border border-white/5 bg-[#0d0d14] p-6 lg:p-8 space-y-6 flex flex-col justify-between">
@@ -340,6 +378,67 @@ export default function MinadoDepositsPage() {
                   {loadingStripe ? "Conectando con Stripe..." : `Pagar ${formatCurrency(selectedPlan.amount)} con Tarjeta`}
                 </button>
               </div>
+            </article>
+
+            {/* PayPhone Ecuador */}
+            <article className="rounded-2xl border border-emerald-500/20 bg-[#0d0d14] p-6 lg:p-8 space-y-6 flex flex-col justify-between" style={{ background: 'linear-gradient(160deg, rgba(16,185,129,0.04) 0%, #0d0d14 70%)' }}>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+                    <Smartphone size={18} className="text-emerald-400" />
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-black text-white">PayPhone Ecuador</h3>
+                    <span className="text-[9px] font-mono text-emerald-500 font-bold uppercase tracking-wider">🇪🇨 Pago local instantáneo</span>
+                  </div>
+                </div>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  Paga directamente desde tu app PayPhone. Ingresa tu número de teléfono registrado y recibirás una notificación de cobro al instante. Acepta tarjetas Visa, Mastercard, Diners y saldo PayPhone.
+                </p>
+
+                {payphoneSuccess ? (
+                  <div className="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-center">
+                    <CheckCircle size={24} className="text-emerald-400 mx-auto mb-2" />
+                    <p className="text-sm font-bold text-emerald-400">¡Solicitud enviada exitosamente!</p>
+                    <p className="text-xs text-slate-400 mt-1">Revisa tu app PayPhone y acepta el cobro de <strong className="text-white">{formatCurrency(selectedPlan.amount)}</strong></p>
+                    <p className="text-[10px] text-slate-500 mt-2 font-mono">El estado de tu contrato se actualizará automáticamente una vez confirmado.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    <div>
+                      <label className="block text-xs font-mono font-bold text-slate-400 uppercase mb-2">Número PayPhone (Ecuador)</label>
+                      <div className="flex gap-2">
+                        <div className="flex items-center px-3 py-3 rounded-xl bg-black/40 border border-white/10 text-slate-400 text-sm font-mono flex-shrink-0">
+                          🇪🇨 +593
+                        </div>
+                        <input
+                          type="tel"
+                          placeholder="098 411 1222"
+                          value={payphonePhone}
+                          onChange={e => setPayphonePhone(e.target.value)}
+                          className="flex-1 px-4 py-3 rounded-xl text-white outline-none focus:ring-1 focus:ring-emerald-500 text-sm font-mono"
+                          style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.08)' }}
+                        />
+                      </div>
+                      <p className="text-[10px] text-slate-500 mt-1 font-mono">Número registrado en tu cuenta PayPhone Personal</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {!payphoneSuccess && (
+                <div className="pt-4">
+                  <button
+                    onClick={createPayphoneDeposit}
+                    disabled={loadingPayphone || !acceptedTerms || !payphonePhone}
+                    className="w-full py-4 rounded-xl font-bold text-xs bg-emerald-500 text-white hover:bg-emerald-400 disabled:opacity-50 active:scale-[0.99] transition-all flex items-center justify-center gap-2 shadow-[0_0_15px_rgba(16,185,129,0.2)]"
+                  >
+                    <Smartphone size={14} />
+                    {loadingPayphone ? 'Enviando a PayPhone...' : `Pagar ${formatCurrency(selectedPlan.amount)} con PayPhone`}
+                  </button>
+                </div>
+              )}
+
             </article>
 
             {/* Bank Transfer */}

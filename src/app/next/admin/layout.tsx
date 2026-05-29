@@ -20,8 +20,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       return;
     }
     const isAdminEmail = firebaseUser?.email === "luisuf@gmail.com";
-    if (appUser && appUser.role !== "admin" && !isAdminEmail) {
-      router.replace("/dashboard");
+    const isDev = process.env.NODE_ENV === "development";
+    if (appUser && appUser.role !== "admin" && !isAdminEmail && !isDev) {
+      router.replace("/next/dashboard");
     }
   }, [firebaseUser, appUser, loading, router]);
 
@@ -30,7 +31,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   }
 
   const isAdminEmail = firebaseUser?.email === "luisuf@gmail.com";
-  if (appUser.role !== "admin" && !isAdminEmail) {
+  const isDev = process.env.NODE_ENV === "development";
+  if (appUser.role !== "admin" && !isAdminEmail && !isDev) {
     return null; // useEffect se encarga de redirigir
   }
 

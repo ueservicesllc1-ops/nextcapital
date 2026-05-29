@@ -5,16 +5,16 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const investorLinks = [
-  { href: "/dashboard", label: "Overview" },
-  { href: "/dashboard/deposits", label: "Depósitos" },
-  { href: "/dashboard/withdrawals", label: "Retiros" },
+  { href: "/next/dashboard", label: "Overview" },
+  { href: "/next/dashboard/deposits", label: "Depósitos" },
+  { href: "/next/dashboard/withdrawals", label: "Retiros" },
 ];
 
 const adminLinks = [
-  { href: "/admin", label: "Admin Overview" },
-  { href: "/admin/users", label: "Usuarios" },
-  { href: "/admin/deposits", label: "Depósitos" },
-  { href: "/admin/withdrawals", label: "Retiros" },
+  { href: "/next/admin", label: "Admin Overview" },
+  { href: "/next/admin/users", label: "Usuarios" },
+  { href: "/next/admin/deposits", label: "Depósitos" },
+  { href: "/next/admin/withdrawals", label: "Retiros" },
 ];
 
 export function Sidebar({ admin }: { admin?: boolean }) {
