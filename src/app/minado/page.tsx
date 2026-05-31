@@ -8,8 +8,7 @@ import dynamic from 'next/dynamic';
 
 const MiningWorldMap = dynamic(() => import('@/components/mining/MiningWorldMap'), { ssr: false });
 
-
-const PLANS = [
+const PLANS_ES = [
   {
     tier: 'STARTER',
     code: 'NC-S1',
@@ -18,9 +17,9 @@ const PLANS = [
     minRoi: 0.75,
     maxRoi: 1.10,
     invest: '$500 – $2K',
-    duration: '12M',
+    duration: '12 Meses',
     uptime: '99.5%',
-    features: ['1 nodo ASIC físico', 'Dashboard en vivo', 'Retiro mensual', 'Email support'],
+    features: ['1 nodo ASIC físico', 'Dashboard en vivo', 'Retiro mensual', 'Soporte por email'],
     hot: false,
   },
   {
@@ -31,7 +30,7 @@ const PLANS = [
     minRoi: 0.80,
     maxRoi: 1.10,
     invest: '$2K – $10K',
-    duration: '12M',
+    duration: '12 Meses',
     uptime: '99.9%',
     features: ['2 nodos ASIC físicos', 'Telemetría en tiempo real', 'Retiro semanal', 'Soporte 24/7', 'Reinversión auto'],
     hot: true,
@@ -44,29 +43,221 @@ const PLANS = [
     minRoi: 0.85,
     maxRoi: 1.10,
     invest: '$10K+',
-    duration: '24M',
+    duration: '24 Meses',
     uptime: '99.99%',
     features: ['Rack dedicado completo', 'API telemetría cruda', 'Retiro diario', 'Account Manager', 'SLA contractual'],
     hot: false,
   },
 ];
 
-function useCounter(target: number, speed = 50) {
-  const [val, setVal] = useState(0);
-  useEffect(() => {
-    let current = 0;
-    const step = target / 60;
-    const t = setInterval(() => {
-      current += step;
-      if (current >= target) { setVal(target); clearInterval(t); }
-      else setVal(Math.floor(current));
-    }, speed);
-    return () => clearInterval(t);
-  }, [target, speed]);
-  return val;
-}
+const PLANS_EN = [
+  {
+    tier: 'STARTER',
+    code: 'NC-S1',
+    hashrate: '100 TH/s',
+    price: 149,
+    minRoi: 0.75,
+    maxRoi: 1.10,
+    invest: '$500 – $2K',
+    duration: '12 Months',
+    uptime: '99.5%',
+    features: ['1 physical ASIC node', 'Live dashboard', 'Monthly withdrawal', 'Email support'],
+    hot: false,
+  },
+  {
+    tier: 'PRO',
+    code: 'NC-P2',
+    hashrate: '250 TH/s',
+    price: 329,
+    minRoi: 0.80,
+    maxRoi: 1.10,
+    invest: '$2K – $10K',
+    duration: '12 Months',
+    uptime: '99.9%',
+    features: ['2 physical ASIC nodes', 'Real-time telemetry', 'Weekly withdrawal', '24/7 Support', 'Auto reinvestment'],
+    hot: true,
+  },
+  {
+    tier: 'INDUSTRIAL',
+    code: 'NC-I3',
+    hashrate: '500 TH/s',
+    price: 599,
+    minRoi: 0.85,
+    maxRoi: 1.10,
+    invest: '$10K+',
+    duration: '24 Months',
+    uptime: '99.99%',
+    features: ['Full dedicated rack', 'Raw telemetry API', 'Daily withdrawal', 'Account Manager', 'Contractual SLA'],
+    hot: false,
+  },
+];
 
-function LiveTicker() {
+const TRANSLATIONS = {
+  es: {
+    navPlanes: 'Planes',
+    navFunciona: '¿Cómo funciona?',
+    navHardware: 'Hardware',
+    navAcceder: 'Acceder',
+    navDashboard: 'Dashboard →',
+    badgeSystem: 'SISTEMA OPERATIVO · 142.5 EH/s',
+    heroLine1: 'Minería',
+    heroLine2: 'Industrial',
+    heroLine3: 'en la Nube.',
+    heroSub: 'Hardware ASIC dedicado 1:1 en nuestros data centers físicos. Tu equipo mina Bitcoin, Litecoin y más criptomonedas 24/7 y tú ves las ganancias en tiempo real — entre 0.75% y 1.10% diario.',
+    btnPlanes: 'Ver Planes de Inversión',
+    btnFunciona: 'Cómo funciona',
+    statNodes: 'Nodos activos',
+    statCountries: 'Países',
+    statUptime: 'Uptime promedio',
+    disclaimerTitle: 'Transparencia sobre rendimientos',
+    disclaimerDesc: 'El rendimiento diario no es fijo. Oscila entre 0.75% y 1.10% según la dificultad de red de Bitcoin, precio del BTC y eficiencia energética. Los valores en pantalla reflejan la actividad real de las máquinas en tiempo real. Toda inversión conlleva riesgo.',
+    controlTitle: 'CENTRO DE CONTROL Y TELEMETRÍA GLOBAL',
+    controlSub: 'Rendimiento de Minado en Tiempo Real',
+    controlDesc: 'Estadísticas agregadas de todos los pools de minería NextCapital operando bajo tecnología ASIC. Actualizado cada 100ms.',
+    cardUsersTitle: 'MINEROS ACTIVOS EN EL POOL',
+    cardUsersSuffix: 'usuarios',
+    cardUsersDesc: 'Nodos activos dedicados procesando y distribuyendo potencia de cómputo en la nube. Sincronización instantánea de pools hashrate.',
+    cardUsersBottom: 'INICIO HISTÓRICO: NOV 2025',
+    cardUsersStatus: 'RED TOTALMENTE OPERATIVA',
+    cardMinedTitle: 'MINADO HISTÓRICO TOTAL',
+    cardMinedBadge: 'ACUMULADO',
+    cardMinedDesc: 'Rendimiento real acumulado por el pool global desde Noviembre de 2025. Minado respaldado por hardware físico.',
+    cardMinedBottom: 'EQUIVALENTE A:',
+    cardLiveTitle: 'RENDIMIENTO ESTIMADO EN VIVO (EN SESIÓN)',
+    cardLiveStarter: 'STARTER [100 TH/s]',
+    cardLivePro: 'PRO [250 TH/s]',
+    cardLiveInd: 'INDUSTRIAL [500 TH/s]',
+    cardLiveRange: 'Rendimiento:',
+    cardLiveBottom: 'Métrica en tiempo real acumulada desde tu ingreso a la web.',
+    ledgerTitle: 'POOL PAYOUT LEDGER · TRANSACCIONES EN VIVO',
+    ledgerFee: 'COMISIÓN:',
+    ledgerDiff: 'DIFICULTAD:',
+    ledgerLoading: 'Estableciendo canal seguro con nodos ASIC...',
+    howTitle: 'Las máquinas trabajan.',
+    howTitleSub: 'Tú cobras.',
+    howDesc: 'Nuestros data centers operan racks completos de ASICs Bitcoin las 24 horas. Cuando contratas un plan, ese hardware se te asigna en exclusiva. Lo que minan esas máquinas físicas es lo que verás acreditarse en tu dashboard.',
+    step1Title: 'Eliges tu potencia',
+    step1Desc: 'Seleccionas cuántos TH/s de hashrate quieres contratar y por cuánto tiempo.',
+    step2Title: 'ASIC asignado en exclusiva',
+    step2Desc: 'Un equipo físico en tu nombre. Sin virtualización, sin fraccionamiento.',
+    step3Title: 'Ganancias en tiempo real',
+    step3Desc: 'Tu dashboard muestra el saldo aumentando segundo a segundo, reflejando la actividad real del hardware.',
+    plansSectionSub: '— CONTRATOS DE HASHRATE',
+    plansSectionTitle: 'Elige tu nivel de operación',
+    plansSectionDesc: 'Todos los planes incluyen hardware ASIC físico dedicado y rendimiento variable real entre 0.75% y 1.10% diario.',
+    plansBadgePopular: '★ MÁS POPULAR',
+    plansInvest: 'Inversión:',
+    plansPriceSuffix: '/mes',
+    plansYield: 'Rendimiento diario',
+    plansYieldSub: 'Variable · no garantizado',
+    plansUptime: 'Uptime',
+    plansDuration: 'Duración',
+    plansBtnStart: 'Comenzar con',
+    hwSectionSub: '— HARDWARE 1:1',
+    hwSectionTitle: 'Tu máquina. Tu Bitcoin.',
+    hwSectionDesc: 'No compartimos ni fraccionamos hashrate. Cuando contratas un plan con NextCapital Mining, un ASIC físico te es asignado en exclusiva en nuestros data centers certificados. El rendimiento que ves es 100% tuyo.',
+    hwSpecModel: 'Modelo base',
+    hwSpecEff: 'Eficiencia',
+    hwSpecCool: 'Refrigeración',
+    hwSpecPower: 'Energía',
+    hwSpecCoolVal: 'Inmersión líquida',
+    hwSpecPowerVal: 'Hidroeléctrica PPA',
+    ctaTitle: 'Tu nodo ASIC,',
+    ctaTitleSub: 'operando en 24 horas.',
+    ctaDesc: 'Crea tu cuenta, elige tu plan y tu hardware físico empezará a minar Bitcoin para ti.',
+    ctaBtnDashboard: 'Ir al Dashboard →',
+    ctaBtnRegister: 'Crear Cuenta Gratis →',
+    ctaBtnDemo: 'Ver Dashboard Demo',
+    footerRights: 'NextCapital Mining © 2025',
+    footerTerms: 'Términos',
+    footerPrivacy: 'Privacidad',
+    footerSupport: 'Soporte',
+    footerHub: '← Hub Principal',
+  },
+  en: {
+    navPlanes: 'Plans',
+    navFunciona: 'How it works',
+    navHardware: 'Hardware',
+    navAcceder: 'Log in',
+    navDashboard: 'Dashboard →',
+    badgeSystem: 'OPERATING SYSTEM · 142.5 EH/s',
+    heroLine1: 'Industrial',
+    heroLine2: 'Cloud',
+    heroLine3: 'Mining.',
+    heroSub: 'Dedicated 1:1 ASIC hardware in our physical data centers. Your equipment mines Bitcoin, Litecoin and more cryptocurrencies 24/7 and you see profits in real time — between 0.75% and 1.10% daily.',
+    btnPlanes: 'View Investment Plans',
+    btnFunciona: 'How it works',
+    statNodes: 'Active nodes',
+    statCountries: 'Countries',
+    statUptime: 'Average uptime',
+    disclaimerTitle: 'Performance Transparency',
+    disclaimerDesc: 'Daily performance is not fixed. It ranges between 0.75% and 1.10% depending on Bitcoin network difficulty, BTC price, and power efficiency. On-screen values reflect actual machine activity in real-time. All investment carries risk.',
+    controlTitle: 'GLOBAL CONTROL CENTER & TELEMETRY',
+    controlSub: 'Real-Time Mining Performance',
+    controlDesc: 'Aggregated statistics of all NextCapital mining pools operating under ASIC technology. Updated every 100ms.',
+    cardUsersTitle: 'ACTIVE MINERS IN POOL',
+    cardUsersSuffix: 'users',
+    cardUsersDesc: 'Dedicated active nodes processing and distributing computing power in the cloud. Instant synchronization of hashrate pools.',
+    cardUsersBottom: 'HISTORICAL START: NOV 2025',
+    cardUsersStatus: 'NETWORK FULLY OPERATIONAL',
+    cardMinedTitle: 'TOTAL HISTORICAL MINED',
+    cardMinedBadge: 'ACCUMULATED',
+    cardMinedDesc: 'Actual performance accumulated by the global pool since November 2025. Mining backed by physical hardware.',
+    cardMinedBottom: 'EQUIVALENT TO:',
+    cardLiveTitle: 'ESTIMATED LIVE SESSION PERFORMANCE',
+    cardLiveStarter: 'STARTER [100 TH/s]',
+    cardLivePro: 'PRO [250 TH/s]',
+    cardLiveInd: 'INDUSTRIAL [500 TH/s]',
+    cardLiveRange: 'Yield:',
+    cardLiveBottom: 'Real-time metric accumulated since your session started.',
+    ledgerTitle: 'POOL PAYOUT LEDGER · LIVE TRANSACTIONS',
+    ledgerFee: 'POOL FEE:',
+    ledgerDiff: 'DIFFICULTY:',
+    ledgerLoading: 'Establishing secure channel with ASIC nodes...',
+    howTitle: 'Machines work.',
+    howTitleSub: 'You get paid.',
+    howDesc: 'Our data centers operate full racks of Bitcoin ASICs 24 hours a day. When you rent a plan, that hardware is allocated exclusively to you. What those physical machines mine is what you will see credited in your dashboard.',
+    step1Title: 'Choose your power',
+    step1Desc: 'Select how many TH/s of hashrate you want to rent and for how long.',
+    step2Title: 'Exclusively assigned ASIC',
+    step2Desc: 'A physical rig in your name. No virtualization, no splitting.',
+    step3Title: 'Real-time earnings',
+    step3Desc: 'Your dashboard shows your balance increasing second by second, reflecting real hardware activity.',
+    plansSectionSub: '— HASHRATE CONTRACTS',
+    plansSectionTitle: 'Choose your operating tier',
+    plansSectionDesc: 'All plans include dedicated physical ASIC hardware and real variable daily returns between 0.75% and 1.10%.',
+    plansBadgePopular: '★ MOST POPULAR',
+    plansInvest: 'Investment:',
+    plansPriceSuffix: '/month',
+    plansYield: 'Daily yield',
+    plansYieldSub: 'Variable · not guaranteed',
+    plansUptime: 'Uptime',
+    plansDuration: 'Duration',
+    plansBtnStart: 'Get Started with',
+    hwSectionSub: '— 1:1 HARDWARE',
+    hwSectionTitle: 'Your machine. Your Bitcoin.',
+    hwSectionDesc: 'We do not share or fraction hashrate. When you rent a plan with NextCapital Mining, a physical ASIC is allocated exclusively to you in our certified data centers. The yield you see is 100% yours.',
+    hwSpecModel: 'Base model',
+    hwSpecEff: 'Efficiency',
+    hwSpecCool: 'Cooling',
+    hwSpecPower: 'Power',
+    hwSpecCoolVal: 'Liquid immersion',
+    hwSpecPowerVal: 'Hydroelectric PPA',
+    ctaTitle: 'Your ASIC node,',
+    ctaTitleSub: 'operating in 24 hours.',
+    ctaDesc: 'Create your account, choose your plan and your physical hardware will start mining Bitcoin for you.',
+    ctaBtnDashboard: 'Go to Dashboard →',
+    ctaBtnRegister: 'Create Free Account →',
+    ctaBtnDemo: 'View Demo Dashboard',
+    footerRights: 'NextCapital Mining © 2025',
+    footerTerms: 'Terms',
+    footerPrivacy: 'Privacy',
+    footerSupport: 'Support',
+    footerHub: '← Main Hub',
+  }
+};
+
+function LiveTicker({ lang = 'es' }: { lang?: 'es' | 'en' }) {
   const [hashrate, setHashrate] = useState(142.5);
   const [nodes, setNodes] = useState(12408);
   const [temp, setTemp] = useState(68.2);
@@ -82,14 +273,23 @@ function LiveTicker() {
     return () => clearInterval(t);
   }, []);
 
-  const items = [
+  const items = lang === 'es' ? [
     `HASH_RATE • ${hashrate} EH/s`,
     `NODOS_ACTIVOS • ${nodes.toLocaleString()}`,
     `TEMP_PROM • ${temp}°C`,
     `YIELD_DIARIO • ${yield_}%`,
-    `NETWORK_DIFF • 86.39T`,
+    `DIFICULTAD_RED • 86.39T`,
     `UPTIME_GLOBAL • 99.97%`,
     `BTC_BLOQUE • 3.125`,
+    `COMISIÓN_POOL • 0.9%`,
+  ] : [
+    `HASH_RATE • ${hashrate} EH/s`,
+    `ACTIVE_NODES • ${nodes.toLocaleString()}`,
+    `AVG_TEMP • ${temp}°C`,
+    `DAILY_YIELD • ${yield_}%`,
+    `NETWORK_DIFF • 86.39T`,
+    `GLOBAL_UPTIME • 99.97%`,
+    `BTC_BLOCK • 3.125`,
     `POOL_FEE • 0.9%`,
   ];
 
@@ -109,6 +309,34 @@ function LiveTicker() {
 export default function MinadoLandingPage() {
   const { firebaseUser, appUser } = useAuth();
   const sessionStart = useRef(Date.now());
+  const [lang, setLang] = useState<'es' | 'en'>('es');
+
+  // Initialize lang from localStorage if available
+  useEffect(() => {
+    const stored = localStorage.getItem('mining_lang');
+    if (stored === 'es' || stored === 'en') {
+      setLang(stored);
+    }
+  }, []);
+
+  const handleSetLang = (newLang: 'es' | 'en') => {
+    setLang(newLang);
+    localStorage.setItem('mining_lang', newLang);
+  };
+
+  const t = TRANSLATIONS[lang];
+  const PLANS = lang === 'es' ? PLANS_ES : PLANS_EN;
+
+  // Dynamic status/time payout translations
+  const getTranslatedTime = (timeStr: string) => {
+    if (lang === 'es') return timeStr;
+    if (timeStr === 'Ahora mismo') return 'Just now';
+    if (timeStr.startsWith('Hace ')) {
+      const val = timeStr.replace('Hace ', '');
+      return `${val} ago`;
+    }
+    return timeStr;
+  };
 
   // Algoritmo matemático para estadísticas automáticas desde Noviembre 2025
   const [stats, setStats] = useState({
@@ -348,31 +576,55 @@ export default function MinadoLandingPage() {
           </Link>
 
           <div className="hidden md:flex items-center gap-8 text-sm text-slate-500">
-            <a href="#planes" className="hover:text-amber-400 transition-colors">Planes</a>
-            <a href="#funciona" className="hover:text-amber-400 transition-colors">¿Cómo funciona?</a>
-            <a href="#hardware" className="hover:text-amber-400 transition-colors">Hardware</a>
+            <a href="#planes" className="hover:text-amber-400 transition-colors">{t.navPlanes}</a>
+            <a href="#funciona" className="hover:text-amber-400 transition-colors">{t.navFunciona}</a>
+            <a href="#hardware" className="hover:text-amber-400 transition-colors">{t.navHardware}</a>
           </div>
 
           <div className="flex items-center gap-4">
+            {/* Elegant Language Switcher Pill */}
+            <div className="flex items-center gap-1 p-0.5 rounded-full bg-white/5 border border-white/10">
+              <button
+                onClick={() => handleSetLang('es')}
+                className={`px-2.5 py-1 text-[10px] font-bold rounded-full transition-all ${
+                  lang === 'es'
+                    ? 'bg-amber-500 text-black shadow-md'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                }`}
+              >
+                ES
+              </button>
+              <button
+                onClick={() => handleSetLang('en')}
+                className={`px-2.5 py-1 text-[10px] font-bold rounded-full transition-all ${
+                  lang === 'en'
+                    ? 'bg-amber-500 text-black shadow-md'
+                    : 'text-slate-400 hover:text-slate-200 hover:bg-white/5'
+                }`}
+              >
+                EN
+              </button>
+            </div>
+
             {firebaseUser ? (
               <span className="text-xs font-mono text-slate-300 flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                 {appUser?.name || firebaseUser.displayName || firebaseUser.email}
               </span>
             ) : (
-              <Link href="/login" className="text-sm text-slate-400 hover:text-white transition-colors">Acceder</Link>
+              <Link href="/login" className="text-sm text-slate-400 hover:text-white transition-colors">{t.navAcceder}</Link>
             )}
             <Link href="/minado/dashboard"
               className="text-sm font-semibold px-4 py-2 rounded-lg transition-all text-black"
               style={{ background: 'linear-gradient(135deg, #f59e0b, #f97316)' }}>
-              Dashboard →
+              {t.navDashboard}
             </Link>
           </div>
         </div>
       </nav>
 
       {/* ══ TICKER ══ */}
-      <LiveTicker />
+      <LiveTicker lang={lang} />
 
       {/* ══ HERO ══ */}
       <section className="relative overflow-hidden" style={{ minHeight: '92vh' }}>
@@ -400,36 +652,34 @@ export default function MinadoLandingPage() {
               <div className="flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-mono font-bold tracking-widest text-amber-300"
                 style={{ background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)' }}>
                 <span className="w-1.5 h-1.5 rounded-full bg-amber-400" style={{ animation: 'blink 1.2s step-end infinite' }} />
-                SISTEMA OPERATIVO · 142.5 EH/s
+                {t.badgeSystem}
               </div>
             </div>
 
             {/* Headline — brutal typography */}
             <div className="fade-up-2">
               <h1 className="leading-none mb-6" style={{ fontSize: 'clamp(3rem, 6vw, 5.5rem)', fontWeight: 900, letterSpacing: '-0.03em' }}>
-                <span className="block text-white">Minería</span>
-                <span className="block text-white">Industrial</span>
+                <span className="block text-white">{t.heroLine1}</span>
+                <span className="block text-white">{t.heroLine2}</span>
                 <span className="block" style={{ background: 'linear-gradient(90deg, #f59e0b 0%, #f97316 50%, #fb923c 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-                  en la Nube.
+                  {t.heroLine3}
                 </span>
               </h1>
               <p className="text-lg leading-relaxed mb-10" style={{ color: '#94a3b8', maxWidth: '480px' }}>
-                Hardware ASIC dedicado 1:1 en nuestros data centers físicos. 
-                Tu equipo mina <strong style={{ color: '#e2e8f0' }}>Bitcoin, Litecoin y más criptomonedas 24/7</strong> y tú ves las ganancias en tiempo real — 
-                entre <strong style={{ color: '#f59e0b' }}>0.75% y 1.10% diario</strong>.
+                {t.heroSub}
               </p>
 
               <div className="flex flex-wrap gap-4 mb-14">
                 <a href="#planes"
                   className="flex items-center gap-2 px-7 py-3.5 rounded-xl font-bold text-sm text-black transition-all hover:scale-105"
                   style={{ background: 'linear-gradient(135deg, #f59e0b, #f97316)', boxShadow: '0 8px 32px rgba(245,158,11,0.3)' }}>
-                  Ver Planes de Inversión
+                  {t.btnPlanes}
                   <svg width="16" height="16" fill="none" viewBox="0 0 16 16"><path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                 </a>
                 <a href="#funciona"
                   className="flex items-center gap-2 px-7 py-3.5 rounded-xl font-semibold text-sm transition-all hover:scale-105"
                   style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)', color: '#cbd5e1' }}>
-                  Cómo funciona
+                  {t.btnFunciona}
                 </a>
               </div>
             </div>
@@ -437,9 +687,9 @@ export default function MinadoLandingPage() {
             {/* Mini stats row */}
             <div className="fade-up-3 grid grid-cols-3 gap-4">
               {[
-                { val: '12,408+', lbl: 'Nodos activos' },
-                { val: '34', lbl: 'Países' },
-                { val: '99.97%', lbl: 'Uptime promedio' },
+                { val: '12,408+', lbl: t.statNodes },
+                { val: '34', lbl: t.statCountries },
+                { val: '99.97%', lbl: t.statUptime },
               ].map((s, i) => (
                 <div key={i} style={{ borderLeft: '2px solid rgba(245,158,11,0.3)', paddingLeft: '12px' }}>
                   <div className="font-black text-white" style={{ fontSize: '1.4rem', letterSpacing: '-0.02em' }}>{s.val}</div>
@@ -474,8 +724,8 @@ export default function MinadoLandingPage() {
                 ['HASH_RATE', '250.4 TH/s', true],
                 ['TEMP_BOARD', '65°C', false],
                 ['FAN_SPEED', '4,520 RPM', false],
-                ['YIELD_HOY', '0.93%', true],
-                ['GANANCIA_24H', '+$3.07 USD', true],
+                [lang === 'es' ? 'YIELD_HOY' : 'YIELD_TODAY', '0.93%', true],
+                [lang === 'es' ? 'GANANCIA_24H' : 'EARNINGS_24H', '+$3.07 USD', true],
               ].map(([k, v, highlight]) => (
                 <div key={String(k)} className="flex justify-between items-center">
                   <span className="text-xs font-mono" style={{ color: '#475569' }}>{k}</span>
@@ -492,9 +742,9 @@ export default function MinadoLandingPage() {
         <div className="flex gap-4 items-start p-5 rounded-xl" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.15)' }}>
           <span className="text-amber-500 text-lg flex-shrink-0">⚠</span>
           <div>
-            <p className="text-sm font-semibold text-amber-300 mb-1">Transparencia sobre rendimientos</p>
+            <p className="text-sm font-semibold text-amber-300 mb-1">{t.disclaimerTitle}</p>
             <p className="text-xs leading-relaxed" style={{ color: '#64748b' }}>
-              El rendimiento diario <strong style={{ color: '#94a3b8' }}>no es fijo</strong>. Oscila entre <strong style={{ color: '#f59e0b' }}>0.75% y 1.10%</strong> según la dificultad de red de Bitcoin, precio del BTC y eficiencia energética. Los valores en pantalla reflejan la actividad real de las máquinas en tiempo real. Toda inversión conlleva riesgo.
+              {t.disclaimerDesc}
             </p>
           </div>
         </div>
@@ -518,15 +768,15 @@ export default function MinadoLandingPage() {
               <div className="flex items-center gap-2 mb-3">
                 <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
                 <span className="text-xs font-mono font-bold tracking-widest text-amber-500 uppercase">
-                  CENTRO DE CONTROL Y TELEMETRÍA GLOBAL
+                  {t.controlTitle}
                 </span>
               </div>
               <h2 className="text-3xl lg:text-4xl font-black text-white" style={{ letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-                Rendimiento de Minado <span style={{ background: 'linear-gradient(90deg, #f59e0b, #fb923c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>en Tiempo Real</span>
+                {t.controlSub[0]} <span style={{ background: 'linear-gradient(90deg, #f59e0b, #fb923c)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>{t.controlSub.split(' ').slice(4).join(' ')}</span>
               </h2>
             </div>
             <p className="text-xs text-slate-500 font-mono max-w-xs md:text-right">
-              Estadísticas agregadas de todos los pools de minería NextCapital operando bajo tecnología ASIC. Actualizado cada 100ms.
+              {t.controlDesc}
             </p>
           </div>
 
@@ -540,7 +790,7 @@ export default function MinadoLandingPage() {
             }}>
               <div>
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-xs font-mono font-bold text-slate-400">MINEROS ACTIVOS EN EL POOL</span>
+                  <span className="text-xs font-mono font-bold text-slate-400">{t.cardUsersTitle}</span>
                   <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     LIVE
@@ -548,16 +798,15 @@ export default function MinadoLandingPage() {
                 </div>
                 <div className="text-4xl font-black text-white tracking-tight mb-2 flex items-baseline gap-1">
                   <span>{stats.activeUsers.toLocaleString()}</span>
-                  <span className="text-xs font-normal text-slate-500">usuarios</span>
+                  <span className="text-xs font-normal text-slate-500">{t.cardUsersSuffix}</span>
                 </div>
                 <p className="text-xs text-slate-400 leading-relaxed">
-                  Nodos activos dedicados procesando y distribuyendo potencia de cómputo en la nube. 
-                  Sincronización instantánea de pools hashrate.
+                  {t.cardUsersDesc}
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-white/5 flex justify-between items-center text-[10px] font-mono text-slate-500">
-                <span>INICIO HISTÓRICO: NOV 2025</span>
-                <span className="text-emerald-400">RED TOTALMENTE OPERATIVA</span>
+                <span>{t.cardUsersBottom}</span>
+                <span className="text-emerald-400">{t.cardUsersStatus}</span>
               </div>
             </div>
 
@@ -570,21 +819,20 @@ export default function MinadoLandingPage() {
               <div className="absolute top-0 right-0 w-32 h-32 rounded-full bg-amber-500/10 blur-2xl pointer-events-none" />
               <div>
                 <div className="flex justify-between items-center mb-4">
-                  <span className="text-xs font-mono font-bold text-amber-500">MINADO HISTÓRICO TOTAL</span>
+                  <span className="text-xs font-mono font-bold text-amber-500">{t.cardMinedTitle}</span>
                   <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-mono font-bold text-amber-400 bg-amber-500/10 border border-amber-500/20">
-                    ACUMULADO
+                    {t.cardMinedBadge}
                   </div>
                 </div>
                 <div className="text-4xl font-black text-white tracking-tight mb-2 font-mono">
                   ${stats.totalMinedUSD.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                 </div>
                 <p className="text-xs text-amber-300/80 leading-relaxed">
-                  Rendimiento real acumulado por el pool global desde <strong className="text-white">Noviembre de 2025</strong>. 
-                  Minado respaldado por hardware físico.
+                  {t.cardMinedDesc}
                 </p>
               </div>
               <div className="mt-6 pt-4 border-t border-amber-500/10 flex justify-between items-center text-[10px] font-mono text-amber-500">
-                <span>EQUIVALENTE A:</span>
+                <span>{t.cardMinedBottom}</span>
                 <span className="font-bold text-white">Ξ {stats.totalMinedBTC.toFixed(5)} BTC</span>
               </div>
             </div>
@@ -596,13 +844,13 @@ export default function MinadoLandingPage() {
               boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.02)'
             }}>
               <div>
-                <span className="text-xs font-mono font-bold text-slate-400 block mb-4">RENDIMIENTO ESTIMADO EN VIVO (EN SESIÓN)</span>
+                <span className="text-xs font-mono font-bold text-slate-400 block mb-4">{t.cardLiveTitle}</span>
                 <div className="space-y-3">
                   {/* STARTER */}
                   <div className="p-2.5 rounded-lg bg-white/5 border border-white/5 flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-slate-500">STARTER [100 TH/s]</span>
-                      <p className="text-[9px] text-slate-500 font-mono">Rendimiento: 0.75% - 1.10%</p>
+                      <span className="text-[10px] font-mono font-bold text-slate-500">{t.cardLiveStarter}</span>
+                      <p className="text-[9px] text-slate-500 font-mono">{t.cardLiveRange} 0.75% - 1.10%</p>
                     </div>
                     <span className="text-xs font-mono font-bold text-slate-300">
                       +${stats.liveStarterMined.toFixed(6)} USD
@@ -611,8 +859,8 @@ export default function MinadoLandingPage() {
                   {/* PRO */}
                   <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-amber-400">PRO [250 TH/s]</span>
-                      <p className="text-[9px] text-amber-500/70 font-mono">Rendimiento: 0.80% - 1.10%</p>
+                      <span className="text-[10px] font-mono font-bold text-amber-400">{t.cardLivePro}</span>
+                      <p className="text-[9px] text-amber-500/70 font-mono">{t.cardLiveRange} 0.80% - 1.10%</p>
                     </div>
                     <span className="text-xs font-mono font-bold text-amber-400">
                       +${stats.liveProMined.toFixed(6)} USD
@@ -621,8 +869,8 @@ export default function MinadoLandingPage() {
                   {/* INDUSTRIAL */}
                   <div className="p-2.5 rounded-lg bg-white/5 border border-white/5 flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-slate-500">INDUSTRIAL [500 TH/s]</span>
-                      <p className="text-[9px] text-slate-500 font-mono">Rendimiento: 0.85% - 1.10%</p>
+                      <span className="text-[10px] font-mono font-bold text-slate-500">{t.cardLiveInd}</span>
+                      <p className="text-[9px] text-slate-500 font-mono">{t.cardLiveRange} 0.85% - 1.10%</p>
                     </div>
                     <span className="text-xs font-mono font-bold text-slate-300">
                       +${stats.liveIndustrialMined.toFixed(6)} USD
@@ -631,14 +879,14 @@ export default function MinadoLandingPage() {
                 </div>
               </div>
               <div className="mt-4 text-[9px] font-mono text-slate-600 text-center">
-                Métrica en tiempo real acumulada desde tu ingreso a la web.
+                {t.cardLiveBottom}
               </div>
             </div>
           </div>
 
           {/* GLOBAL NODE MAP */}
           <div className="mb-6">
-            <MiningWorldMap userHashrate={0} />
+            <MiningWorldMap userHashrate={0} lang={lang} />
           </div>
 
           {/* LIVE COMMAND TERMINAL (PAYOUTS) */}
@@ -649,18 +897,18 @@ export default function MinadoLandingPage() {
             <div className="px-5 py-3 flex items-center justify-between" style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', background: '#0a0a0f' }}>
               <div className="flex items-center gap-2">
                 <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-mono text-slate-400">POOL PAYOUT LEDGER · TRANSACCIONES EN VIVO</span>
+                <span className="text-xs font-mono text-slate-400">{t.ledgerTitle}</span>
               </div>
               <div className="flex gap-4 text-[10px] font-mono text-slate-500">
-                <span>COMISIÓN: <strong className="text-amber-500">0.9%</strong></span>
-                <span>DIFICULTAD: <strong className="text-amber-500">86.39T</strong></span>
+                <span>{t.ledgerFee} <strong className="text-amber-500">0.9%</strong></span>
+                <span>{t.ledgerDiff} <strong className="text-amber-500">86.39T</strong></span>
               </div>
             </div>
             
             <div className="p-4 space-y-2 max-h-[220px] overflow-y-auto scrollbar-thin">
               {payouts.length === 0 ? (
                 <div className="text-center py-6 text-xs font-mono text-slate-600 animate-pulse">
-                  Estableciendo canal seguro con nodos ASIC...
+                  {t.ledgerLoading}
                 </div>
               ) : (
                 payouts.map((p) => (
@@ -669,7 +917,7 @@ export default function MinadoLandingPage() {
                     className="flex flex-col sm:flex-row sm:justify-between sm:items-center py-2.5 px-4 rounded-lg bg-white/5 border border-white/5 hover:border-amber-500/20 transition-all gap-2 animate-[fadeInUp_0.3s_ease_forwards]"
                   >
                     <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-                      <span className="text-slate-500 text-[10px]">{p.time}</span>
+                      <span className="text-slate-500 text-[10px]">{getTranslatedTime(p.time)}</span>
                       <span className="px-1.5 py-0.5 rounded text-[10px] font-bold" style={{
                         background: p.plan === 'INDUSTRIAL' ? 'rgba(239, 68, 68, 0.1)' : p.plan === 'PRO' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(59, 130, 246, 0.1)',
                         color: p.plan === 'INDUSTRIAL' ? '#ef4444' : p.plan === 'PRO' ? '#f59e0b' : '#3b82f6',
@@ -683,7 +931,7 @@ export default function MinadoLandingPage() {
                     </div>
                     <div className="flex items-center justify-between sm:justify-end gap-2 text-right">
                       <span className="text-[10px] font-mono text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded border border-emerald-500/20 font-bold">
-                        {p.status}
+                        {lang === 'es' ? 'ACREDITADO' : 'CREDITED'}
                       </span>
                       <span className="text-xs font-mono font-bold text-emerald-400">
                         +{p.amountCrypto}
@@ -704,19 +952,19 @@ export default function MinadoLandingPage() {
       <section id="funciona" className="py-24 px-6 lg:px-10 max-w-7xl mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-center">
           <div>
-            <p className="text-xs font-mono font-bold text-amber-500 tracking-widest mb-5">— PROCESO</p>
+            <p className="text-xs font-mono font-bold text-amber-500 tracking-widest mb-5">— {lang === 'es' ? 'PROCESO' : 'PROCESS'}</p>
             <h2 className="text-4xl font-black text-white mb-6" style={{ letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-              Las máquinas trabajan.<br />
-              <span style={{ color: '#94a3b8', fontWeight: 400 }}>Tú cobras.</span>
+              {t.howTitle}<br />
+              <span style={{ color: '#94a3b8', fontWeight: 400 }}>{t.howTitleSub}</span>
             </h2>
             <p className="text-slate-400 text-base leading-relaxed mb-10">
-              Nuestros data centers operan racks completos de ASICs Bitcoin las 24 horas. Cuando contratas un plan, ese hardware se te asigna en exclusiva. Lo que minan esas máquinas físicas es lo que verás acreditarse en tu dashboard.
+              {t.howDesc}
             </p>
             <div className="space-y-6">
               {[
-                { num: '01', title: 'Eliges tu potencia', desc: 'Seleccionas cuántos TH/s de hashrate quieres contratar y por cuánto tiempo.' },
-                { num: '02', title: 'ASIC asignado en exclusiva', desc: 'Un equipo físico en tu nombre. Sin virtualización, sin fraccionamiento.' },
-                { num: '03', title: 'Ganancias en tiempo real', desc: 'Tu dashboard muestra el saldo aumentando segundo a segundo, reflejando la actividad real del hardware.' },
+                { num: '01', title: t.step1Title, desc: t.step1Desc },
+                { num: '02', title: t.step2Title, desc: t.step2Desc },
+                { num: '03', title: t.step3Title, desc: t.step3Desc },
               ].map(step => (
                 <div key={step.num} className="flex gap-5 items-start group">
                   <div className="flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center font-mono font-black text-xs text-amber-500 transition-all group-hover:scale-110"
@@ -753,9 +1001,9 @@ export default function MinadoLandingPage() {
                 { t: '> TEMP_CHIP: 65°C [NOMINAL]', c: '#94a3b8' },
                 { t: '> FAN1: 4500 RPM · FAN2: 4520 RPM', c: '#94a3b8' },
                 { t: '> POOL_SHARE_ACCEPT: 99.3%', c: '#10b981' },
-                { t: '> YIELD_RATE_NOW: 0.93%/día', c: '#f59e0b' },
+                { t: `> YIELD_RATE_NOW: 0.93%/${lang === 'es' ? 'día' : 'day'}`, c: '#f59e0b' },
                 { t: '> ACCRUED_TODAY: +$3.07 USD', c: '#f59e0b' },
-                { t: '> STATUS: ██ MINING ██', c: '#f59e0b' },
+                { t: `> STATUS: ██ ${lang === 'es' ? 'MINANDO' : 'MINING'} ██`, c: '#f59e0b' },
               ].map((line, i) => (
                 <div key={i} style={{ color: line.c, opacity: i < 2 ? 0.5 : 1 }}>
                   {line.t}{i === 9 && <span style={{ animation: 'blink 1s step-end infinite' }}> ▌</span>}
@@ -769,10 +1017,10 @@ export default function MinadoLandingPage() {
       {/* ══ PLANS ══ */}
       <section id="planes" className="py-24 px-6 lg:px-10 max-w-7xl mx-auto">
         <div className="text-center mb-16">
-          <p className="text-xs font-mono font-bold text-amber-500 tracking-widest mb-4">— CONTRATOS DE HASHRATE</p>
-          <h2 className="text-4xl font-black text-white mb-4" style={{ letterSpacing: '-0.03em' }}>Elige tu nivel de operación</h2>
+          <p className="text-xs font-mono font-bold text-amber-500 tracking-widest mb-4">{t.plansSectionSub}</p>
+          <h2 className="text-4xl font-black text-white mb-4" style={{ letterSpacing: '-0.03em' }}>{t.plansSectionTitle}</h2>
           <p className="text-slate-400 max-w-xl mx-auto text-sm">
-            Todos los planes incluyen hardware ASIC físico dedicado y rendimiento variable real entre 0.75% y 1.10% diario.
+            {t.plansSectionDesc}
           </p>
         </div>
 
@@ -795,7 +1043,7 @@ export default function MinadoLandingPage() {
                 <div className="absolute top-0 left-0 right-0 flex justify-center">
                   <span className="text-[10px] font-black tracking-widest text-black px-4 py-1 rounded-b-lg"
                     style={{ background: 'linear-gradient(90deg, #f59e0b, #f97316)' }}>
-                    ★ MÁS POPULAR
+                    {t.plansBadgePopular}
                   </span>
                 </div>
               )}
@@ -810,18 +1058,18 @@ export default function MinadoLandingPage() {
                 <h3 className="font-black text-white mb-1" style={{ fontSize: '1.8rem', letterSpacing: '-0.04em', lineHeight: 1 }}>
                   {plan.tier}
                 </h3>
-                <p className="text-xs text-slate-500 mb-5">Inversión: {plan.invest}</p>
+                <p className="text-xs text-slate-500 mb-5">{t.plansInvest} {plan.invest}</p>
 
                 {/* Price */}
                 <div className="flex items-baseline gap-1 mb-6">
                   <span className="font-black text-white" style={{ fontSize: '2.2rem', letterSpacing: '-0.04em' }}>${plan.price}</span>
-                  <span className="text-slate-500 text-sm">/mes</span>
+                  <span className="text-slate-500 text-sm">{t.plansPriceSuffix}</span>
                 </div>
 
                 {/* ROI bar */}
                 <div className="mb-6 p-3 rounded-xl" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
                   <div className="flex justify-between text-xs mb-2">
-                    <span className="text-slate-500">Rendimiento diario</span>
+                    <span className="text-slate-500">{t.plansYield}</span>
                     <span className="font-bold text-amber-400">{plan.minRoi}% – {plan.maxRoi}%</span>
                   </div>
                   <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
@@ -830,7 +1078,7 @@ export default function MinadoLandingPage() {
                       background: 'linear-gradient(90deg, #f59e0b, #f97316)',
                     }} />
                   </div>
-                  <p className="text-[10px] text-slate-600 mt-1.5">Variable · no garantizado</p>
+                  <p className="text-[10px] text-slate-600 mt-1.5">{t.plansYieldSub}</p>
                 </div>
 
                 {/* Features */}
@@ -847,8 +1095,8 @@ export default function MinadoLandingPage() {
                 {/* Specs row */}
                 <div className="grid grid-cols-2 gap-2 mb-6">
                   {[
-                    { k: 'Uptime', v: plan.uptime },
-                    { k: 'Duración', v: plan.duration },
+                    { k: t.plansUptime, v: plan.uptime },
+                    { k: t.plansDuration, v: plan.duration },
                   ].map(spec => (
                     <div key={spec.k} className="rounded-lg p-2.5 text-center" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
                       <p className="text-[10px] text-slate-600 mb-0.5">{spec.k}</p>
@@ -865,7 +1113,7 @@ export default function MinadoLandingPage() {
                     : { background: 'rgba(255,255,255,0.05)', color: '#e2e8f0', border: '1px solid rgba(255,255,255,0.1)' }
                   }
                 >
-                  Comenzar con {plan.tier} →
+                  {t.plansBtnStart} {plan.tier} →
                 </Link>
               </div>
             </div>
@@ -888,19 +1136,19 @@ export default function MinadoLandingPage() {
 
               {/* Text side */}
               <div className="p-10 lg:p-14 flex flex-col justify-center">
-                <p className="text-xs font-mono font-bold text-amber-500 tracking-widest mb-5">— HARDWARE 1:1</p>
+                <p className="text-xs font-mono font-bold text-amber-500 tracking-widest mb-5">{t.hwSectionSub}</p>
                 <h2 className="font-black text-white mb-4" style={{ fontSize: '2.2rem', letterSpacing: '-0.03em', lineHeight: 1.1 }}>
-                  Tu máquina.<br />Tu Bitcoin.
+                  {t.hwSectionTitle}
                 </h2>
                 <p className="text-slate-400 text-sm leading-relaxed mb-8">
-                  No compartimos ni fraccionamos hashrate. Cuando contratas un plan con NextCapital Mining, un ASIC físico te es asignado en exclusiva en nuestros data centers certificados. El rendimiento que ves es 100% tuyo.
+                  {t.hwSectionDesc}
                 </p>
                 <div className="grid grid-cols-2 gap-4">
                   {[
-                    { label: 'Modelo base', val: 'Antminer S19 XP' },
-                    { label: 'Eficiencia', val: '21.5 J/TH' },
-                    { label: 'Refrigeración', val: 'Inmersión líquida' },
-                    { label: 'Energía', val: 'Hidroeléctrica PPA' },
+                    { label: t.hwSpecModel, val: 'Antminer S19 XP' },
+                    { label: t.hwSpecEff, val: '21.5 J/TH' },
+                    { label: t.hwSpecCool, val: t.hwSpecCoolVal },
+                    { label: t.hwSpecPower, val: t.hwSpecPowerVal },
                   ].map(spec => (
                     <div key={spec.label} className="p-3 rounded-lg" style={{ background: 'rgba(245,158,11,0.04)', border: '1px solid rgba(245,158,11,0.1)' }}>
                       <p className="text-[10px] text-amber-600 font-mono mb-0.5">{spec.label}</p>
@@ -917,22 +1165,22 @@ export default function MinadoLandingPage() {
       {/* ══ CTA ══ */}
       <section className="py-24 px-6 lg:px-10 text-center max-w-4xl mx-auto">
         <h2 className="font-black text-white mb-4" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)', letterSpacing: '-0.04em', lineHeight: 1.1 }}>
-          Tu nodo ASIC,<br />
+          {t.ctaTitle}<br />
           <span style={{ background: 'linear-gradient(90deg, #f59e0b, #f97316)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-            operando en 24 horas.
+            {t.ctaTitleSub}
           </span>
         </h2>
-        <p className="text-slate-400 mb-10 text-base">Crea tu cuenta, elige tu plan y tu hardware físico empezará a minar Bitcoin para ti.</p>
+        <p className="text-slate-400 mb-10 text-base">{t.ctaDesc}</p>
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href={firebaseUser ? "/minado/dashboard" : "/register"}
             className="px-10 py-4 rounded-xl font-bold text-sm text-black transition-all hover:scale-105"
             style={{ background: 'linear-gradient(135deg, #f59e0b, #f97316)', boxShadow: '0 8px 40px rgba(245,158,11,0.3)' }}>
-            {firebaseUser ? "Ir al Dashboard →" : "Crear Cuenta Gratis →"}
+            {firebaseUser ? t.ctaBtnDashboard : t.ctaBtnRegister}
           </Link>
           <Link href="/minado/dashboard"
             className="px-10 py-4 rounded-xl font-semibold text-sm text-slate-300 transition-all hover:text-white"
             style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.08)' }}>
-            Ver Dashboard Demo
+            {t.ctaBtnDemo}
           </Link>
         </div>
       </section>
@@ -945,11 +1193,11 @@ export default function MinadoLandingPage() {
             <span className="text-xs text-slate-700">© 2025</span>
           </div>
           <div className="flex gap-6">
-            {['Términos', 'Privacidad', 'Soporte'].map(l => (
-              <a key={l} href="#" className="text-xs text-slate-600 hover:text-amber-400 transition-colors">{l}</a>
-            ))}
+            <a href="#" className="text-xs text-slate-600 hover:text-amber-400 transition-colors">{t.footerTerms}</a>
+            <a href="#" className="text-xs text-slate-600 hover:text-amber-400 transition-colors">{t.footerPrivacy}</a>
+            <a href="#" className="text-xs text-slate-600 hover:text-amber-400 transition-colors">{t.footerSupport}</a>
           </div>
-          <Link href="/" className="text-xs text-slate-600 hover:text-white transition-colors">← Hub Principal</Link>
+          <Link href="/" className="text-xs text-slate-600 hover:text-white transition-colors">{t.footerHub}</Link>
         </div>
       </footer>
     </div>

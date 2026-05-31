@@ -170,11 +170,58 @@ function latLngToXY(lat: number, lng: number, w = 800, h = 400) {
   return { x, y };
 }
 
-export default function MiningWorldMap({ userHashrate }: { userHashrate: number }) {
+export default function MiningWorldMap({ userHashrate, lang = 'es' }: { userHashrate: number; lang?: 'es' | 'en' }) {
   const [pulseStates, setPulseStates] = useState<Record<number, number>>({});
   const [activeNode, setActiveNode] = useState<typeof NODES[0] | null>(null);
   
   const farmContainerRef = useRef<Record<number, HTMLDivElement | null>>({});
+
+  const translateNodeName = (name: string) => {
+    if (lang === 'es') return name;
+    return name
+      .replace('Islandia', 'Iceland')
+      .replace('Alemania', 'Germany')
+      .replace('Noruega', 'Norway')
+      .replace('EE. UU.', 'USA')
+      .replace('Dubái, EAU', 'Dubai, UAE')
+      .replace('Singapur', 'Singapore')
+      .replace('Fráncfort', 'Frankfurt')
+      .replace('Canadá', 'Canada');
+  };
+
+  const translateEnergy = (energy: string) => {
+    if (lang === 'es') return energy;
+    return energy
+      .replace('Geotérmica Geysir 100% Limpia', '100% Clean Geothermal Geysir')
+      .replace('Gas de antorcha recuperado (Stranded Gas)', 'Recovered Flare Gas (Stranded Gas)')
+      .replace('Red Hidroeléctrica del Tian Shan', 'Tian Shan Hydroelectric Grid')
+      .replace('Hidroeléctrica fluvial estacional', 'Seasonal Fluvial Hydro')
+      .replace('Energía Eólica del Mar del Norte', 'North Sea Wind Energy')
+      .replace('Solar Dedicada + Red Eléctrica Local', 'Dedicated Solar + Local Grid')
+      .replace('Hidroeléctrica BC Hydro Renovable', 'BC Hydro Renewable Hydro')
+      .replace('Parque Eólico Dedicado de Gori', 'Gori Dedicated Wind Farm')
+      .replace('Parque Solar Fotovoltaico de Atacama', 'Atacama Photovoltaic Solar Farm')
+      .replace('Solar Fotovoltaica Concentrada', 'Concentrated Solar Photovoltaic')
+      .replace('Gas natural reciclado local', 'Recycled Local Natural Gas')
+      .replace('Energía Eólica + Red Renovable Regional', 'Wind Energy + Regional Renewable Grid');
+  };
+
+  const translateCooling = (cooling: string) => {
+    if (lang === 'es') return cooling;
+    return cooling
+      .replace('Aire glacial geotérmico', 'Glacial Geothermal Air')
+      .replace('Inmersión Líquida Sintética', 'Synthetic Liquid Immersion')
+      .replace('Aire forzado industrial', 'Industrial Forced Air')
+      .replace('Flujo de río de montaña indirecto', 'Indirect Mountain River Flow')
+      .replace('Aire helado del fiordo natural', 'Natural Fjord Frozen Air')
+      .replace('HVAC de ciclo cerrado avanzado', 'Advanced Closed-Loop HVAC')
+      .replace('Intercambiadores por agua fría', 'Cold Water Exchangers')
+      .replace('Convección ambiental forzada', 'Forced Ambient Convection')
+      .replace('Convección seca de montaña', 'Dry Mountain Convection')
+      .replace('Enfriamiento Líquido Activo', 'Active Liquid Cooling')
+      .replace('Enfriamiento por inmersión bifásica', 'Two-Phase Immersion Cooling')
+      .replace('Enfriamiento híbrido por evaporación', 'Evaporative Hybrid Cooling');
+  };
 
   useEffect(() => {
     // Randomize pulse phases per node
@@ -218,10 +265,10 @@ export default function MiningWorldMap({ userHashrate }: { userHashrate: number 
       <div className="flex justify-between items-center border-b border-white/5 pb-4">
         <span className="text-xs font-mono font-bold text-slate-400 flex items-center gap-2">
           <Globe size={14} className="text-amber-500 animate-spin" style={{ animationDuration: '20s' }} />
-          RED GLOBAL DE NODOS — NEXTCAPITAL CLUSTER
+          {lang === 'es' ? 'RED GLOBAL DE NODOS — NEXTCAPITAL CLUSTER' : 'GLOBAL NODE NETWORK — NEXTCAPITAL CLUSTER'}
         </span>
         <span className="text-[10px] font-mono text-slate-500 uppercase">
-          {NODES.length} centros de datos activos
+          {NODES.length} {lang === 'es' ? 'centros de datos activos' : 'active data centers'}
         </span>
       </div>
 
@@ -331,7 +378,7 @@ export default function MiningWorldMap({ userHashrate }: { userHashrate: number 
               <div className="bg-[#09090e]/95 border border-amber-500/40 rounded-xl px-4 py-2.5 text-xs font-mono whitespace-nowrap shadow-[0_0_15px_rgba(0,0,0,0.5)]">
                 <div className="text-amber-400 font-bold flex items-center gap-1.5">
                   <Activity size={10} className="animate-pulse" />
-                  {activeNode.name}
+                  {translateNodeName(activeNode.name)}
                 </div>
                 <div className="text-slate-400 mt-1 text-[10px]">{activeNode.farmName}</div>
                 <div className="text-[10px] text-slate-500 mt-0.5">Uptime: <span className="text-emerald-400 font-bold">{activeNode.uptime}</span></div>
@@ -342,15 +389,15 @@ export default function MiningWorldMap({ userHashrate }: { userHashrate: number 
         })()}
       </div>
 
-      {/* ── GRANJAS DE MINERÍA DIAGNOSTIC PANEL (AS requested: 'pon otros datos como tiempo activo de cada granja') ── */}
+      {/* ── GRANJAS DE MINERÍA DIAGNOSTIC PANEL ── */}
       <div className="space-y-3">
         <div className="flex justify-between items-center px-1">
           <span className="text-[10px] font-mono font-bold text-slate-500 uppercase tracking-widest flex items-center gap-1.5">
             <Cpu size={12} className="text-amber-500" />
-            Monitoreo de Infraestructura por Centro de Datos
+            {lang === 'es' ? 'Monitoreo de Infraestructura por Centro de Datos' : 'Data Center Infrastructure Monitoring'}
           </span>
           <span className="text-[9px] font-mono text-slate-600">
-            Haz clic en un nodo para aislar telemetría
+            {lang === 'es' ? 'Haz clic en un nodo para aislar telemetría' : 'Click on a node to isolate telemetry'}
           </span>
         </div>
 
@@ -373,7 +420,7 @@ export default function MiningWorldMap({ userHashrate }: { userHashrate: number 
                 <div className="flex justify-between items-start mb-2">
                   <div className="space-y-0.5">
                     <span className="text-[9px] font-mono text-slate-500 uppercase tracking-wide block">FARM_NODE #{farm.id}</span>
-                    <h4 className="text-xs font-black text-white truncate max-w-[130px]">{farm.name}</h4>
+                    <h4 className="text-xs font-black text-white truncate max-w-[130px]">{translateNodeName(farm.name)}</h4>
                   </div>
                   
                   <div className="flex items-center gap-1.5">
@@ -390,11 +437,11 @@ export default function MiningWorldMap({ userHashrate }: { userHashrate: number 
                   
                   <div className="grid grid-cols-2 gap-1 text-[9px] font-mono text-slate-500">
                     <div>
-                      <span className="block text-[7.5px] uppercase text-slate-600">Refrigeración</span>
-                      <span className="text-slate-400 font-bold truncate block">{farm.cooling.split(' (')[0]}</span>
+                      <span className="block text-[7.5px] uppercase text-slate-600">{lang === 'es' ? 'Refrigeración' : 'Cooling'}</span>
+                      <span className="text-slate-400 font-bold truncate block">{translateCooling(farm.cooling).split(' (')[0]}</span>
                     </div>
                     <div>
-                      <span className="block text-[7.5px] uppercase text-slate-600">Eficiencia</span>
+                      <span className="block text-[7.5px] uppercase text-slate-600">{lang === 'es' ? 'Eficiencia' : 'Efficiency'}</span>
                       <span className="text-amber-500 font-black block">{farm.cooling.includes('PUE') ? 'PUE ' + farm.cooling.split('PUE ')[1].replace(')', '') : 'N/A'}</span>
                     </div>
                   </div>
@@ -405,7 +452,7 @@ export default function MiningWorldMap({ userHashrate }: { userHashrate: number 
                   <span className="text-slate-600">Est: {farm.established}</span>
                   <span className="text-slate-400 font-bold flex items-center gap-1">
                     <Zap size={9} className="text-amber-500" />
-                    {farm.energy.split(' ')[0]}
+                    {translateEnergy(farm.energy).split(' ')[0]}
                   </span>
                 </div>
 
@@ -413,7 +460,7 @@ export default function MiningWorldMap({ userHashrate }: { userHashrate: number 
                 {userHashrate > 0 && farm.id === 1 && (
                   <div className="absolute -top-1 -right-1">
                     <span className="bg-amber-500 text-black font-black text-[7px] px-1.5 py-0.5 rounded-bl rounded-tr uppercase tracking-wider shadow">
-                      Tu ASIC Aquí
+                      {lang === 'es' ? 'Tu ASIC Aquí' : 'Your ASIC Here'}
                     </span>
                   </div>
                 )}
