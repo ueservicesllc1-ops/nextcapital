@@ -197,69 +197,75 @@ export default function Home() {
 
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {/* Plan Inicio */}
-          <div className="group relative rounded-3xl border border-white/10 bg-zinc-900/50 p-8 transition-all hover:-translate-y-2 hover:border-white/20 hover:bg-zinc-900/80 hover:shadow-2xl hover:shadow-cyan-500/10">
-            <h3 className="text-xl font-semibold text-white">Plan Inicio</h3>
-            <div className="my-6 flex items-baseline gap-2">
-              <span className="text-4xl font-bold tracking-tight text-white">$100</span>
-              <span className="text-sm text-zinc-500">USD</span>
+          <div className="group relative rounded-3xl border border-white/10 bg-zinc-900/50 p-8 transition-all hover:-translate-y-2 hover:border-white/20 hover:bg-zinc-900/80 hover:shadow-2xl hover:shadow-cyan-500/10 flex flex-col justify-between">
+            <div>
+              <h3 className="text-xl font-semibold text-white">Plan Inicio</h3>
+              <div className="my-6 flex items-baseline gap-2">
+                <span className="text-4xl font-bold tracking-tight text-white">$100</span>
+                <span className="text-sm text-zinc-500">USD</span>
+              </div>
+              <ul className="mb-8 space-y-4 text-sm text-zinc-400">
+                <li className="flex items-center gap-3">
+                  <svg className="h-5 w-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  <span><strong className="text-white">2%</strong> de rendimiento diario estimado</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <svg className="h-5 w-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Monitoreo en tiempo real
+                </li>
+              </ul>
             </div>
-            <ul className="mb-8 space-y-4 text-sm text-zinc-400">
-              <li className="flex items-center gap-3">
-                <svg className="h-5 w-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span><strong className="text-white">0.5%</strong> de rendimiento diario estimado</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <svg className="h-5 w-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                Monitoreo en tiempo real
-              </li>
-            </ul>
             <Link href="/register" className="block w-full rounded-full bg-white/5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/10">Comenzar</Link>
           </div>
 
           {/* Plan Plata */}
-          <div className="group relative rounded-3xl border border-white/10 bg-zinc-900/50 p-8 transition-all hover:-translate-y-2 hover:border-white/20 hover:bg-zinc-900/80 hover:shadow-2xl hover:shadow-teal-500/10">
-            <h3 className="text-xl font-semibold text-white">Plan Plata</h3>
-            <div className="my-6 flex items-baseline gap-2">
-              <span className="text-4xl font-bold tracking-tight text-white">$500</span>
-              <span className="text-sm text-zinc-500">USD</span>
+          <div className="group relative rounded-3xl border border-white/10 bg-zinc-900/50 p-8 transition-all hover:-translate-y-2 hover:border-white/20 hover:bg-zinc-900/80 hover:shadow-2xl hover:shadow-teal-500/10 flex flex-col justify-between">
+            <div>
+              <h3 className="text-xl font-semibold text-white">Plan Plata</h3>
+              <div className="my-6 flex items-baseline gap-2">
+                <span className="text-4xl font-bold tracking-tight text-white">$500</span>
+                <span className="text-sm text-zinc-500">USD</span>
+              </div>
+              <ul className="mb-8 space-y-4 text-sm text-zinc-400">
+                <li className="flex items-center gap-3">
+                  <svg className="h-5 w-5 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  <span><strong className="text-white">2.5%</strong> de rendimiento diario estimado</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <svg className="h-5 w-5 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Monitoreo en tiempo real
+                </li>
+              </ul>
             </div>
-            <ul className="mb-8 space-y-4 text-sm text-zinc-400">
-              <li className="flex items-center gap-3">
-                <svg className="h-5 w-5 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span><strong className="text-white">0.75%</strong> de rendimiento diario estimado</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <svg className="h-5 w-5 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                Monitoreo en tiempo real
-              </li>
-            </ul>
             <Link href="/register" className="block w-full rounded-full bg-white/5 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-white/10">Comenzar</Link>
           </div>
 
           {/* Plan Oro */}
-          <div className="group relative rounded-3xl border border-amber-500/30 bg-amber-500/5 p-8 transition-all hover:-translate-y-2 hover:border-amber-500/50 hover:bg-amber-500/10 hover:shadow-2xl hover:shadow-amber-500/20">
-            <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-600 to-amber-400 px-3 py-1 text-xs font-bold text-black shadow-lg">MÁS POPULAR</div>
-            <h3 className="text-xl font-semibold text-white">Plan Oro</h3>
-            <div className="my-6 flex items-baseline gap-2">
-              <span className="text-4xl font-bold tracking-tight text-white">$1,000</span>
-              <span className="text-sm text-zinc-500">USD</span>
+          <div className="group relative rounded-3xl border border-amber-500/30 bg-amber-500/5 p-8 transition-all hover:-translate-y-2 hover:border-amber-500/50 hover:bg-amber-500/10 hover:shadow-2xl hover:shadow-amber-500/20 flex flex-col justify-between">
+            <div>
+              <div className="absolute -top-4 left-1/2 -translate-x-1/2 rounded-full bg-gradient-to-r from-amber-600 to-amber-400 px-3 py-1 text-xs font-bold text-black shadow-lg">MÁS POPULAR</div>
+              <h3 className="text-xl font-semibold text-white">Plan Oro</h3>
+              <div className="my-6 flex items-baseline gap-2">
+                <span className="text-4xl font-bold tracking-tight text-white">$1,000</span>
+                <span className="text-sm text-zinc-500">USD</span>
+              </div>
+              <ul className="mb-8 space-y-4 text-sm text-zinc-400">
+                <li className="flex items-center gap-3">
+                  <svg className="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  <span><strong className="text-white">3%</strong> de rendimiento diario estimado</span>
+                </li>
+                <li className="flex items-center gap-3">
+                  <svg className="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  Atención prioritaria
+                </li>
+              </ul>
             </div>
-            <ul className="mb-8 space-y-4 text-sm text-zinc-400">
-              <li className="flex items-center gap-3">
-                <svg className="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                <span><strong className="text-white">1%</strong> de rendimiento diario estimado</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <svg className="h-5 w-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                Atención prioritaria
-              </li>
-            </ul>
             <Link href="/register" className="block w-full rounded-full bg-gradient-to-r from-amber-500 to-amber-600 py-3 text-center text-sm font-semibold text-black transition-transform hover:scale-105">Comenzar</Link>
           </div>
 
           {/* Plan Platinium */}
-          <div className="group relative overflow-hidden rounded-3xl border border-indigo-500/30 bg-zinc-900/50 p-8 transition-all hover:-translate-y-2 hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/20">
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-50" />
+          <div className="group relative overflow-hidden rounded-3xl border border-indigo-500/30 bg-zinc-900/50 p-8 transition-all hover:-translate-y-2 hover:border-indigo-500/50 hover:shadow-2xl hover:shadow-indigo-500/20 flex flex-col justify-between">
+            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/10 to-purple-500/10 opacity-50 pointer-events-none" />
             <div className="relative z-10">
               <h3 className="text-xl font-semibold text-white">Plan Platinium</h3>
               <div className="my-6 flex items-baseline gap-2">
@@ -269,14 +275,49 @@ export default function Home() {
               <ul className="mb-8 space-y-4 text-sm text-zinc-400">
                 <li className="flex items-center gap-3">
                   <svg className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
-                  <span><strong className="text-white">1.25%</strong> de rendimiento diario estimado</span>
+                  <span><strong className="text-white">3.5%</strong> de rendimiento diario estimado</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <svg className="h-5 w-5 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
                   Gestión institucional
                 </li>
               </ul>
-              <Link href="/register" className="block w-full rounded-full bg-indigo-500 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-indigo-400">Comenzar</Link>
+            </div>
+            <Link href="/register" className="relative z-10 block w-full rounded-full bg-indigo-500 py-3 text-center text-sm font-semibold text-white transition-colors hover:bg-indigo-400">Comenzar</Link>
+            </div>
+        </div>
+
+        {/* Plan Abierto (Grande y Destacado abajo) */}
+        <div className="mt-8 group relative overflow-hidden rounded-3xl border border-teal-500/30 bg-[#0d0d14]/80 p-8 transition-all hover:-translate-y-1 hover:border-teal-500/50 hover:shadow-2xl hover:shadow-teal-500/20">
+          <div className="absolute inset-0 bg-gradient-to-br from-teal-500/10 to-emerald-500/10 opacity-40 pointer-events-none" />
+          <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <span className="px-2 py-0.5 rounded bg-teal-500/15 border border-teal-500/35 text-[10px] font-mono font-bold text-teal-400 uppercase tracking-widest">NUEVO PLAN FLEXIBLE</span>
+                <span className="w-1.5 h-1.5 rounded-full bg-teal-400 animate-pulse" />
+              </div>
+              <h3 className="text-2xl font-black text-white tracking-tight">Plan Abierto</h3>
+              <p className="text-sm text-zinc-400 max-w-2xl leading-relaxed">
+                Invierte a tu medida sin límites de escala. Deposita la cantidad que desees (desde $10 USD) y obtén un rendimiento diario variable de entre <strong>1.5% y 3.0%</strong>. Ideal para estrategias personalizadas y escalado dinámico.
+              </p>
+              <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm text-zinc-400 pt-1">
+                <li className="flex items-center gap-2">
+                  <svg className="h-4 w-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  <span>Monto de inversión 100% libre</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="h-4 w-4 text-teal-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                  <span>Rendimiento optimizado en tiempo real</span>
+                </li>
+              </ul>
+            </div>
+            
+            <div className="flex flex-col items-start md:items-end justify-between gap-4 flex-shrink-0 w-full md:w-auto">
+              <div className="text-left md:text-right">
+                <span className="text-[10px] font-mono text-zinc-500 block uppercase">Rendimiento</span>
+                <span className="text-2xl font-black text-teal-400 font-mono">1.5% - 3.0% diario</span>
+              </div>
+              <Link href="/register" className="w-full md:w-auto block rounded-full bg-teal-500 hover:bg-teal-400 px-8 py-3.5 text-center text-sm font-bold text-black transition-colors shadow-lg shadow-teal-500/20">Comenzar</Link>
             </div>
           </div>
         </div>

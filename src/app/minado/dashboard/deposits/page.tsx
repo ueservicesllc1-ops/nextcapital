@@ -28,9 +28,9 @@ import {
 } from 'lucide-react';
 
 const CLOUD_MINING_PLANS = [
-  { id: "NC-S1", name: "Minería Starter (NC-S1)", amount: 149, daily: "0.75% - 1.10% diario", hashrate: "100 TH/s" },
-  { id: "NC-P2", name: "Minería Pro (NC-P2)", amount: 329, daily: "0.80% - 1.10% diario", hashrate: "250 TH/s" },
-  { id: "NC-I3", name: "Minería Industrial (NC-I3)", amount: 599, daily: "0.85% - 1.10% diario", hashrate: "500 TH/s" },
+  { id: "NC-S1", name: "Minería Starter (NC-S1)", amount: 149, daily: "1.5% - 2.5% diario", hashrate: "100 TH/s" },
+  { id: "NC-P2", name: "Minería Pro (NC-P2)", amount: 329, daily: "1.75% - 3% diario", hashrate: "250 TH/s" },
+  { id: "NC-I3", name: "Minería Industrial (NC-I3)", amount: 599, daily: "1.90% - 3.5% diario", hashrate: "500 TH/s" },
 ];
 
 export default function MinadoDepositsPage() {

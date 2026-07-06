@@ -52,8 +52,8 @@ const CLOUD_MINING_PLANS = [
     code: 'NC-S1',
     hashrate: '100 TH/s',
     price: 149,
-    minRoi: 0.75,
-    maxRoi: 1.10,
+    minRoi: 1.50,
+    maxRoi: 2.50,
     invest: '$500 – $2K',
     features: ['1 nodo ASIC físico', 'Dashboard en vivo', 'Retiro mensual'],
     hot: false,
@@ -63,8 +63,8 @@ const CLOUD_MINING_PLANS = [
     code: 'NC-P2',
     hashrate: '250 TH/s',
     price: 329,
-    minRoi: 0.80,
-    maxRoi: 1.10,
+    minRoi: 1.75,
+    maxRoi: 3.00,
     invest: '$2K – $10K',
     features: ['2 nodos ASIC físicos', 'Telemetría 24/7', 'Retiro semanal'],
     hot: true,
@@ -74,8 +74,8 @@ const CLOUD_MINING_PLANS = [
     code: 'NC-I3',
     hashrate: '500 TH/s',
     price: 599,
-    minRoi: 0.85,
-    maxRoi: 1.10,
+    minRoi: 1.90,
+    maxRoi: 3.50,
     invest: '$10K+',
     features: ['Rack dedicado completo', 'API telemetría cruda', 'Retiro diario'],
     hot: false,
@@ -1050,7 +1050,7 @@ export default function MinadoDashboardPage() {
               <div>
                 <h4 className="text-slate-400 text-xs font-medium">Rendimiento Estimado</h4>
                 <div className="text-3xl font-black tracking-tight text-amber-500 mt-1 flex items-baseline gap-1">
-                  {hasActivePlan ? '0.75% - 1.10%' : '0.00%'}
+                  {hasActivePlan ? (currentPlan ? `${currentPlan.minRoi.toFixed(2)}% - ${currentPlan.maxRoi.toFixed(2)}%` : '1.50% - 3.50%') : '0.00%'}
                   <span className="text-xs text-slate-500 font-mono">/DÍA</span>
                 </div>
                 <p className="text-[10px] text-slate-500 font-mono mt-1">

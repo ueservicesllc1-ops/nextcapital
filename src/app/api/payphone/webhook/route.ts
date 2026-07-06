@@ -72,6 +72,16 @@ export async function GET(req: NextRequest) {
               updatedAt: new Date().toISOString(),
             });
           }
+
+          // Create transaction record for audit and user history
+          await adminDb.collection("transactions").add({
+            userId: depositData.userId,
+            type: "deposit",
+            amount: depositData.amount ?? 0,
+            status: "approved",
+            description: `Plan de inversión adquirido vía PayPhone (${(depositData.planId ?? "").toUpperCase()})`,
+            createdAt: new Date().toISOString(),
+          });
         }
       } else {
         console.warn('[PayPhone Webhook] No deposit found for clientTransactionId:', clientTransactionId);

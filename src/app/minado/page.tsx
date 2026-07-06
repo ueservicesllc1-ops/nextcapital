@@ -14,8 +14,8 @@ const PLANS_ES = [
     code: 'NC-S1',
     hashrate: '100 TH/s',
     price: 149,
-    minRoi: 0.75,
-    maxRoi: 1.10,
+    minRoi: 1.50,
+    maxRoi: 2.50,
     invest: '$500 – $2K',
     duration: '12 Meses',
     uptime: '99.5%',
@@ -27,8 +27,8 @@ const PLANS_ES = [
     code: 'NC-P2',
     hashrate: '250 TH/s',
     price: 329,
-    minRoi: 0.80,
-    maxRoi: 1.10,
+    minRoi: 1.75,
+    maxRoi: 3.00,
     invest: '$2K – $10K',
     duration: '12 Meses',
     uptime: '99.9%',
@@ -40,8 +40,8 @@ const PLANS_ES = [
     code: 'NC-I3',
     hashrate: '500 TH/s',
     price: 599,
-    minRoi: 0.85,
-    maxRoi: 1.10,
+    minRoi: 1.90,
+    maxRoi: 3.50,
     invest: '$10K+',
     duration: '24 Meses',
     uptime: '99.99%',
@@ -56,8 +56,8 @@ const PLANS_EN = [
     code: 'NC-S1',
     hashrate: '100 TH/s',
     price: 149,
-    minRoi: 0.75,
-    maxRoi: 1.10,
+    minRoi: 1.50,
+    maxRoi: 2.50,
     invest: '$500 – $2K',
     duration: '12 Months',
     uptime: '99.5%',
@@ -69,8 +69,8 @@ const PLANS_EN = [
     code: 'NC-P2',
     hashrate: '250 TH/s',
     price: 329,
-    minRoi: 0.80,
-    maxRoi: 1.10,
+    minRoi: 1.75,
+    maxRoi: 3.00,
     invest: '$2K – $10K',
     duration: '12 Months',
     uptime: '99.9%',
@@ -82,8 +82,8 @@ const PLANS_EN = [
     code: 'NC-I3',
     hashrate: '500 TH/s',
     price: 599,
-    minRoi: 0.85,
-    maxRoi: 1.10,
+    minRoi: 1.90,
+    maxRoi: 3.50,
     invest: '$10K+',
     duration: '24 Months',
     uptime: '99.99%',
@@ -103,14 +103,14 @@ const TRANSLATIONS = {
     heroLine1: 'Minería',
     heroLine2: 'Industrial',
     heroLine3: 'en la Nube.',
-    heroSub: 'Hardware ASIC dedicado 1:1 en nuestros data centers físicos. Tu equipo mina Bitcoin, Litecoin y más criptomonedas 24/7 y tú ves las ganancias en tiempo real — entre 0.75% y 1.10% diario.',
+    heroSub: 'Hardware ASIC dedicado 1:1 en nuestros data centers físicos. Tu equipo mina Bitcoin, Litecoin y más criptomonedas 24/7 y tú ves las ganancias en tiempo real — entre 1.50% y 3.50% diario.',
     btnPlanes: 'Ver Planes de Inversión',
     btnFunciona: 'Cómo funciona',
     statNodes: 'Nodos activos',
     statCountries: 'Países',
     statUptime: 'Uptime promedio',
     disclaimerTitle: 'Transparencia sobre rendimientos',
-    disclaimerDesc: 'El rendimiento diario no es fijo. Oscila entre 0.75% y 1.10% según la dificultad de red de Bitcoin, precio del BTC y eficiencia energética. Los valores en pantalla reflejan la actividad real de las máquinas en tiempo real. Toda inversión conlleva riesgo.',
+    disclaimerDesc: 'El rendimiento diario no es fijo. Oscila entre 1.50% y 3.50% según la dificultad de red de Bitcoin, precio del BTC y eficiencia energética. Los valores en pantalla reflejan la actividad real de las máquinas en tiempo real. Toda inversión conlleva riesgo.',
     controlTitle: 'CENTRO DE CONTROL Y TELEMETRÍA GLOBAL',
     controlSub: 'Rendimiento de Minado en Tiempo Real',
     controlDesc: 'Estadísticas agregadas de todos los pools de minería NextCapital operando bajo tecnología ASIC. Actualizado cada 100ms.',
@@ -144,7 +144,7 @@ const TRANSLATIONS = {
     step3Desc: 'Tu dashboard muestra el saldo aumentando segundo a segundo, reflejando la actividad real del hardware.',
     plansSectionSub: '— CONTRATOS DE HASHRATE',
     plansSectionTitle: 'Elige tu nivel de operación',
-    plansSectionDesc: 'Todos los planes incluyen hardware ASIC físico dedicado y rendimiento variable real entre 0.75% y 1.10% diario.',
+    plansSectionDesc: 'Todos los planes incluyen hardware ASIC físico dedicado y rendimiento variable real entre 1.50% y 3.50% diario.',
     plansBadgePopular: '★ MÁS POPULAR',
     plansInvest: 'Inversión:',
     plansPriceSuffix: '/mes',
@@ -184,14 +184,14 @@ const TRANSLATIONS = {
     heroLine1: 'Industrial',
     heroLine2: 'Cloud',
     heroLine3: 'Mining.',
-    heroSub: 'Dedicated 1:1 ASIC hardware in our physical data centers. Your equipment mines Bitcoin, Litecoin and more cryptocurrencies 24/7 and you see profits in real time — between 0.75% and 1.10% daily.',
+    heroSub: 'Dedicated 1:1 ASIC hardware in our physical data centers. Your equipment mines Bitcoin, Litecoin and more cryptocurrencies 24/7 and you see profits in real time — between 1.50% and 3.50% daily.',
     btnPlanes: 'View Investment Plans',
     btnFunciona: 'How it works',
     statNodes: 'Active nodes',
     statCountries: 'Countries',
     statUptime: 'Average uptime',
     disclaimerTitle: 'Performance Transparency',
-    disclaimerDesc: 'Daily performance is not fixed. It ranges between 0.75% and 1.10% depending on Bitcoin network difficulty, BTC price, and power efficiency. On-screen values reflect actual machine activity in real-time. All investment carries risk.',
+    disclaimerDesc: 'Daily performance is not fixed. It ranges between 1.50% and 3.50% depending on Bitcoin network difficulty, BTC price, and power efficiency. On-screen values reflect actual machine activity in real-time. All investment carries risk.',
     controlTitle: 'GLOBAL CONTROL CENTER & TELEMETRY',
     controlSub: 'Real-Time Mining Performance',
     controlDesc: 'Aggregated statistics of all NextCapital mining pools operating under ASIC technology. Updated every 100ms.',
@@ -225,7 +225,7 @@ const TRANSLATIONS = {
     step3Desc: 'Your dashboard shows your balance increasing second by second, reflecting real hardware activity.',
     plansSectionSub: '— HASHRATE CONTRACTS',
     plansSectionTitle: 'Choose your operating tier',
-    plansSectionDesc: 'All plans include dedicated physical ASIC hardware and real variable daily returns between 0.75% and 1.10%.',
+    plansSectionDesc: 'All plans include dedicated physical ASIC hardware and real variable daily returns between 1.50% and 3.50%.',
     plansBadgePopular: '★ MOST POPULAR',
     plansInvest: 'Investment:',
     plansPriceSuffix: '/month',
@@ -850,7 +850,7 @@ export default function MinadoLandingPage() {
                   <div className="p-2.5 rounded-lg bg-white/5 border border-white/5 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] font-mono font-bold text-slate-500">{t.cardLiveStarter}</span>
-                      <p className="text-[9px] text-slate-500 font-mono">{t.cardLiveRange} 0.75% - 1.10%</p>
+                      <p className="text-[9px] text-slate-500 font-mono">{t.cardLiveRange} 1.5% - 2.5%</p>
                     </div>
                     <span className="text-xs font-mono font-bold text-slate-300">
                       +${stats.liveStarterMined.toFixed(6)} USD
@@ -860,7 +860,7 @@ export default function MinadoLandingPage() {
                   <div className="p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] font-mono font-bold text-amber-400">{t.cardLivePro}</span>
-                      <p className="text-[9px] text-amber-500/70 font-mono">{t.cardLiveRange} 0.80% - 1.10%</p>
+                      <p className="text-[9px] text-amber-500/70 font-mono">{t.cardLiveRange} 1.75% - 3%</p>
                     </div>
                     <span className="text-xs font-mono font-bold text-amber-400">
                       +${stats.liveProMined.toFixed(6)} USD
@@ -870,7 +870,7 @@ export default function MinadoLandingPage() {
                   <div className="p-2.5 rounded-lg bg-white/5 border border-white/5 flex items-center justify-between">
                     <div>
                       <span className="text-[10px] font-mono font-bold text-slate-500">{t.cardLiveInd}</span>
-                      <p className="text-[9px] text-slate-500 font-mono">{t.cardLiveRange} 0.85% - 1.10%</p>
+                      <p className="text-[9px] text-slate-500 font-mono">{t.cardLiveRange} 1.90% - 3.5%</p>
                     </div>
                     <span className="text-xs font-mono font-bold text-slate-300">
                       +${stats.liveIndustrialMined.toFixed(6)} USD
@@ -1074,7 +1074,7 @@ export default function MinadoLandingPage() {
                   </div>
                   <div className="h-1.5 rounded-full overflow-hidden" style={{ background: 'rgba(255,255,255,0.07)' }}>
                     <div className="h-full rounded-full" style={{
-                      width: `${(plan.maxRoi / 1.10) * 100}%`,
+                      width: `${(plan.maxRoi / 3.50) * 100}%`,
                       background: 'linear-gradient(90deg, #f59e0b, #f97316)',
                     }} />
                   </div>

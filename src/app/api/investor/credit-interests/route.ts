@@ -50,15 +50,72 @@ export async function POST(request: Request) {
     let iterDate = new Date(firstDeposit);
     iterDate.setDate(iterDate.getDate() + 1);
 
-    const writes: Array<{ id: string; amount: number; date: string }> = [];
+    const writes: Array<{ id: string; amount: number; date: string; description: string }> = [];
 
     while (iterDate <= now) {
       const dateKey = iterDate.toISOString().split("T")[0];
       const trxId = `profit-${userId}-${dateKey}`;
 
       if (!alreadyCredited.has(trxId) && now.getTime() >= iterDate.getTime()) {
-        const amount = Number((totalDeposited * DAILY_RATE).toFixed(2));
-        writes.push({ id: trxId, amount, date: iterDate.toISOString() });
+        let dayProfit = 0;
+        const descriptions: string[] = [];
+
+        for (const dep of planDeposits as any[]) {
+          const depDate = new Date(normalizeDate(dep.createdAt));
+          if (iterDate.getTime() >= depDate.getTime()) {
+            const planId = (dep.planId ?? "").toLowerCase();
+            let rate = 0.01; // default fallback
+            let planName = "Plan de Inversión";
+
+            if (planId === "inicio") {
+              rate = 0.02;
+              planName = "Plan Inicio (2.00%)";
+            } else if (planId === "plata") {
+              rate = 0.025;
+              planName = "Plan Plata (2.50%)";
+            } else if (planId === "oro") {
+              rate = 0.03;
+              planName = "Plan Oro (3.00%)";
+            } else if (planId === "platinium") {
+              rate = 0.035;
+              planName = "Plan Platinium (3.50%)";
+            } else if (planId === "abierto") {
+              // Generate deterministic pseudo-random number based on trxId/depositId to ensure idempotency
+              let hash = 0;
+              const seedStr = `${trxId}-${dep.id}`;
+              for (let i = 0; i < seedStr.length; i++) {
+                hash = (hash << 5) - hash + seedStr.charCodeAt(i);
+                hash |= 0;
+              }
+              const seededRandom = Math.abs(Math.sin(hash)); // Value between 0 and 1
+              
+              // 50% chance to yield the absolute minimum (1.50%), 20% chance to yield exactly 1.75%, 30% chance for 1.75% to 3.00%
+              if (seededRandom < 0.50) {
+                rate = 0.015;
+              } else if (seededRandom < 0.70) {
+                rate = 0.0175;
+              } else {
+                const normalizedRand = (seededRandom - 0.70) / 0.30;
+                rate = 0.0175 + normalizedRand * 0.0125; // Random range from 1.75% to 3.00%
+              }
+              
+              planName = `Plan Abierto (${(rate * 100).toFixed(2)}%)`;
+            }
+
+            const depProfit = (dep.amount ?? 0) * rate;
+            dayProfit += depProfit;
+            descriptions.push(`${planName}: +$${depProfit.toFixed(2)}`);
+          }
+        }
+
+        if (dayProfit > 0) {
+          writes.push({
+            id: trxId,
+            amount: Number(dayProfit.toFixed(2)),
+            date: iterDate.toISOString(),
+            description: `Rendimiento diario: ${descriptions.join(", ")}`,
+          });
+        }
       }
 
       iterDate = new Date(iterDate);
@@ -81,7 +138,7 @@ export async function POST(request: Request) {
         type: "profit",
         amount: w.amount,
         status: "approved",
-        description: "Rendimiento diario fijo (1.00%)",
+        description: w.description,
         createdAt: w.date,
       });
     }

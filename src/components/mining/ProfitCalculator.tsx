@@ -9,8 +9,8 @@ const PLANS = [
     label: 'STARTER', 
     model: 'Antminer S19 SE',
     price: 149, 
-    minRoi: 0.0075, 
-    maxRoi: 0.0110,
+    minRoi: 0.0150, 
+    maxRoi: 0.0250,
     power: 1250 
   },
   { 
@@ -18,8 +18,8 @@ const PLANS = [
     label: 'PRO', 
     model: 'Antminer S19 Pro',
     price: 329, 
-    minRoi: 0.0080, 
-    maxRoi: 0.0110,
+    minRoi: 0.0175, 
+    maxRoi: 0.0300,
     power: 3250 
   },
   { 
@@ -27,8 +27,8 @@ const PLANS = [
     label: 'INDUSTRIAL', 
     model: 'Antminer S19 XP',
     price: 599, 
-    minRoi: 0.0085, 
-    maxRoi: 0.0110,
+    minRoi: 0.0190, 
+    maxRoi: 0.0350,
     power: 6500 
   },
 ];

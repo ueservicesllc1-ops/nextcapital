@@ -199,14 +199,14 @@ export default function GlobalHubPage() {
               Core<br /><span style={{ color: '#f59e0b' }}>Mining</span>
             </h2>
             <p className="text-sm leading-relaxed mb-8 max-w-xs" style={{ color: '#4a3500' }}>
-              Hardware ASIC físico dedicado. Mina Bitcoin en nuestros data centers y recibe entre <strong style={{ color: '#92400e' }}>0.75% – 1.10%</strong> diario sobre tu inversión.
+              Hardware ASIC físico dedicado. Mina Bitcoin en nuestros data centers y recibe entre <strong style={{ color: '#92400e' }}>1.50% – 3.50%</strong> diario sobre tu inversión.
             </p>
 
             {/* Live stats */}
             <div className="flex gap-6 mb-8">
               {[
                 { v: '12,408', l: 'Nodos activos' },
-                { v: '0.93%', l: 'Yield hoy' },
+                { v: '2.45%', l: 'Yield hoy' },
                 { v: '99.97%', l: 'Uptime' },
               ].map(s => (
                 <div key={s.l}>

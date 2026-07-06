@@ -23,7 +23,7 @@ export function StatCard({
       <div className="relative z-10 flex flex-col h-full justify-between gap-4">
         <div>
           <p className="text-[13px] font-medium tracking-wide text-zinc-500 uppercase">{title}</p>
-          <p className={cn("mt-3 text-3xl font-bold tracking-tight", positive ? "text-white" : "text-zinc-100")}>
+          <p className={cn("mt-3 text-2xl font-bold tracking-tight truncate sm:text-3xl", positive ? "text-white" : "text-zinc-100")}>
             {value}
           </p>
         </div>
