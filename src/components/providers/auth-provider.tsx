@@ -3,12 +3,14 @@
 import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
+  getRedirectResult,
   onAuthStateChanged,
   reload,
   sendEmailVerification,
   sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   updateProfile,
   User,
@@ -99,6 +101,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => unsub();
   }, []);
 
+  // Handle Google redirect result (Capacitor WebView flow)
+  useEffect(() => {
+    if (!auth || !db) return;
+    getRedirectResult(auth)
+      .then(async (result) => {
+        if (!result) return; // no pending redirect
+        const user = result.user;
+        const ref = doc(db!, "users", user.uid);
+        const snap = await getDoc(ref);
+        if (!snap.exists()) {
+          const isAdminEmail = user.email === "luisuf@gmail.com";
+          const newUser: AppUser = {
+            uid: user.uid,
+            ncId: `NC${Math.floor(10000 + Math.random() * 90000)}`,
+            email: user.email ?? "",
+            name: user.displayName ?? "Investor",
+            role: isAdminEmail ? "admin" : "investor",
+            createdAt: new Date().toISOString(),
+            status: "active",
+          };
+          await setDoc(ref, { ...newUser, createdAt: serverTimestamp() });
+          await setDoc(doc(db!, "balances", user.uid), {
+            userId: user.uid,
+            totalDeposited: 0,
+            totalProfit: 0,
+            currentBalance: 0,
+            updatedAt: serverTimestamp(),
+          });
+        }
+      })
+      .catch((err) => {
+        console.error("Google redirect result error:", err);
+      });
+  }, []);
+
   const value = useMemo<AuthContextValue>(
     () => ({
       firebaseUser,
@@ -111,6 +148,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loginWithGoogle: async () => {
         if (!auth || !db) throw new Error("Firebase Auth no configurado.");
         const provider = new GoogleAuthProvider();
+        provider.addScope("email");
+        provider.addScope("profile");
+        // Capacitor WebViews block popups — use redirect flow instead
+        const isCapacitor =
+          typeof window !== "undefined" &&
+          (window.navigator.userAgent.includes("wv") ||
+            window.navigator.userAgent.includes("Version/") ||
+            (window as any).Capacitor?.isNativePlatform?.());
+        if (isCapacitor) {
+          await signInWithRedirect(auth, provider);
+          return; // page will reload; result handled in useEffect below
+        }
         const credential = await signInWithPopup(auth, provider);
         const user = credential.user;
         const ref = doc(db, "users", user.uid);
